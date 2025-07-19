@@ -34,7 +34,7 @@ A simple Laravel auth starter kit with **Livewire**, **Tailwind CSS**, and **Alp
 
 #### Windows (Command Prompt)
 ```cmd
-git clone https://github.com/HaidarSharaf/livewire-auth-starter.git my-project
+git clone https://github.com/HaidarSharaf/livewire-auth-starter-kit.git my-project
 cd my-project
 setup.bat
 ```
@@ -43,7 +43,7 @@ setup.bat
 #### Windows (PowerShell):
 ```powershell
 
-git clone https://github.com/HaidarSharaf/livewire-auth-starter.git
+git clone https://github.com/HaidarSharaf/livewire-auth-starter-kit.git
 cd your-new-project
 .\setup.ps1
 ````
@@ -51,7 +51,7 @@ cd your-new-project
 #### Linux/Mac:
 ```bash
 
-git clone https://github.com/HaidarSharaf/livewire-auth-starter.git
+git clone https://github.com/HaidarSharaf/livewire-auth-starter-kit.git
 cd your-new-project
 chmod +x setup.sh
 ./setup.sh
@@ -63,7 +63,7 @@ chmod +x setup.sh
 ```cmd
 
 # Clone the repository
-git clone https://github.com/HaidarSharaf/livewire-auth-starter.git my-project
+git clone https://github.com/HaidarSharaf/livewire-auth-starter-kit.git my-project
 cd my-project
 
 # Run setup (choose one)
@@ -85,7 +85,7 @@ php artisan serve
 ``` bash
 
 # Clone the repository
-git clone https://github.com/HaidarSharaf/livewire-auth-starter.git my-project
+git clone https://github.com/HaidarSharaf/livewire-auth-starter-kit.git my-project
 cd my-project
 
 # Run setup
