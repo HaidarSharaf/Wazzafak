@@ -72,7 +72,9 @@ setup.bat
 .\setup.ps1
 
 # Configure environment
-notepad .env  # Edit database and other settings
+notepad .env
+
+# Edit database and other settings
 
 # Run migrations
 php artisan migrate
@@ -93,7 +95,9 @@ chmod +x setup.sh
 ./setup.sh
 
 # Configure environment
-nano .env  # Edit database and other settings
+nano .env
+
+# Edit database and other settings
 
 # Run migrations
 php artisan migrate
