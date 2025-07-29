@@ -10,12 +10,13 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet"/>
 
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
     <!-- Styles / Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body
-    class="bg-gray-200 bg-gradient-to-br from-blue-600 to-indigo-300 min-h-screen text-white  flex p-6 lg:p-8 items-center lg:justify-center flex-col"
+    class="bg-gray-200 bg-gradient-to-br from-blue-600 to-indigo-300 min-h-screen text-white flex p-6 lg:p-8 items-center lg:justify-center flex-col"
     x-data
 >
 

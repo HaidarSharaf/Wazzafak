@@ -3,17 +3,17 @@
     <form wire:submit.prevent="login" class="lg:p-11 p-7 mx-auto">
 
         <div class="mb-11">
-            <h1 class="text-[#0D1B2A] text-center font-manrope text-3xl font-bold leading-10 mb-2">Log In</h1>
-            <p class="text-[#FF4D30] text-center text-base font-medium leading-6">Log In to your account</p>
+            <h1 class="text-[#19468f] text-center font-manrope text-3xl font-bold leading-10 mb-2">Welcome Back!</h1>
+            <p class="text-lime-500 text-center text-base font-medium leading-6">Log In to your account</p>
         </div>
 
         <div class="space-y-6">
             <div>
-                <label class='text-sm text-[#0D1B2A] font-medium mb-2 block'>Email Address:</label>
+                <label class='text-sm text-gray-800 font-medium mb-2 block'>Email Address:</label>
                 <input
                     wire:model="email"
                     type="email"
-                    class="bg-gray-100 w-full text-sm text-[#0D1B2A] px-4 py-3 rounded-md outline-0 border-1 border-[#0D1B2A] focus-within:ring-2 focus-within:ring-[#0D1B2A] focus:outline-none"
+                    class="bg-gray-100 w-full text-sm text-gray-800 px-4 py-3 rounded-md outline-0 border-1 border-gray-600 focus-within:ring-2 focus-within:ring-gray-600 focus:outline-none"
                 />
                 <div>
                     @error('email')
@@ -23,15 +23,15 @@
             </div>
 
             <div>
-                <label class='text-sm text-[#0D1B2A] font-medium mb-2 block'>Password:</label>
+                <label class='text-sm text-gray-800 font-medium mb-2 block'>Password:</label>
                 <input
                     wire:model="password"
                     type="password"
-                    class="bg-gray-100 w-full text-sm text-[#0D1B2A] px-4 py-3 rounded-md outline-0 border-1 border-[#0D1B2A] focus-within:ring-2 focus-within:ring-[#0D1B2A] focus:outline-none"
+                    class="bg-gray-100 w-full text-sm text-gray-800 px-4 py-3 rounded-md outline-0 border-1 border-gray-500 focus-within:ring-2 focus-within:ring-gray-500 focus:outline-none"
                 />
                 <div>
                     @error('password')
-                    <span class="text-[#FF4D30] text-sm">{{ $message }}</span>
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
@@ -42,16 +42,16 @@
                     <input
                         wire:model="remember"
                         type="checkbox"
-                        class="h-4 w-4 accent-[#0D1B2A] border-slate-300 rounded focus:ring-2 focus:ring-[#0D1B2A] focus:outline-none"
+                        class="h-4 w-4 accent-[#19468f] border-slate-300 rounded focus:ring-2 focus:ring-[#19468f] focus:outline-none"
                     >
-                    <label for="remember-me" class="ml-3 block sm:text-sm text-xs text-[#0D1B2A]">
+                    <label for="remember-me" class="ml-3 block font-semibold sm:text-sm text-xs text-gray-800">
                         Remember me
                     </label>
                 </div>
                 <a
                     wire:navigate
                     href="{{ route('forgot-password') }}"
-                    class="text-sm text-[#0D1B2A] hover:text-[#FF4D30] hover:underline"
+                    class="text-sm font-semibold text-lime-600 hover:underline"
                 >
                     Forgot your password?
                 </a>
@@ -63,7 +63,7 @@
                 type="submit"
                 wire:loading.attr="disabled"
                 wire:target="login"
-                class="w-full shadow-xl py-2.5 px-4 text-[15px] flex justify-center items-center font-medium rounded-md text-white bg-[#FF4D30] hover:bg-[#F53003] focus:outline-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                class="w-full shadow-xl py-2.5 px-4 text-[15px] flex justify-center items-center font-medium rounded-md text-white bg-[#19468f] hover:bg-blue-700 focus:outline-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
                    Log In
             </button>
@@ -72,7 +72,7 @@
         <div class="mt-4 flex justify-center">
             <p class="text-sm text-[#0D1B2A]">
                 Don't have an account?
-                <a wire:navigate href="{{ route('register') }}" class="text-[#FF4D30] hover:underline">Register here.</a>
+                <a wire:navigate href="{{ route('register') }}" class="text-lime-600 hover:underline">Register here.</a>
             </p>
         </div>
     </form>
