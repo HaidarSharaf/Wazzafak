@@ -21,6 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'email_verified_at',
+        'role',
         'otp_code',
         'otp_expires_at',
         'otp_sent_at',
@@ -49,6 +51,36 @@ class User extends Authenticatable
             'password' => 'hashed',
             'otp_code' => 'hashed'
         ];
+    }
+
+    public function developer()
+    {
+        return $this->hasOne(Developer::class);
+    }
+
+    public function recruiter()
+    {
+        return $this->hasOne(Recruiter::class);
+    }
+
+    public function stacks()
+    {
+        return $this->belongsToMany(Stack::class, 'developer_stacks');
+    }
+
+    public function technologies()
+    {
+        return $this->belongsToMany(Technology::class, 'developer_technologies');
+    }
+
+    public function jobListings()
+    {
+        return $this->hasMany(JobListing::class);
+    }
+
+    public function jobApplications()
+    {
+        return $this->hasMany(JobApplication::class);
     }
 
 
