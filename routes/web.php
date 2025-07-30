@@ -8,6 +8,7 @@ use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Auth\UpdatePassword;
 use App\Livewire\Auth\VerifyEmail;
 use App\Livewire\CreateJobs;
+use App\Livewire\ExploreJobs;
 use App\Livewire\Home;
 use App\Livewire\JobDetails;
 use App\Livewire\Jobs;
@@ -31,7 +32,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::get('/', Home::class)->name('home');
 
-Route::get('/jobs', Jobs::class)->name('jobs');
+Route::get('/jobs', ExploreJobs::class)->name('explore-jobs');
 
 Route::get('/job', JobDetails::class)->name('job');
 
