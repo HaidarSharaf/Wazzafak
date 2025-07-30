@@ -1,82 +1,82 @@
-<div class="rounded-2xl bg-white shadow-xl sm:w-[600px] w-[310px]">
+<div class="w-full">
 
-    <form wire:submit.prevent="register" class="lg:p-11 p-7 mx-auto">
+    <div class="max-w-3xl mx-auto bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-3xl shadow-xl">
+        <h2 class="md:text-3xl sm:text-2xl text-xl text-center font-bold mb-6 text-white">Create an Account</h2>
 
-        <div class="mb-11">
-            <h1 class=" text-[#19468f] text-center font-manrope text-3xl font-bold leading-10 mb-2">New to Wazzafak?</h1>
-            <p class="text-lime-600 text-center text-base font-medium leading-6">Create a new account</p>
-        </div>
+        <form class="space-y-6" wire:submit.prevent="register">
 
-        <div class="space-y-6">
             <div>
-                <label class='text-sm text-gray-800 font-medium mb-2 block'>Full Name:</label>
+                <label class="block text-sm md:text-base mb-1 text-white">Full Name:</label>
                 <input
                     wire:model="name"
                     type="text"
-                    class="bg-gray-100 w-full text-sm text-gray-800 px-4 py-3 rounded-md outline-0 border-1 border-gray-800 focus-within:ring-2 focus-within:ring-gray-800 focus:outline-none"
+                    class="w-full bg-white border border-white/20 rounded-xl p-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <div>
                     @error('name')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                    <span class="text-[#FF4D30] text-sm">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
 
             <div>
-                <label class='text-sm text-gray-800 font-medium mb-2 block'>Email Address:</label>
+                <label class="block text-sm md:text-base mb-1 text-white">Email:</label>
                 <input
                     wire:model="email"
                     type="email"
-                    class="bg-gray-100 w-full text-sm text-gray-800 px-4 py-3 rounded-md outline-0 border-1 border-gray-800 focus-within:ring-2 focus-within:ring-gray-800 focus:outline-none"
+                    class="w-full bg-white border border-white/20 rounded-xl p-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <div>
                     @error('email')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                    <span class="text-[#FF4D30] text-sm">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
 
             <div>
-                <label class='text-sm text-gray-800 font-medium mb-2 block'>Password:</label>
+                <label class="block text-sm md:text-base mb-1 text-white">Password:</label>
                 <input
                     wire:model="password"
                     type="password"
-                    class="bg-gray-100 w-full text-sm text-gray-800 px-4 py-3 rounded-md outline-0 border-1 border-gray-800 focus-within:ring-2 focus-within:ring-gray-800 focus:outline-none"
+                    class="w-full bg-white border border-white/20 rounded-xl p-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <div>
                     @error('password')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
 
             <div>
-                <label class='text-sm text-gray-800 font-medium mb-2 block'>Confirm Password:</label>
+                <label class="block text-sm md:text-base mb-1 text-white">Confirm Password:</label>
                 <input
                     wire:model="password_confirmation"
                     type="password"
-                    class="bg-gray-100 w-full text-sm text-gray-800 px-4 py-3 rounded-md outline-0 border-1 border-gray-800 focus-within:ring-2 focus-within:ring-gray-800 focus:outline-none"
+                    class="w-full bg-white border border-white/20 rounded-xl p-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
             </div>
-        </div>
 
-        <div class="!mt-10">
-            <button
-                type="submit"
-                wire:loading.attr="disabled"
-                wire:target="register"
-                class="w-full shadow-xl py-2.5 px-4 text-[15px] flex justify-center items-center font-medium rounded-md text-white bg-[#19468f] hover:bg-blue-700 focus:outline-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-                Register
-            </button>
-        </div>
+            <div>
+                <button
+                    type="submit"
+                    wire:loading.attr="disabled"
+                    wire:target="register"
+                    class="w-full bg-[#1750b6] hover:bg-lime-600 transition text-white md:text-base text-sm font-semibold cursor-pointer py-3 px-6 rounded-xl shadow-lg !mt-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    Register
+                </button>
+            </div>
 
-        <div class="mt-4 flex justify-center">
-            <p class="text-sm text-gray-800">
-                Already have an account?
-                <a wire:navigate href="{{ route('login') }}" class="text-lime-600 hover:underline">Log In here.</a>
-            </p>
-        </div>
-    </form>
+            <div class="mt-4 flex justify-center">
+                <p class="text-sm text-white">
+                    Already have an account?
+                    <a wire:navigate href="{{ route('login') }}" class="text-[#19468f] hover:underline">Log in here.</a>
+                </p>
+            </div>
+        </form>
+    </div>
 
 </div>
+
+
+

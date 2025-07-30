@@ -5,11 +5,11 @@ namespace App\Livewire;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-#[Title('Posted Jobs | Wazzafak')]
-class PostedJobs extends Component
+#[Title('Edit Job | Wazzafak')]
+class EditJobs extends Component
 {
     public function render()
     {
-        return view('livewire.posted-jobs');
+        return view('livewire.edit-jobs');
     }
 }

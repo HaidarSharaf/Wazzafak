@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 
+#[Title('Job Applications | Wazzafak')]
 class AppliedJobs extends Component
 {
     public function render()

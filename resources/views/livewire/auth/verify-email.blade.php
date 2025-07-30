@@ -1,58 +1,57 @@
-<div class="rounded-2xl bg-white shadow-xl sm:w-[500px] w-[310px] p-5">
+<div class="w-full">
 
-    <div class="mb-6">
-        <h1 class="text-[#0D1B2A] text-center font-manrope text-3xl font-bold leading-10 mb-2">Email Verification</h1>
-        <p
-            class="text-[#FF4D30] text-center text-base font-medium leading-6"
-        >
+    <div class="max-w-3xl mx-auto bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-3xl shadow-xl">
+        <h2 class="md:text-3xl sm:text-2xl text-xl text-center font-bold mb-6 text-white">Email Verification</h2>
+        <h2 class="md:text-2xl sm:text-xl text-lg text-center font-bold mb-6 text-white">
             An OTP code was sent to your email address:
-            <span class="text-[#0D1B2A]">{{$this->email}}</span>
-        </p>
+            <span class="text-[#19468f]">{{$this->email}}</span>
+        </h2>
+
+        <form class="space-y-6" wire:submit.prevent="verifyOTP">
+
+            <div>
+                <label class="block text-sm md:text-base mb-1 text-white">Enter OTP:</label>
+                <input
+                    wire:model="otp"
+                    type="password"
+                    maxlength="6"
+                    class="w-full bg-white border border-white/20 rounded-xl p-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <div>
+                    @error('otp')
+                    <span class="text-[#FF4D30] text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+
+            <div>
+                <button
+                    type="submit"
+                    wire:loading.attr="disabled"
+                    wire:target="verifyOtp"
+                    class="w-full bg-[#1750b6] hover:bg-lime-600 transition text-white md:text-base text-sm font-semibold cursor-pointer py-3 px-6 rounded-xl shadow-lg !mt-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    Verify
+                </button>
+            </div>
+
+            <div class="mt-4 flex justify-center">
+                <p class="text-sm text-white">
+                    Or,
+                    <a
+                        wire:navigate
+                        href=""
+                        class="text-[#19468f] hover:underline"
+                    >
+                        logout from your account.
+                    </a>
+                </p>
+            </div>
+        </form>
     </div>
-
-    <div class="mb-4">
-        <label class='text-sm text-[#0D1B2A] font-medium mb-2 block'>Enter OTP:</label>
-        <input
-            wire:model="otp"
-            type="password"
-            maxlength="6"
-            class="bg-gray-100 w-full text-sm text-[#0D1B2A] px-4 py-3 rounded-md outline-0 border-1 border-[#0D1B2A] focus-within:ring-2 focus-within:ring-[#0D1B2A] focus:outline-none"
-        />
-        @error('otp') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-    </div>
-
-    <button
-        type="button"
-        wire:click="verifyOtp"
-        wire:loading.attr="disabled"
-        wire:target="verifyOtp"
-        class="w-full shadow-xl py-2.5 px-4 text-[15px] font-medium rounded-md text-white bg-[#FF4D30] hover:bg-[#F53003] focus:outline-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-    >
-        Verify
-    </button>
-
-
-    <div class="mt-3 text-center">
-
-        <a
-            href=""
-            class="mt-3 text-sm text-[#0D1B2A]"
-        >
-            Or,
-            <span class="text-[#FF4D30] hover:underline cursor-pointer">logout from your account.</span>
-        </a>
-    </div>
-
-    @if(!$valid)
-        <button
-            type="button"
-            wire:click="sendOtp"
-            wire:loading.attr="disabled"
-            wire:target="sendOtp"
-            class="w-full shadow-xl py-2.5 px-4 text-[15px] font-medium rounded-md text-white bg-[#0D1B2A] hover:bg-slate-800 focus:outline-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-            Resend OTP
-        </button>
-    @endif
 
 </div>
+
+
+
+

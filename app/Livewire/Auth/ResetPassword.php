@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
+#[Title('Reset Password | Wazzafak')]
 class ResetPassword extends Component
 {
     #[Locked]

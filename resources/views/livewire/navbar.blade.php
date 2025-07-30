@@ -5,7 +5,7 @@
         href="{{ route('home') }}"
         class="xl:text-4xl lg:text-3xl md:text-3xl text-2xl font-bold flex items-center md:gap-4 gap-2"
     >
-        <img src="{{ asset('images/Logo.png') }}" alt="brand logo" class="lg:w-14 md:w-12 w-10" />
+        <img src="{{ asset('images/Logo.png') }}" alt="Wazzafak logo" class="lg:w-14 md:w-12 w-10" />
         <span>Wazzafak</span>
     </a>
 

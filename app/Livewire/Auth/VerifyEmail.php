@@ -8,9 +8,11 @@ use Exception;
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
+#[Title('Verify Email | Wazzafak')]
 class VerifyEmail extends Component
 {
     #[Validate('required|digits:6|numeric')]

@@ -3,8 +3,10 @@
 namespace App\Livewire\Auth;
 
 use Illuminate\Support\Facades\Password;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
+#[Title('Forgot Password | Wazzafak')]
 class ForgotPassword extends Component
 {
     public string $email = '';

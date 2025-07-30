@@ -1,63 +1,65 @@
-<div class="rounded-2xl bg-white shadow-xl sm:w-[500px] w-[310px]">
 
-    <form wire:submit.prevent="updatePassword" class="lg:p-11 p-7 mx-auto">
 
-        <div class="mb-11">
-            <h1 class="text-[#0D1B2A] text-center font-manrope text-3xl font-bold leading-10 mb-2">Update Password</h1>
-            <p class="text-[#FF4D30] text-center text-base font-medium leading-6">Ensure your password consists of a minimum of 10 characters.</p>
-        </div>
+<div class="w-full">
 
-        <div class="space-y-6">
+    <div class="max-w-3xl mx-auto bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-3xl shadow-xl">
+        <h2 class="md:text-3xl sm:text-2xl text-xl text-center font-bold mb-6 text-white">Create an Account</h2>
+
+        <form class="space-y-6" wire:submit.prevent="updatePassword">
 
             <div>
-                <label class='text-sm text-[#0D1B2A] font-medium mb-2 block'>Current Password:</label>
+                <label class="block text-sm md:text-base mb-1 text-white">Current Password:</label>
                 <input
                     wire:model="current_password"
                     type="password"
-                    class="bg-gray-100 w-full text-sm text-[#0D1B2A] px-4 py-3 rounded-md outline-0 border-1 border-[#0D1B2A] focus-within:ring-2 focus-within:ring-[#0D1B2A] focus:outline-none"
+                    class="w-full bg-white border border-white/20 rounded-xl p-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <div>
                     @error('current_password')
-                    <span class="text-[#FF4D30] text-sm">{{ $message }}</span>
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
 
             <div>
-                <label class='text-sm text-[#0D1B2A] font-medium mb-2 block'>New Password:</label>
+                <label class="block text-sm md:text-base mb-1 text-white">New Password:</label>
                 <input
                     wire:model="password"
                     type="password"
-                    class="bg-gray-100 w-full text-sm text-[#0D1B2A] px-4 py-3 rounded-md outline-0 border-1 border-[#0D1B2A] focus-within:ring-2 focus-within:ring-[#0D1B2A] focus:outline-none"
+                    class="w-full bg-white border border-white/20 rounded-xl p-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <div>
                     @error('password')
-                    <span class="text-[#FF4D30] text-sm">{{ $message }}</span>
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
 
             <div>
-                <label class='text-sm text-[#0D1B2A] font-medium mb-2 block'>Confirm Password:</label>
+                <label class="block text-sm md:text-base mb-1 text-white">Confirm Password:</label>
                 <input
                     wire:model="password_confirmation"
                     type="password"
-                    class="bg-gray-100 w-full text-sm text-[#0D1B2A] px-4 py-3 rounded-md outline-0 border-1 border-[#0D1B2A] focus-within:ring-2 focus-within:ring-[#0D1B2A] focus:outline-none"
+                    class="w-full bg-white border border-white/20 rounded-xl p-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
             </div>
 
-        </div>
+            <div>
+                <button
+                    type="submit"
+                    wire:loading.attr="disabled"
+                    wire:target="updatePassword"
+                    class="w-full bg-[#1750b6] hover:bg-lime-600 transition text-white md:text-base text-sm font-semibold cursor-pointer py-3 px-6 rounded-xl shadow-lg !mt-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    Save
+                </button>
+            </div>
 
-        <div class="!mt-12">
-            <button
-                type="submit"
-                wire:loading.attr="disabled"
-                wire:target="updatePassword"
-                class="w-full shadow-xl py-2.5 px-4 text-[15px] flex justify-center items-center font-medium rounded-md text-white bg-[#FF4D30] hover:bg-[#F53003] focus:outline-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-                Save
-            </button>
-        </div>
-    </form>
+        </form>
+    </div>
 
 </div>
+
+
+
+
