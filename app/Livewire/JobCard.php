@@ -4,10 +4,10 @@ namespace App\Livewire;
 
 use Livewire\Component;
 
-class PostJobs extends Component
+class JobCard extends Component
 {
     public function render()
     {
-        return view('livewire.post-jobs');
+        return view('livewire.job-card');
     }
 }
