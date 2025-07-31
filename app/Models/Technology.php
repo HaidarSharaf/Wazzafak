@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Technology extends Model
 {
     protected $table = 'technologies';
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'icon', 'color'];
 
     public function users()
     {
@@ -16,6 +16,6 @@ class Technology extends Model
 
     public function jobListings()
     {
-        return $this->belongsToMany(JobListing::class, 'job_listing_technology');
+        return $this->belongsToMany(JobListing::class, 'job_listing_technologies');
     }
 }

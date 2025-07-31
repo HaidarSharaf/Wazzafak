@@ -16,6 +16,6 @@ class Stack extends Model
 
     public function jobListings()
     {
-        return $this->hasMany(JobListing::class);
+        return $this->hasMany(JobListing::class, 'job_listing_stacks');
     }
 }
