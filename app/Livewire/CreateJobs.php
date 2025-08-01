@@ -25,14 +25,21 @@ class CreateJobs extends Component
     public $salary = 400;
 
     public function mount(){
-        $this->techs = Technology::all();
-        $this->stacks = Stack::all();
+        $this->techs = Technology::query()
+                            ->orderBy('name', 'asc')
+                            ->get();
+        $this->stacks = Stack::query()
+            ->orderBy('name', 'asc')
+            ->get();
     }
 
     public function toggleTech($techId)
     {
-        if (in_array($techId, $this->chosenTechs)) {
-            $this->chosenTechs = array_filter($this->chosenTechs, fn($id) => $id != $techId);
+        $key = array_search($techId, $this->chosenTechs);
+
+        if ($key !== false) {
+            unset($this->chosenTechs[$key]);
+            $this->chosenTechs = array_values($this->chosenTechs);
         } else {
             $this->chosenTechs[] = $techId;
         }

@@ -8,10 +8,12 @@ use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Auth\UpdatePassword;
 use App\Livewire\Auth\VerifyEmail;
 use App\Livewire\CreateJobs;
+use App\Livewire\EditJobs;
 use App\Livewire\ExploreJobs;
 use App\Livewire\Home;
 use App\Livewire\JobDetails;
 use App\Livewire\Jobs;
+use App\Livewire\PostedJobs;
 use Illuminate\Support\Facades\Route;
 
 
@@ -34,12 +36,18 @@ Route::get('/', Home::class)->name('home');
 
 Route::get('/jobs', ExploreJobs::class)->name('explore-jobs');
 
-Route::get('/jobs/{job_listing}', JobDetails::class)->name('job');
+Route::get('/jobs/{job_listing}', JobDetails::class)->name('job_listing');
 
-Route::get('/my-applications', AppliedJobs::class)->name('my-applications');
+Route::get('/applications', AppliedJobs::class)->name('my-applications');
+
+Route::get('/posted-jobs', PostedJobs::class)->name('my-applications');
+
+
+
+
 
 Route::get('/job/create', CreateJobs::class)->name('create-job');
 
-Route::get('/job/{job_listing}/edit', CreateJobs::class)->name('edit-job');
+Route::get('/job/{job_listing}/edit', EditJobs::class)->name('edit-job');
 
 

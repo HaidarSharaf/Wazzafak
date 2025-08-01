@@ -16,14 +16,12 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body
-    class="bg-gray-200 bg-gradient-to-br from-blue-600 to-indigo-300 min-h-screen text-white flex p-6 lg:p-8 items-center lg:justify-center flex-col"
+    class="bg-gray-200 bg-gradient-to-br from-blue-600 to-indigo-300 min-h-screen text-white flex p-6 lg:p-8 items-center lg:justify-start flex-col"
     x-data
 >
-
-
     <div class="w-full lg:max-w-6xl md:max-w-4xl sm:max-w-2xl max-w-[450px]">
 
-        <header class="w-full lg:max-w-6xl md:max-w-4xl sm:max-w-2xl max-w-[450px] text-sm mb-2 not-has-[nav]:hidden">
+        <header class="w-full lg:max-w-6xl md:max-w-4xl sm:max-w-2xl max-w-[450px] sticky top-0 z-50 text-sm mb-2 not-has-[nav]:hidden">
             <livewire:navbar />
         </header>
 

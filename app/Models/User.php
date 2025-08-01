@@ -83,6 +83,11 @@ class User extends Authenticatable
         return $this->hasMany(JobApplication::class);
     }
 
+    public function appliedJobs()
+    {
+        return $this->belongsToMany(JobListing::class, 'job_applications', 'user_id', 'job_listing_id');
+    }
+
 
     public function sendPasswordResetNotification($token): void
     {
