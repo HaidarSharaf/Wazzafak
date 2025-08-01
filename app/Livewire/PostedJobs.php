@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -13,7 +14,6 @@ class PostedJobs extends Component
     public function mount(){
         $this->posted_jobs = auth()->user()->jobListings()->get();
     }
-
 
     public function render()
     {

@@ -1,11 +1,15 @@
 <div class="w-full space-y-10">
 
-    <livewire:guest-dashboard />
+    @guest
+        <livewire:guest-dashboard />
+    @endguest
 
     @auth
-
-        <livewire:developer-dashboard />
-        <livewire:recruiter-dashboard />
+        @if($user->role === 'developer')
+            <livewire:developer-dashboard />
+        @elseif($user->role === 'recruiter')
+            <livewire:recruiter-dashboard />
+        @endif
     @endauth
 
     <livewire:home-stats />

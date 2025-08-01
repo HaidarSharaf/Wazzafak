@@ -21,7 +21,7 @@
 >
     <div class="w-full lg:max-w-6xl md:max-w-4xl sm:max-w-2xl max-w-[450px]">
 
-        <header class="w-full lg:max-w-6xl md:max-w-4xl sm:max-w-2xl max-w-[450px] sticky top-0 z-50 text-sm mb-2 not-has-[nav]:hidden">
+        <header class="w-full lg:max-w-6xl md:max-w-4xl sm:max-w-2xl max-w-[450px] top-0 z-50 text-sm mb-2 not-has-[nav]:hidden">
             <livewire:navbar />
         </header>
 

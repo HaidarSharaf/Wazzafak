@@ -49,7 +49,7 @@
             <li>
                 <a
                     wire:navigate
-                    href="#"
+                    href="{{ route('explore-jobs') }}"
                     wire:current.exact="text-lime-300 underline"
                     class="font-bold lg:text-xl md:text-lg text-base text-primary hover:underline hover:text-lime-300 focus:outline-hidden focus:underline "
                 >
@@ -60,11 +60,11 @@
             <li class="md:mr-5">
                 <a
                     wire:navigate
-                    href="#"
+                    href="{{ route('my-applications') }}"
                     wire:current.exact="text-lime-300 underline"
                     class="font-bold lg:text-xl md:text-lg text-base text-primary hover:text-lime-300 hover:underline focus:outline-hidden focus:underline"
                 >
-                    Applied Jobs
+                    Applications
                 </a>
             </li>
 
@@ -94,8 +94,8 @@
 
                     <li class="border-b border-outline">
                         <div class="flex flex-col items-center px-4 py-2">
-                            <span class="text-base font-bold text-[#1750b6]">Alice Brown</span>
-                            <p class="text-sm font-medium text-[#1750b6]">alice.brown@gmail.com</p>
+                            <span class="text-base font-bold text-[#1750b6]">{{ $user->name }}</span>
+                            <p class="text-sm font-medium text-[#1750b6]">{{ $user->email }}</p>
                         </div>
                     </li>
 
@@ -104,7 +104,7 @@
                             href="{{ route('update-password') }}"
                             wire:current.exact="text-lime-300 underline"
                             wire:navigate
-                            class="block font-semibold px-4 py-2 sm:text-base text-sm text-[#1b7af5] hover:text-lime-300 hover:underline"
+                            class="block font-semibold px-4 py-2 sm:text-base text-sm text-[#1b7af5] hover:text-lime-500 hover:underline"
                         >
                             Settings
                         </a>
@@ -113,7 +113,7 @@
                     <li>
                         <button
                             wire:click="logout"
-                            class="block font-semibold px-4 py-2 sm:text-base text-sm text-[#1b7af5] hover:text-lime-300 hover:underline"
+                            class="block font-semibold px-4 py-2 sm:text-base text-sm text-[#1b7af5] hover:text-lime-500 hover:underline"
                         >
                             Logout
                         </button>
@@ -170,8 +170,8 @@
                         class="size-12 rounded-full object-cover"
                     />
                     <div>
-                        <span class="text-base font-bold text-[#1750b6]">Alice Brown</span>
-                        <p class="text-sm font-medium text-[#1750b6]">alice.brown@gmail.com</p>
+                        <span class="text-base font-bold text-[#1750b6]">{{ $user->name }}</span>
+                        <p class="text-sm font-medium text-[#1750b6]">{{ $user->email }}</p>
                     </div>
                 </div>
             </li>
@@ -192,7 +192,7 @@
             <li class="p-2 text-center">
                 <a
                     wire:navigate
-                    href="#"
+                    href="{{ route('explore-jobs') }}"
                     wire:current.exact="text-lime-300 underline" class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
                 >
                     Explore Jobs
@@ -202,7 +202,7 @@
             <li class="p-2 text-center">
                 <a
                     wire:navigate
-                    href="#"
+                    href="{{ route('my-applications') }}"
                     wire:current.exact="text-lime-300 underline" class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
                 >
                     Applied Jobs
@@ -216,7 +216,7 @@
                     wire:navigate
                     href="{{ route('update-password') }}"
                     wire:current.exact="text-lime-300 underline"
-                    class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
+                    class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-500 hover:underline"
                 >
                     Settings
                 </a>
@@ -225,7 +225,7 @@
             <li class="p-2 text-center">
                 <button
                     wire:click="logout"
-                    class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
+                    class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-500 hover:underline"
                 >
                     Logout
                 </button>
@@ -238,7 +238,7 @@
                     wire:navigate
                     href="{{ route('login') }}"
                     wire:current.exact="text-lime-300 underline"
-                    class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
+                    class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-500 hover:underline"
                 >
                     Login
                 </a>
@@ -249,7 +249,7 @@
                     wire:navigate
                     href="{{ route('register') }}"
                     wire:current.exact="text-lime-300 underline"
-                    class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
+                    class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-500 hover:underline"
                 >
                     Register
                 </a>

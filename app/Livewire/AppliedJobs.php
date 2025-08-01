@@ -11,7 +11,7 @@ class AppliedJobs extends Component
     public $applied_jobs = [];
 
     public function mount(){
-//        $this->applied_jobs = auth()->user()->appliedJobs()->with('jobListing')->get();
+        $this->applied_jobs = auth()->user()->appliedJobs;
     }
 
     public function render()

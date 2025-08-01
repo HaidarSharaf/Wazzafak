@@ -12,7 +12,6 @@ use App\Livewire\EditJobs;
 use App\Livewire\ExploreJobs;
 use App\Livewire\Home;
 use App\Livewire\JobDetails;
-use App\Livewire\Jobs;
 use App\Livewire\PostedJobs;
 use Illuminate\Support\Facades\Route;
 
@@ -40,7 +39,7 @@ Route::get('/jobs/{job_listing}', JobDetails::class)->name('job_listing');
 
 Route::get('/applications', AppliedJobs::class)->name('my-applications');
 
-Route::get('/posted-jobs', PostedJobs::class)->name('my-applications');
+Route::get('/posted-jobs', PostedJobs::class)->name('posted-jobs');
 
 
 
