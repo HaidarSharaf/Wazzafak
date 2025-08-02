@@ -33,50 +33,16 @@
 
     </div>
 
-    <div class="grid grid-cols-2 gap-8">
+    <div class="bg-black/10 rounded-lg shadow-sm grid grid-cols-2 gap-8">
         <div class="col-span-2 space-y-6">
-            <div class="bg-white rounded-lg shadow-sm">
-                <div class="p-6 border-b border-gray-200">
-                    <h3 class="text-2xl text-center font-semibold text-[#19468f]">Featured Jobs</h3>
-                    <p class="text-base text-center text-lime-600 mt-1">Based on your skills and preferences</p>
-                </div>
-                <div class="divide-y divide-gray-200">
-                    <div class="p-6 hover:bg-gray-50 transition-colors">
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-
-                                <div class="flex items-center justify-between mb-2 gap-1">
-                                    <div class="flex items-center">
-                                        <div class="md:w-12 md:h-12 w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold mr-4">
-                                            TG
-                                        </div>
-                                        <div>
-                                            <h4 class="md:text-lg text-base font-semibold text-[#19468f]">Senior React Developer</h4>
-                                            <p class="text-lime-600 text-sm sm:text-base">TechGlobal Inc.</p>
-                                        </div>
-                                    </div>
-
-                                    <button class="bg-[#19468f] text-white sm:text-base text-sm px-4 py-2 rounded-lg hover:bg-lime-500 cursor-pointer transition">Apply</button>
-                                </div>
-
-                                <p class="text-gray-800 mb-3">Looking for an experienced React developer to join our growing team...</p>
-                                <div class="flex flex-wrap gap-2 mb-3">
-                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">React</span>
-                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">Node.js</span>
-                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">TypeScript</span>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                            </svg>
-                            San Francisco, CA • $120k-$150k
-                        </div>
-                    </div>
-                </div>
+            <div class="p-6">
+                <h3 class="text-2xl text-center font-semibold text-white">Featured Jobs</h3>
+                <p class="text-base text-center text-lime-400 mt-1">Based on your skills and preferences</p>
+            </div>
+            <div class="p-2">
+                @foreach($featured_jobs as $job)
+                    <livewire:job-card-overview :job_listing="$job" />
+                @endforeach
             </div>
         </div>
 

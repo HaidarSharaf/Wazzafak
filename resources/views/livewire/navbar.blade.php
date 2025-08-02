@@ -46,27 +46,51 @@
         @endguest
 
         @auth
-            <li>
-                <a
-                    wire:navigate
-                    href="{{ route('explore-jobs') }}"
-                    wire:current.exact="text-lime-300 underline"
-                    class="font-bold lg:text-xl md:text-lg text-base text-primary hover:underline hover:text-lime-300 focus:outline-hidden focus:underline "
-                >
-                    Explore Jobs
-                </a>
-            </li>
+            @if($user->role === 'developer')
+                <li>
+                    <a
+                        wire:navigate
+                        href="{{ route('explore-jobs') }}"
+                        wire:current.exact="text-lime-300 underline"
+                        class="font-bold lg:text-xl md:text-lg text-base text-primary hover:underline hover:text-lime-300 focus:outline-hidden focus:underline "
+                    >
+                        Explore Jobs
+                    </a>
+                </li>
 
-            <li class="md:mr-5">
-                <a
-                    wire:navigate
-                    href="{{ route('my-applications') }}"
-                    wire:current.exact="text-lime-300 underline"
-                    class="font-bold lg:text-xl md:text-lg text-base text-primary hover:text-lime-300 hover:underline focus:outline-hidden focus:underline"
-                >
-                    Applications
-                </a>
-            </li>
+                <li class="md:mr-5">
+                    <a
+                        wire:navigate
+                        href="{{ route('my-applications') }}"
+                        wire:current.exact="text-lime-300 underline"
+                        class="font-bold lg:text-xl md:text-lg text-base text-primary hover:text-lime-300 hover:underline focus:outline-hidden focus:underline"
+                    >
+                        Applications
+                    </a>
+                </li>
+            @else
+                <li>
+                    <a
+                        wire:navigate
+                        href="{{ route('create-job') }}"
+                        wire:current.exact="text-lime-300 underline"
+                        class="font-bold lg:text-xl md:text-lg text-base text-primary hover:underline hover:text-lime-300 focus:outline-hidden focus:underline "
+                    >
+                        Post a Job
+                    </a>
+                </li>
+
+                <li class="md:mr-5">
+                    <a
+                        wire:navigate
+                        href="{{ route('posted-jobs') }}"
+                        wire:current.exact="text-lime-300 underline"
+                        class="font-bold lg:text-xl md:text-lg text-base text-primary hover:text-lime-300 hover:underline focus:outline-hidden focus:underline"
+                    >
+                        Posted Jobs
+                    </a>
+                </li>
+            @endif
 
             <li
                 x-data="{ userDropDownIsOpen: false, openWithKeyboard: false }"
@@ -77,9 +101,18 @@
                     x-on:click="userDropDownIsOpen = ! userDropDownIsOpen"
                     x-bind:aria-expanded="userDropDownIsOpen" x-on:keydown.space.prevent="openWithKeyboard = true"
                     x-on:keydown.enter.prevent="openWithKeyboard = true" x-on:keydown.down.prevent="openWithKeyboard = true"
-                    class="rounded-full focus-visible:outline-2 cursor-pointer"
+                    class="rounded-2xl focus-visible:outline-2 cursor-pointer"
                 >
-                    <img src="https://penguinui.s3.amazonaws.com/component-assets/avatar-8.webp" class="md:size-12 size-10 rounded-full object-cover" />
+                    @if($user->role === 'developer')
+                        <div class="md:size-12 size-10 rounded-2xl bg-gradient-to-br from-[#1750b6]/60 to-lime-400 flex items-center justify-center text-lg font-bold text-white">
+                            {{ $user->name[0] }}
+                        </div>
+                    @else
+                        <img
+                            src="{{ asset('storage/users_avatars/' . $this->user->recruiter->company_logo) }}"
+                            class="md:size-12 size-10 rounded-2xl object-cover"
+                        />
+                    @endif
                 </button>
 
 
@@ -89,13 +122,13 @@
                     x-on:click.outside="userDropDownIsOpen = false, openWithKeyboard = false"
                     x-on:keydown.down.prevent="$focus.wrap().next()"
                     x-on:keydown.up.prevent="$focus.wrap().previous()"
-                    class="absolute right-0 top-12 flex w-fit min-w-48 flex-col items-center overflow-hidden rounded-lg border border-outline bg-gray-100 py-1.5"
+                    class="absolute right-0 top-12 flex w-fit min-w-48 z-50 flex-col items-center overflow-hidden rounded-lg border border-outline bg-gray-100 py-1.5"
                 >
 
                     <li class="border-b border-outline">
                         <div class="flex flex-col items-center px-4 py-2">
                             <span class="text-base font-bold text-[#1750b6]">{{ $user->name }}</span>
-                            <p class="text-sm font-medium text-[#1750b6]">{{ $user->email }}</p>
+                            <p class="text-sm font-medium text-[#1750b6]/60">{{ $user->email }}</p>
                         </div>
                     </li>
 
@@ -104,7 +137,7 @@
                             href="{{ route('update-password') }}"
                             wire:current.exact="text-lime-300 underline"
                             wire:navigate
-                            class="block font-semibold px-4 py-2 sm:text-base text-sm text-[#1b7af5] hover:text-lime-500 hover:underline"
+                            class="block font-semibold px-4 py-2 sm:text-base text-sm text-[#1b7af5] hover:text-lime-500 hover:underline cursor-pointer"
                         >
                             Settings
                         </a>
@@ -113,7 +146,7 @@
                     <li>
                         <button
                             wire:click="logout"
-                            class="block font-semibold px-4 py-2 sm:text-base text-sm text-[#1b7af5] hover:text-lime-500 hover:underline"
+                            class="block font-semibold px-4 py-2 sm:text-base text-sm text-[#1b7af5] hover:text-lime-500 hover:underline cursor-pointer"
                         >
                             Logout
                         </button>
@@ -165,10 +198,16 @@
 
             <li class="mb-4 border-none">
                 <div class="flex items-center gap-4 py-2">
-                    <img
-                        src="https://penguinui.s3.amazonaws.com/component-assets/avatar-8.webp"
-                        class="size-12 rounded-full object-cover"
-                    />
+                    @if($user->role === 'developer')
+                        <div class="md:size-12 size-10 rounded-2xl bg-gradient-to-br from-[#1750b6]/60 to-lime-400 flex items-center justify-center text-lg font-bold text-white">
+                            {{ $user->name[0] }}
+                        </div>
+                    @else
+                        <img
+                            src="{{ asset('storage/users_avatars/' . $this->user->recruiter->company_logo) }}"
+                            class="md:size-12 size-10 rounded-xl object-cover"
+                        />
+                    @endif
                     <div>
                         <span class="text-base font-bold text-[#1750b6]">{{ $user->name }}</span>
                         <p class="text-sm font-medium text-[#1750b6]">{{ $user->email }}</p>
@@ -189,25 +228,48 @@
         </li>
 
         @auth
-            <li class="p-2 text-center">
-                <a
-                    wire:navigate
-                    href="{{ route('explore-jobs') }}"
-                    wire:current.exact="text-lime-300 underline" class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
-                >
-                    Explore Jobs
-                </a>
-            </li>
+            @if($user->role === 'developer')
+                <li class="p-2 text-center">
+                    <a
+                        wire:navigate
+                        href="{{ route('explore-jobs') }}"
+                        wire:current.exact="text-lime-300 underline" class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
+                    >
+                        Explore Jobs
+                    </a>
+                </li>
 
-            <li class="p-2 text-center">
-                <a
-                    wire:navigate
-                    href="{{ route('my-applications') }}"
-                    wire:current.exact="text-lime-300 underline" class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
-                >
-                    Applied Jobs
-                </a>
-            </li>
+                <li class="p-2 text-center">
+                    <a
+                        wire:navigate
+                        href="{{ route('my-applications') }}"
+                        wire:current.exact="text-lime-300 underline" class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
+                    >
+                        Applied Jobs
+                    </a>
+                </li>
+            @else
+                <li class="p-2 text-center">
+                    <a
+                        wire:navigate
+                        href="{{ route('create-job') }}"
+                        wire:current.exact="text-lime-300 underline" class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
+                    >
+                        Post a Job
+                    </a>
+                </li>
+
+                <li class="p-2 text-center">
+                    <a
+                        wire:navigate
+                        href="{{ route('posted-jobs') }}"
+                        wire:current.exact="text-lime-300 underline" class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
+                    >
+                        Posted Jobs
+                    </a>
+                </li>
+            @endif
+
 
             <hr role="none" class="my-2 border-gray-300">
 
@@ -216,7 +278,7 @@
                     wire:navigate
                     href="{{ route('update-password') }}"
                     wire:current.exact="text-lime-300 underline"
-                    class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-500 hover:underline"
+                    class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-500 hover:underline cursor-pointer"
                 >
                     Settings
                 </a>
@@ -225,7 +287,7 @@
             <li class="p-2 text-center">
                 <button
                     wire:click="logout"
-                    class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-500 hover:underline"
+                    class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-500 hover:underline cursor-pointer"
                 >
                     Logout
                 </button>
@@ -238,7 +300,7 @@
                     wire:navigate
                     href="{{ route('login') }}"
                     wire:current.exact="text-lime-300 underline"
-                    class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-500 hover:underline"
+                    class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-500 hover:underline cursor-pointer"
                 >
                     Login
                 </a>
@@ -249,7 +311,7 @@
                     wire:navigate
                     href="{{ route('register') }}"
                     wire:current.exact="text-lime-300 underline"
-                    class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-500 hover:underline"
+                    class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-500 hover:underline cursor-pointer"
                 >
                     Register
                 </a>

@@ -11,7 +11,9 @@ class Navbar extends Component
 
     public function mount()
     {
-        $this->user = auth()->user();
+        if(auth()->check()){
+            $this->user = auth()->user();
+        }
     }
 
     public function logout()

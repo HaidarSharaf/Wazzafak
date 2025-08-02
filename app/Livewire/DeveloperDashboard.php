@@ -21,6 +21,7 @@ class DeveloperDashboard extends Component
         $this->accepted_apps = $this->user->jobApplications()->where('status', 'Accepted')->count();
         $this->featured_jobs = JobListing::query()
             ->where('status', 'Accepted')
+            ->where('is_disclosed', 0)
             ->where(function ($query) {
                 $developer = $this->user->developer;
                 $userStackIds = $this->user->stacks->pluck('id')->toArray();
@@ -28,20 +29,17 @@ class DeveloperDashboard extends Component
 
                 $query->whereRaw('1 = 0');
 
-                if ($developer && $developer->experience_level) {
-                    $query->orWhere('experience', $developer->experience_level);
-                }
+                $query->orWhere('experience', $developer->experience_level);
 
-                if (!empty($userStackIds)) {
-                    $query->orWhereIn('stack_id', $userStackIds);
-                }
+                $query->orWhereIn('stack_id', $userStackIds);
 
-                if (!empty($userTechIds)) {
-                    $query->orWhereHas('technologies', function($q) use ($userTechIds) {
-                        $q->whereIn('technology_id', $userTechIds);
-                    });
-                }
+                $query->orWhereHas('technologies', function($q) use ($userTechIds) {
+                    $q->whereIn('technology_id', $userTechIds);
+                });
             })
+            ->where('is_disclosed', 0)
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
             ->get();
     }
 

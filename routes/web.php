@@ -35,7 +35,7 @@ Route::get('/', Home::class)->name('home');
 
 Route::get('/jobs', ExploreJobs::class)->name('explore-jobs');
 
-Route::get('/jobs/{job_listing}', JobDetails::class)->name('job_listing');
+Route::get('/jobs/{job_listing}', JobDetails::class)->name('job-listing');
 
 Route::get('/applications', AppliedJobs::class)->name('my-applications');
 

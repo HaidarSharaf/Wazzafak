@@ -3,7 +3,7 @@
 >
     <a
         wire:navigate
-        href="{{ route('job_listing', $job_listing->id) }}"
+        href="{{ route('job-listing', $job_listing->id) }}"
         class="bg-white/10 backdrop-blur-xl"
     >
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">

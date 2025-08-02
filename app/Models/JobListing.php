@@ -36,6 +36,10 @@ class JobListing extends Model
         return $this->belongsToMany(Technology::class, 'job_listing_technologies');
     }
 
+    public function jobApplications(){
+        return $this->hasMany(JobApplication::class);
+    }
+
     public function getStackNameAttribute(){
         return $this->stack?->name;
     }
@@ -69,6 +73,11 @@ class JobListing extends Model
         } else {
             return "Posted just now";
         }
+    }
+
+    public function getApplicationCountAttribute()
+    {
+        return $this->jobApplications()->count();
     }
 
 

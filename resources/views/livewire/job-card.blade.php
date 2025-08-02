@@ -39,7 +39,7 @@
             </a>
 
             <div class="flex flex-wrap gap-2">
-                @foreach($this->job_listing->technologies->take(3) as $technology)
+                @foreach($this->job_listing->technologies->limit(3) as $technology)
                     <div class="relative z-10 flex items-center bg-white/20 px-2 py-1 rounded-xl mb-2 transition-all duration-200 w-fit">
                         @if($technology->icon)
                             <img src="{{ asset('storage/technologies_icons/' . $technology->icon) }}" alt="{{ $technology->name }}" class="min-w-3 min-h-3 max-w-4 max-h-4 mr-2">
