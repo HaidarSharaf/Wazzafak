@@ -5,8 +5,9 @@
         <form class="space-y-6" wire:submit.prevent="create">
 
             <div>
-                <label class="block text-sm md:text-base mb-1 text-white">Stack:</label>
+                <label class="block text-sm md:text-base mb-1 text-white font-medium">Stack:</label>
                 <select
+                    wire:model="form.stack"
                     class="w-full font-semibold bg-white border border-white/20 rounded-xl p-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                     <option value="">Select Stack</option>
@@ -19,12 +20,32 @@
                         </option>
                     @endforeach
                 </select>
+                @error('form.stack') <span class="text-xs text-red-600"> {{ $message }}</span> @enderror
+            </div>
+
+            <div>
+                <label class="block text-white font-medium mb-2">Experience Level:</label>
+                <select
+                    wire:model="form.experience"
+                    class="w-full px-4 py-3 font-semibold text-gray-900 bg-white/90 rounded-xl border-0 focus:bg-white focus:ring-4 focus:ring-blue-500/30 transition-all"
+                >
+                    <option value="" selected>Select Level</option>
+                    @foreach($levels as $level)
+                        <option
+                            value="{{ $level}}"
+                        >
+                            {{ $level}}
+                        </option>
+                    @endforeach
+                </select>
+                @error('form.experience') <span class="text-xs text-red-600"> {{ $message }}</span> @enderror
             </div>
 
 
             <div>
-                <label class="block text-sm md:text-base mb-1 text-white">Location:</label>
+                <label class="block text-sm md:text-base mb-1 text-white font-medium">Location:</label>
                 <select
+                    wire:model="form.location"
                     class="w-full font-semibold bg-white border border-white/20 rounded-xl p-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                     <option value="">Select Location</option>
@@ -36,21 +57,23 @@
                         </option>
                     @endforeach
                 </select>
+                @error('form.location') <span class="text-xs text-red-600"> {{ $message }}</span> @enderror
             </div>
 
 
             <div>
-                <label class="block text-sm md:text-base mb-1 text-white">Salary Range($):</label>
+                <label class="block text-sm md:text-base mb-1 text-white font-medium">Salary/M($):</label>
                 <input
-                    wire:model="salary"
+                    wire:model="form.salary"
                     type="number"
                     min="400"
-                    class="w-full bg-white border border-white/20 rounded-xl p-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="w-full bg-white border border-white/20 rounded-xl p-3 text-gray-900 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
+                @error('form.salary') <span class="text-xs text-red-600"> {{ $message }}</span> @enderror
             </div>
 
 
-            <label class="block text-sm md:text-base mb-3 text-white">Choose Technologies:</label>
+            <label class="block text-sm md:text-base mb-3 text-white font-medium">Choose Technologies:</label>
             <div class="flex items-center justify-center flex-wrap gap-4 h-44 overflow-y-scroll py-3">
                 @foreach($techs as $tech)
                     <div
@@ -80,24 +103,32 @@
                     </div>
                 @endforeach
             </div>
+            @error('form.technologies') <span class="text-xs text-red-600"> {{ $message }}</span> @enderror
 
-            <div>
-                <label class="block text-sm md:text-base mb-1 text-white">Job Description:</label>
+            <div class="!mb-4">
+                <label class="block text-sm md:text-base mb-1 text-white font-medium">Job Description:</label>
                 <textarea
+                    wire:model="form.description"
                     rows="6"
                     placeholder="Write job responsibilities and requirements..."
-                    class="w-full bg-white border placeholder-gray-900 border-white/20 rounded-xl p-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                    class="w-full bg-white border placeholder-gray-900 border-white/20 rounded-xl p-3 font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 ></textarea>
+                @error('form.description') <span class="text-xs text-red-600"> {{ $message }}</span> @enderror
             </div>
 
-            <span class="text-sm font-bold">*Note: The job will be automatically disclosed after 15 days if no applications were submitted.</span>
+            <span
+                class="text-base font-bold text-red-600"
+            >
+                *Note: The job will be reviewed by an admin to confirm that it aligns with the jobs posts policy.
+                Our team will notify you once it's reviewed.
+            </span>
 
             <div>
                 <button
                     type="submit"
                     wire:loading.attr="disabled"
                     wire:target="create"
-                    class="w-full bg-[#1750b6] hover:bg-lime-600 transition text-white md:text-base text-sm font-semibold cursor-pointer py-3 px-6 rounded-xl shadow-lg !mt-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                    class="w-full bg-[#1750b6] hover:bg-lime-600 transition text-white md:text-base text-sm font-semibold cursor-pointer py-3 px-6 rounded-xl shadow-lg !mt-7 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#1750b6] disabled:hover:text-white disabled:shadow-none disabled:transition-none"
                 >
                     Create Job
                 </button>

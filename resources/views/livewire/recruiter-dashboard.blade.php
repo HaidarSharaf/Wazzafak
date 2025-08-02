@@ -53,9 +53,20 @@
                 <p class="text-base text-center text-lime-400 mt-1">Your most active job posts</p>
             </div>
             <div class="p-6">
-                @foreach($jobs_performance as $job)
+                @forelse($jobs_performance as $job)
                     <livewire:job-performance-overview :job="$job" />
-                @endforeach
+                @empty
+                    <div class="text-center p-4">
+                        <p class="text-lg font-semibold mb-4">You haven't posted any job yet!</p>
+                        <a
+                            wire:navigate
+                            href="{{ route('create-job') }}"
+                            class="px-5 py-4 md:text-xl text-lg !my-7 text-white bg-[#19468f] hover:bg-lime-500 rounded-lg transition-colors duration-300 font-semibold"
+                        >
+                            Post a Job
+                        </a>
+                    </div>
+                @endforelse
             </div>
         </div>
     </div>

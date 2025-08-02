@@ -32,18 +32,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::get('/', Home::class)->name('home');
+Route::get('/jobs/{job_listing}', JobDetails::class)->name('job-listing');
+
+
 
 Route::get('/jobs', ExploreJobs::class)->name('explore-jobs');
 
-Route::get('/jobs/{job_listing}', JobDetails::class)->name('job-listing');
-
 Route::get('/applications', AppliedJobs::class)->name('my-applications');
 
+
+
 Route::get('/posted-jobs', PostedJobs::class)->name('posted-jobs');
-
-
-
-
 
 Route::get('/job/create', CreateJobs::class)->name('create-job');
 

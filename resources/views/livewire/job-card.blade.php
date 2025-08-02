@@ -2,7 +2,7 @@
     <div class="group bg-white/10 backdrop-blur-xl rounded-3xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-500 hover:transform hover:-translate-y-2 hover:shadow-2xl">
 
         <a
-            href="{{ route('job_listing', $this->job_listing->id) }}"
+            href="{{ route('job-listing', $this->job_listing->id) }}"
             wire:navigate
             class="flex xl:justify-between justify-start items-start mb-4 gap-2"
         >
@@ -31,7 +31,7 @@
         <div class="space-y-3 my-6">
 
             <a
-                href="{{ route('job_listing', $this->job_listing->id) }}"
+                href="{{ route('job-listing', $this->job_listing->id) }}"
                 wire:navigate
                 class="text-indigo-200 sm:text-base text-sm line-clamp-3"
             >
@@ -39,7 +39,7 @@
             </a>
 
             <div class="flex flex-wrap gap-2">
-                @foreach($this->job_listing->technologies->limit(3) as $technology)
+                @foreach($this->job_listing->technologies->take(3) as $technology)
                     <div class="relative z-10 flex items-center bg-white/20 px-2 py-1 rounded-xl mb-2 transition-all duration-200 w-fit">
                         @if($technology->icon)
                             <img src="{{ asset('storage/technologies_icons/' . $technology->icon) }}" alt="{{ $technology->name }}" class="min-w-3 min-h-3 max-w-4 max-h-4 mr-2">

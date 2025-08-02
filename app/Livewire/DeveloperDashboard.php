@@ -37,6 +37,9 @@ class DeveloperDashboard extends Component
                     $q->whereIn('technology_id', $userTechIds);
                 });
             })
+            ->whereDoesntHave('jobApplications', function ($query) {
+                $query->where('user_id', $this->user->id);
+            })
             ->where('is_disclosed', 0)
             ->orderBy('created_at', 'desc')
             ->limit(5)

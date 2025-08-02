@@ -40,9 +40,20 @@
                 <p class="text-base text-center text-lime-400 mt-1">Based on your skills and preferences</p>
             </div>
             <div class="p-2">
-                @foreach($featured_jobs as $job)
+                @forelse($featured_jobs as $job)
                     <livewire:job-card-overview :job_listing="$job" />
-                @endforeach
+                @empty
+                    <div class="text-center p-4 mb-5">
+                        <p class="text-lg font-semibold !mb-4">No opened jobs match your profile.</p>
+                        <a
+                            wire:navigate
+                            href="{{ route('explore-jobs') }}"
+                            class="px-5 py-4 md:text-xl text-lg text-white bg-[#19468f] hover:bg-lime-500 rounded-lg transition-colors duration-300 font-semibold !my-7"
+                        >
+                            Explore All Jobs
+                        </a>
+                    </div>
+                @endforelse
             </div>
         </div>
 

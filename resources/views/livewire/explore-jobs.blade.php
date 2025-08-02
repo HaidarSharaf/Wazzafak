@@ -1,6 +1,6 @@
 <div
     x-data="{ showFilters: false, search: '', selectedLocation: '', selectedType: '', selectedExperience: '', selectedSalary: '', selectedTech: '' }" x-cloak
-    class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16"
+    class="w-full mx-auto px-4 sm:px-6 lg:px-8 pb-16"
 >
     <div class="bg-white/10 backdrop-blur-xl rounded-3xl p-6 mb-8 border border-white/20 shadow-2xl">
 
@@ -104,8 +104,6 @@
                     </button>
                 </div>
 
-
-
             </div>
 
             <div class="mt-4">
@@ -164,10 +162,20 @@
     </div>
 
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+    <div
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
+        wire:loading.class="opacity-50 pointer-events-none"
+    >
 
         @foreach($job_listings as $job_listing)
             <livewire:job-card :job_listing="$job_listing"/>
         @endforeach
+    </div>
+
+    <div
+        wire:loading
+        class="w-full flex justify-center text-white py-10"
+    >
+        <div class="w-12 h-12 border-4 border-blue-900 border-t-transparent rounded-full animate-spin mx-auto"></div>
     </div>
 </div>

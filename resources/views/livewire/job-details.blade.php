@@ -22,7 +22,6 @@
             </div>
         </div>
 
-
         <div class="space-y-6">
             <div>
                 <h2 class="text-xl font-semibold text-lime-400 mb-2">Job Stack</h2>
@@ -94,45 +93,47 @@
 
                 @elseif($this->job_listing->status === 'Rejected')
 
-                    <span class="text-red-500 font-semibold">This job is rejected</span>
+                    <span class="text-red-600 text-xl font-semibold w-full text-center">This job was rejected.</span>
 
-                @elseif(!$this->job_listing->is_disclosed)
-                    <button
-                        @click="modalDelete = true"
-                        class="flex-1 px-6 py-3 bg-red-600 hover:bg-red-700 transition-all rounded-xl text-white md:text-lg text-base font-semibold shadow-xl cursor-pointer"
-                    >
-                        Delete Job
-                    </button>
-                @else
-                    <span class="text-red-500 font-semibold">This job is disclosed</span>
+                @elseif($this->job_listing->is_disclosed)
+
+                    <span class="text-red-600 text-xl font-semibold w-full text-center">This job is disclosed.</span>
                 @endif
 
             @endcan
 
             @can('access-developer-dashboard')
-                <button
-                    wire:click="applyForJob"
-                    wire:loading.attr="disabled"
-                    wire:target="applyForJob"
-                    class="flex-1 px-6 py-3 bg-[#19468f] hover:bg-lime-600 transition-all rounded-xl text-white md:text-lg text-base font-semibold shadow-xl cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                    Apply for this Job
-                </button>
+                @if($this->job_listing->is_disclosed)
+                    <span class="text-red-600 text-xl font-semibold w-full text-center">This job is disclosed.</span>
+                @else
+                    @if($this->job_listing->status === 'Accepted')
+                        @if($this->hasUserApplied())
+                            <button
+                                disabled
+                                class="flex-1 px-6 py-3 bg-[#19468f] rounded-xl text-white md:text-lg text-base font-semibold shadow-xl cursor-not-allowed opacity-50"
+                            >
+                                Applied
+                            </button>
+                        @else
+                            <button
+                                wire:click="applyForJob"
+                                wire:loading.attr="disabled"
+                                wire:target="applyForJob"
+                                class="flex-1 px-6 py-3 bg-[#19468f] hover:bg-lime-600 transition-all rounded-xl text-white md:text-lg text-base font-semibold shadow-xl cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+                            >
+                                Apply
+                            </button>
+                        @endif
+                    @endif
+                @endif
             @endcan
 
             @can('access-recruiter-dashboard')
                 @if($this->job_listing->status === 'Pending')
-                    <span>The job is yet to be approved by an admin!</span>
+                    <p class="text-amber-600 text-xl font-semibold w-full text-center">The job is yet to be approved by an admin!</p>
                 @elseif($this->job_listing->status === 'Rejected')
-                    <span class="text-red-500 font-semibold">This job is rejected</span>
+                    <span class="text-red-600 text-xl font-semibold w-full text-center">This job has been rejected by an admin. An email was sent including the problem behind rejecting it.</span>
                 @elseif(!$this->job_listing->is_disclosed)
-                    <a
-                        href="{{ route('edit-job', $this->job_listing->id) }}"
-                        class="flex-1 px-6 py-3 bg-[#19468f] hover:bg-lime-600 transition-all rounded-xl text-white md:text-lg text-base font-semibold shadow-xl cursor-pointer"
-                    >
-                        Edit Job Details
-                    </a>
-
                     <button
                         @click="modalDisclose = true"
                         class="flex-1 px-6 py-3 bg-red-600 hover:bg-red-700 transition-all rounded-xl text-white md:text-lg text-base font-semibold shadow-xl cursor-pointer"
@@ -140,7 +141,7 @@
                         Disclose Job
                     </button>
                 @else
-                    <span class="text-red-500 font-semibold">This job is disclosed</span>
+                    <span class="text-red-600 text-xl font-semibold w-full text-center">This job is disclosed.</span>
                 @endif
 
             @endcan
@@ -151,7 +152,7 @@
                     wire:navigate
                     class="flex-1 px-6 py-3 bg-[#19468f] hover:bg-lime-600 text-center transition-all rounded-xl text-white md:text-lg text-base font-semibold shadow-xl cursor-pointer"
                 >
-                    Register/Login to apply for this Job
+                    Register/Login to apply for this job
                 </a>
             @endguest
 

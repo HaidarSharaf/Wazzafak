@@ -18,6 +18,14 @@ class JobDetails extends Component
         $this->user = User::where('id', $this->job_listing->user_id)->first();
     }
 
+    public function hasUserApplied()
+    {
+        return auth()->user()
+            ->appliedJobs()
+            ->where('job_listing_id', $this->job_listing->id)
+            ->exists();
+    }
+
     public function acceptJob()
     {
         // Logic to handle job acceptance

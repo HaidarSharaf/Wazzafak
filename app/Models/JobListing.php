@@ -80,6 +80,26 @@ class JobListing extends Model
         return $this->jobApplications()->count();
     }
 
+    public static function getLocations()
+    {
+        return [
+            'Remote' => 'Remote',
+            'Hybrid' => 'Hybrid',
+            'OnSite' => 'OnSite',
+        ];
+    }
+
+    public static function getExperienceLevels()
+    {
+        return [
+            'Intern' => 'Intern',
+            'Junior' => 'Junior',
+            'Mid_level' => 'Mid-level',
+            'Senior' => 'Senior',
+            'Tech_lead' => 'Tech-lead',
+        ];
+    }
+
 
     public function applicants()
     {

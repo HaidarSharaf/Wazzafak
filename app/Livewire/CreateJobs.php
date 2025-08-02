@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Livewire\Forms\JobForm;
+use App\Models\JobListing;
 use App\Models\Stack;
 use App\Models\Technology;
 use Livewire\Attributes\Title;
@@ -10,19 +12,16 @@ use Livewire\Component;
 #[Title('Create a Job | Wazzafak')]
 class CreateJobs extends Component
 {
+    public JobForm $form;
 
     public $techs = [];
     public $stacks = [];
 
-    public $locations = [
-        'Remote',
-        'Hybrid',
-        'OnSite'
-    ];
+    public $levels = [];
+
+    public $locations = [];
 
     public $chosenTechs = [];
-
-    public $salary = 400;
 
     public function mount(){
         $this->techs = Technology::query()
@@ -31,6 +30,8 @@ class CreateJobs extends Component
         $this->stacks = Stack::query()
             ->orderBy('name', 'asc')
             ->get();
+        $this->locations = JobListing::getLocations();
+        $this->levels = JobListing::getExperienceLevels();
     }
 
     public function toggleTech($techId)
@@ -45,9 +46,12 @@ class CreateJobs extends Component
         }
     }
 
-    public function create(){
-
-    }
+    public function create()
+    {
+        $this->form->technologies = $this->chosenTechs;
+        $this->form->store();
+        $this->chosenTechs = [];
+        return $this->redirect(route('posted-jobs'), navigate: true);    }
 
     public function render()
     {
