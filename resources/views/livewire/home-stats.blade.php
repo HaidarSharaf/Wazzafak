@@ -5,7 +5,7 @@
                 @guest
                     <h2 class="sm:text-4xl text-3xl font-bold mb-4">Join Thousands of Success Stories</h2>
                 @endguest
-                <p class="sm:text-2xl text-xl font-semibold text-white/80">Real-time platform statistics</p>
+                <p class="sm:text-3xl text-2xl font-semibold text-white/80">Real-time platform statistics</p>
             </div>
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
                 <div class="text-center md:p-8 p-6 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-300">

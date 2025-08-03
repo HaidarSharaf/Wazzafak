@@ -53,13 +53,13 @@
 
 
         <div class="flex gap-3">
-            <button class="flex-1 md:text-base text-sm px-3 py-2 bg-[#19468f] text-white font-semibold rounded-xl hover:bg-lime-600 cursor-pointer transition-all duration-300 shadow-lg hover:shadow-xl">
-                Apply Now
-            </button>
-
-            @if(!$this->job_listing->is_disclosed && $this->job_listing->status === 'Accepted')
-                <livewire:share-button />
-            @endif
+            <a
+                wire:navigate
+                href="{{ route('job-listing', $this->job_listing->id) }}"
+                class="flex-1 md:text-base text-sm text-center p-3 bg-[#19468f] text-white font-semibold rounded-xl hover:bg-lime-600 cursor-pointer transition-all duration-300 shadow-lg hover:shadow-xl"
+            >
+                View Details
+            </a>
         </div>
 
         <div class="mt-4 pt-4 border-t border-white/20">

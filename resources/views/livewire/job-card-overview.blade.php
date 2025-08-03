@@ -3,7 +3,7 @@
 >
     <a
         wire:navigate
-        href="{{ route('job-listing', $job_listing->id) }}"
+        href="{{ $admin_page ? route('admin.job.manage', $job_listing->id) : route('job-listing', $job_listing->id) }}"
         class="bg-white/10 backdrop-blur-xl"
     >
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
@@ -29,19 +29,27 @@
                         Disclosed
                     </span>
                 @elseif($user->role === 'developer')
-                    <span
-                        @php
-                            $status = $user->getApplicationStatus($job_listing->id);
-                        @endphp
-                        @class([
-                            'bg-green-500' => $status === 'Accepted',
-                            'bg-red-500' => $status === 'Rejected',
-                            'bg-amber-500' => $status === 'Pending',
-                            'md:px-5 md:py-3 md:text-base px-3 py-1 text-sm font-semibold rounded-lg text-white',
-                        ])
-                    >
-                        Application {{ $status }}
-                    </span>
+                    @if($this->hasUserApplied())
+                        <span
+                            @php
+                                $status = $user->getApplicationStatus($job_listing->id);
+                            @endphp
+                            @class([
+                                'bg-green-500' => $status === 'Accepted',
+                                'bg-red-500' => $status === 'Rejected',
+                                'bg-amber-500' => $status === 'Pending',
+                                'md:px-5 md:py-3 md:text-base px-3 py-1 text-sm font-semibold rounded-lg text-white',
+                            ])
+                        >
+                            Application {{ $status }}
+                        </span>
+                    @else
+                        <span
+                            class="bg-blue-500 md:px-5 md:py-3 md:text-base px-3 py-1 text-sm font-semibold rounded-lg text-white"
+                        >
+                            View Details
+                        </span>
+                    @endif
                 @else
                     <span
                         @class([

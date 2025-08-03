@@ -3,7 +3,7 @@
 <div class="w-full">
 
     <div class="max-w-3xl mx-auto bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-3xl shadow-xl">
-        <h2 class="md:text-3xl sm:text-2xl text-xl text-center font-bold mb-6 text-white">Create an Account</h2>
+        <h2 class="md:text-3xl sm:text-2xl text-xl text-center font-bold mb-6 text-white">Update Current Password</h2>
 
         <form class="space-y-6" wire:submit.prevent="updatePassword">
 

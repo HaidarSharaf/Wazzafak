@@ -37,6 +37,11 @@ class UpdatePassword extends Component
     }
     public function render()
     {
-        return view('livewire.auth.update-password');
+        $layout = auth()->user()?->role === 'admin'
+            ? 'components.layouts.admin'
+            : 'components.layouts.app';
+
+        return view('livewire.auth.update-password')
+            ->layout($layout);
     }
 }

@@ -93,7 +93,7 @@ class User extends Authenticatable
         $app =  $this->jobApplications()
             ->where('job_listing_id', $jobListingId)
             ->first();
-        return $app->status;
+        return $app ? $app->status: null;
     }
 
 

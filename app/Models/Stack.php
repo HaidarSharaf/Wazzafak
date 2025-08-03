@@ -18,4 +18,9 @@ class Stack extends Model
     {
         return $this->hasMany(JobListing::class, 'job_listing_stacks');
     }
+
+    public function developers()
+    {
+        return $this->belongsToMany(Developer::class, 'developer_stacks');
+    }
 }

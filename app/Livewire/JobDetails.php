@@ -2,16 +2,21 @@
 
 namespace App\Livewire;
 
+use App\Models\JobApplication;
 use App\Models\JobListing;
 use App\Models\User;
+use App\Notifications\JobRejection;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Title('Job Details | Wazzafak')]
 class JobDetails extends Component
 {
+
     public ?JobListing $job_listing;
     public ?User $user;
+    public $rejection_message = '';
 
     public function mount(JobListing $job_listing){
         $this->job_listing = $job_listing;
@@ -26,39 +31,92 @@ class JobDetails extends Component
             ->exists();
     }
 
+    public function isUserAccepted()
+    {
+        return auth()->user()
+            ->appliedJobs()
+            ->where('job_listing_id', $this->job_listing->id)
+            ->where('job_applications.status', 'Accepted')
+            ->exists();
+    }
+
+    public function isUserRejected()
+    {
+        return auth()->user()
+            ->appliedJobs()
+            ->where('job_listing_id', $this->job_listing->id)
+            ->where('job_applications.status', 'Rejected')
+            ->exists();
+    }
+
+
     public function acceptJob()
     {
-        // Logic to handle job acceptance
-        // This could involve updating the job listing status, notifying the user, etc.
+        $this->authorize('accept-job-listing', $this->job_listing);
+
+        $this->job_listing->update([
+            'status' => 'Accepted'
+        ]);
+
         session()->flash('message', 'Job accepted successfully!');
     }
 
     public function rejectJob()
     {
-        // Logic to handle job rejection
-        // This could involve updating the job listing status, notifying the user, etc.
-        session()->flash('message', 'Job rejected successfully!');
-    }
+        $this->authorize('reject-job-listing', $this->job_listing);
 
-    public function deleteJob()
-    {
-        // Logic to handle job rejection
-        // This could involve updating the job listing status, notifying the user, etc.
+        $this->validate([
+            'rejection_message' => 'required|string',
+        ]);
+
+        $this->job_listing->update([
+            'status' => 'Rejected',
+            'rejection_message' => $this->rejection_message
+        ]);
+
+        $this->user->notify(new JobRejection($this->rejection_message, $this->job_listing));
+
         session()->flash('message', 'Job rejected successfully!');
     }
 
     public function applyForJob()
     {
-        // Logic to handle job application
-        // This could involve creating an application record, sending notifications, etc.
+        $this->authorize('apply-for-job', $this->job_listing);
+
+        JobApplication::create([
+            'job_listing_id' => $this->job_listing->id,
+            'user_id' => auth()->id(),
+            'status' => 'Pending'
+        ]);
+
         session()->flash('message', 'Application submitted successfully!');
     }
 
-    public function discloseJob()
+    #[On('discloseJob')]
+    public function discloseJob($acceptedApplicationId = null)
     {
-        // Logic to handle job application
-        // This could involve creating an application record, sending notifications, etc.
-        session()->flash('message', 'Application submitted successfully!');
+        $this->authorize('disclose-job-listing', $this->job_listing);
+
+        $this->job_listing->update([
+            'is_disclosed' => true
+        ]);
+
+        $query = $this->job_listing->jobApplications()
+            ->where('status', '!=', 'Rejected');
+
+        if ($acceptedApplicationId) {
+            $query->where('id', '!=', $acceptedApplicationId);
+        }
+
+        $query->update([
+            'status' => 'Rejected'
+        ]);
+
+        $this->job_listing = $this->job_listing->fresh();
+
+        $this->dispatch('appsUpdated');
+
+        session()->flash('message', 'Job disclosed.');
     }
 
     public function render()

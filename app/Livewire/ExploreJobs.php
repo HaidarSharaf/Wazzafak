@@ -86,6 +86,10 @@ class ExploreJobs extends Component
         ->when($this->stack, fn($query) => $query->where('stack_id', $this->stack))
         ->when($this->location, fn($query) => $query->where('location', $this->location))
         ->when($this->experience, fn($query) => $query->where('experience', $this->experience))
+        ->where('status', 'Accepted')
+        ->whereDoesntHave('jobApplications', function ($query) {
+            $query->where('user_id', auth()->id());
+        })
         ->get();
     }
 

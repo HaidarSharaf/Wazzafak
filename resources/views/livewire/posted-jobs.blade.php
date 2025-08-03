@@ -1,7 +1,7 @@
 <div class="w-full space-y-3">
     <h1 class="lg:text-3xl md:text-2xl text-xl font-bold text-white mb-8 ml-2">My Job Posts</h1>
 
-    <div class="flex items-center justify-end gap-4 mb-10">
+    <div class="flex items-center sm:justify-end justify-start flex-wrap gap-4 mb-10">
 
         <div class="w-48">
             <label class="block text-white font-medium">Status:</label>
@@ -35,7 +35,7 @@
         <div class="w-48">
             <label class="block text-white font-medium">&nbsp;</label>
             <button
-                @click="$wire.resetFilters()"
+                @click="$wire.resetFilters"
                 class="w-full px-4 py-3 font-semibold cursor-pointer text-white bg-red-500 hover:bg-red-600 rounded-xl transition-all"
             >
                 Reset Filters

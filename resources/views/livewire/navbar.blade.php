@@ -103,7 +103,7 @@
                     x-on:keydown.enter.prevent="openWithKeyboard = true" x-on:keydown.down.prevent="openWithKeyboard = true"
                     class="rounded-2xl focus-visible:outline-2 cursor-pointer"
                 >
-                    @if($user->role === 'developer')
+                    @if($user->role !== 'recruiter')
                         <div class="md:size-12 size-10 rounded-2xl bg-gradient-to-br from-[#1750b6]/60 to-lime-400 flex items-center justify-center text-lg font-bold text-white">
                             {{ $user->name[0] }}
                         </div>
@@ -139,7 +139,7 @@
                             wire:navigate
                             class="block font-semibold px-4 py-2 sm:text-base text-sm text-[#1b7af5] hover:text-lime-500 hover:underline cursor-pointer"
                         >
-                            Settings
+                            Update Password
                         </a>
                     </li>
 
@@ -198,7 +198,7 @@
 
             <li class="mb-4 border-none">
                 <div class="flex items-center gap-4 py-2">
-                    @if($user->role === 'developer')
+                    @if($user->role !== 'recruiter')
                         <div class="md:size-12 size-10 rounded-2xl bg-gradient-to-br from-[#1750b6]/60 to-lime-400 flex items-center justify-center text-lg font-bold text-white">
                             {{ $user->name[0] }}
                         </div>
@@ -280,7 +280,7 @@
                     wire:current.exact="text-lime-300 underline"
                     class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-500 hover:underline cursor-pointer"
                 >
-                    Settings
+                    Update Password
                 </a>
             </li>
 

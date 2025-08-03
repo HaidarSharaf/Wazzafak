@@ -1,5 +1,8 @@
 <?php
 
+use App\Livewire\Admin\AdminDashboard;
+use App\Livewire\Admin\ManageJob;
+use App\Livewire\Admin\ManageJobPosts;
 use App\Livewire\AppliedJobs;
 use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\Login;
@@ -48,4 +51,7 @@ Route::get('/job/create', CreateJobs::class)->name('create-job');
 
 Route::get('/job/{job_listing}/edit', EditJobs::class)->name('edit-job');
 
+Route::get('/admin/dashboard', AdminDashboard::class)->name('admin.dashboard');
+Route::get('/admin/jobs/manage', ManageJobPosts::class)->name('admin.manage');
+Route::get('/admin/job/manage/{job_listing}', ManageJob::class)->name('admin.job.manage');
 

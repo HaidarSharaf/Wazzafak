@@ -22,4 +22,17 @@ class JobApplication extends Model
     {
         return $this->belongsTo(JobListing::class);
     }
+
+    public function getApplicantExperienceAttribute()
+    {
+        return $this->user?->developer?->experience_level;
+    }
+
+    public function getApplicantStacksAttribute()
+    {
+        return $this->user?->stacks
+            ->pluck('name')
+            ->implode(', ');
+    }
+
 }

@@ -19,4 +19,9 @@ class Developer extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function stacks()
+    {
+        return $this->belongsToMany(Stack::class, 'developer_stacks');
+    }
 }

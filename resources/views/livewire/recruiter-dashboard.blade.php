@@ -52,7 +52,7 @@
                 <h3 class="text-2xl text-center font-semibold text-white">Job Performance</h3>
                 <p class="text-base text-center text-lime-400 mt-1">Your most active job posts</p>
             </div>
-            <div class="p-6">
+            <div class="p-6 space-y-6">
                 @forelse($jobs_performance as $job)
                     <livewire:job-performance-overview :job="$job" />
                 @empty

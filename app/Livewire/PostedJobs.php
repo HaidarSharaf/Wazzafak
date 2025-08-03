@@ -26,28 +26,26 @@ class PostedJobs extends Component
         return auth()->user()->jobListings()
             ->orderBy('created_at', 'desc')
             ->when($this->status, function ($query) {
-                return $query->where('status', $this->status);
+                $query->where('status', $this->status);
             })
-            ->when($this->app_date, function ($query) {
-                if ($this->app_date === 'this_week') {
-                    return $query->whereBetween('created_at', [
-                        now()->startOfWeek(),
-                        now()->endOfWeek(),
-                    ]);
-                } elseif ($this->app_date === 'this_month') {
-                    return $query->whereBetween('created_at', [
-                        now()->startOfMonth(),
-                        now()->endOfMonth(),
-                    ]);
-                }
+            ->when($this->app_date === 'this_week', function ($query) {
+                $query->whereBetween('created_at', [
+                    now()->startOfWeek(),
+                    now()->endOfWeek(),
+                ]);
+            })
+            ->when($this->app_date === 'this_month', function ($query) {
+                $query->whereBetween('created_at', [
+                    now()->startOfMonth(),
+                    now()->endOfMonth(),
+                ]);
             })
             ->get();
     }
 
     public function resetFilters()
     {
-        $this->status = '';
-        $this->app_date = '';
+        $this->reset(['status', 'app_date']);
     }
 
     public function render()
