@@ -11,7 +11,6 @@ use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Auth\UpdatePassword;
 use App\Livewire\Auth\VerifyEmail;
 use App\Livewire\CreateJobs;
-use App\Livewire\EditJobs;
 use App\Livewire\ExploreJobs;
 use App\Livewire\Home;
 use App\Livewire\JobDetails;
@@ -30,28 +29,30 @@ Route::middleware(['auth'])->group(function () {
     Route::get('verify-email', VerifyEmail::class)->name('verify-email');
 });
 
+Route::get('/', Home::class)->middleware('can:access-home')->name('home');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/update-password', UpdatePassword::class)->name('update-password');
+
+    Route::get('/jobs/{job_listing}', JobDetails::class)->name('job-listing');
+
+    Route::middleware(['can:access-developer-dashboard'])->group(function () {
+        Route::get('/jobs', ExploreJobs::class)->name('explore-jobs');
+
+        Route::get('/applications', AppliedJobs::class)->name('my-applications');
+    });
+
+    Route::middleware(['can:access-recruiter-dashboard'])->group(function () {
+        Route::get('/posted-jobs', PostedJobs::class)->name('posted-jobs');
+
+        Route::get('/job/create', CreateJobs::class)->name('create-job');
+    });
 });
 
-Route::get('/', Home::class)->name('home');
-Route::get('/jobs/{job_listing}', JobDetails::class)->name('job-listing');
 
-
-
-Route::get('/jobs', ExploreJobs::class)->name('explore-jobs');
-
-Route::get('/applications', AppliedJobs::class)->name('my-applications');
-
-
-
-Route::get('/posted-jobs', PostedJobs::class)->name('posted-jobs');
-
-Route::get('/job/create', CreateJobs::class)->name('create-job');
-
-Route::get('/job/{job_listing}/edit', EditJobs::class)->name('edit-job');
-
-Route::get('/admin/dashboard', AdminDashboard::class)->name('admin.dashboard');
-Route::get('/admin/jobs/manage', ManageJobPosts::class)->name('admin.manage');
-Route::get('/admin/job/manage/{job_listing}', ManageJob::class)->name('admin.job.manage');
+Route::middleware(['auth', 'can:access-admin-panel'])->prefix('/admin')->group(function(){
+    Route::get('/dashboard', AdminDashboard::class)->name('admin.dashboard');
+    Route::get('/jobs/manage', ManageJobPosts::class)->name('admin.manage');
+    Route::get('/job/manage/{job_listing}', ManageJob::class)->name('admin.job.manage');
+});
 

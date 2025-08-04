@@ -161,6 +161,9 @@
         </div>
     </div>
 
+    <div class="my-4">
+        {{ $job_listings->links() }}
+    </div>
 
     <div
         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
@@ -170,6 +173,10 @@
         @foreach($job_listings as $job_listing)
             <livewire:job-card :job_listing="$job_listing"/>
         @endforeach
+    </div>
+
+    <div class="my-4">
+        {{ $job_listings->links() }}
     </div>
 
     <div

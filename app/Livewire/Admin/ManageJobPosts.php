@@ -11,14 +11,14 @@ use Livewire\Component;
 #[Title('Manage Jobs | Byte Zone')]
 class ManageJobPosts extends Component
 {
-    public $pending_jobs = [];
-
-    public function mount(){
-        $this->pending_jobs = JobListing::where('status', 'Pending')->get();
+    public function loadPendingJobs(){
+        return JobListing::where('status', 'Pending')->paginate(6);
     }
 
     public function render()
     {
-        return view('livewire.admin.manage-job-posts');
+        return view('livewire.admin.manage-job-posts', [
+            'pending_jobs' => $this->loadPendingJobs()
+        ]);
     }
 }

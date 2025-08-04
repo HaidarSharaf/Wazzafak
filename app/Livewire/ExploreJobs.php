@@ -90,7 +90,7 @@ class ExploreJobs extends Component
         ->whereDoesntHave('jobApplications', function ($query) {
             $query->where('user_id', auth()->id());
         })
-        ->get();
+        ->paginate(9);
     }
 
     public function toggleTech($techId)

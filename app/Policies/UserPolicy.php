@@ -65,16 +65,16 @@ class UserPolicy
 
     public function accessAdminPanel(User $user): bool
     {
-        return $user->role === 'admin';
+        return $user->role === 'admin' && $user->hasVerifiedEmail();
     }
 
     public function accessRecruiterDashboard(User $user): bool
     {
-        return $user->role === 'recruiter';
+        return $user->role === 'recruiter' && $user->hasVerifiedEmail();
     }
 
     public function accessDeveloperDashboard(User $user): bool
     {
-        return $user->role === 'developer';
+        return $user->role === 'developer' && $user->hasVerifiedEmail();
     }
 }

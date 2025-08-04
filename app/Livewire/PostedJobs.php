@@ -40,12 +40,13 @@ class PostedJobs extends Component
                     now()->endOfMonth(),
                 ]);
             })
-            ->get();
+            ->paginate(6);
     }
 
     public function resetFilters()
     {
         $this->reset(['status', 'app_date']);
+        $this->resetPage(pageName: 'posted-jobs');
     }
 
     public function render()

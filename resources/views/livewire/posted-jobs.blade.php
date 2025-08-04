@@ -43,6 +43,10 @@
         </div>
     </div>
 
+    <div class="my-4">
+        {{ $posted_jobs->links() }}
+    </div>
+
     <div
         class="space-y-6"
         wire:loading.class="opacity-50 pointer-events-none"
@@ -54,6 +58,10 @@
                 <p class="md:text-2xl text-xl font-semibold !mb-7">No job posts found!</p>
             </div>
         @endforelse
+    </div>
+
+    <div class="my-4">
+        {{ $posted_jobs->links() }}
     </div>
 
     <div

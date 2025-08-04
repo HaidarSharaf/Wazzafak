@@ -5,10 +5,13 @@ namespace App\Livewire;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Title('Job Applications | Wazzafak')]
 class AppliedJobs extends Component
 {
+    Use WithPagination;
+
     #[Url(as: 's', except: '')]
     public $status = '';
 
@@ -21,29 +24,29 @@ class AppliedJobs extends Component
     public function getAppliedJobs(){
         return auth()->user()->appliedJobs()
             ->orderBy('job_applications.created_at', 'desc')
-                ->when($this->status, function ($query) {
-                    return $query->where('job_applications.status', $this->status);
-                })
-                ->when($this->app_date, function ($query) {
-                    if ($this->app_date === 'this_week') {
-                        return $query->whereBetween('job_applications.created_at', [
-                            now()->startOfWeek(),
-                            now()->endOfWeek(),
-                        ]);
-                    } elseif ($this->app_date === 'this_month') {
-                        return $query->whereBetween('job_applications.created_at', [
-                            now()->startOfMonth(),
-                            now()->endOfMonth(),
-                        ]);
-                    }
-                })
-                ->get();
+            ->when($this->status, function ($query) {
+                return $query->where('job_applications.status', $this->status);
+            })
+            ->when($this->app_date === 'this_week', function ($query) {
+                $query->whereBetween('job_applications.created_at', [
+                    now()->startOfWeek(),
+                    now()->endOfWeek(),
+                ]);
+            })
+            ->when($this->app_date === 'this_month', function ($query) {
+                $query->whereBetween('job_applications.created_at', [
+                    now()->startOfMonth(),
+                    now()->endOfMonth(),
+                ]);
+            })
+            ->paginate(6);
     }
 
     public function resetFilters()
     {
         $this->status = '';
         $this->app_date = '';
+        $this->resetPage(pageName: 'applications');
     }
 
     public function render()

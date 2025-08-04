@@ -35,6 +35,11 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('access-recruiter-dashboard', [UserPolicy::class, 'accessRecruiterDashboard']);
         Gate::define('access-developer-dashboard', [UserPolicy::class, 'accessDeveloperDashboard']);
 
+        Gate::define('access-home', function ($user = null) {
+            if (!$user) return true;
+            return Gate::allows('access-developer-dashboard') || Gate::allows('access-recruiter-dashboard');
+        });
+
         Gate::define('view-job-listing', [JobListingPolicy::class, 'view']);
         Gate::define('accept-job-listing', [JobListingPolicy::class, 'accept']);
         Gate::define('reject-job-listing', [JobListingPolicy::class, 'reject']);

@@ -6,21 +6,22 @@ use App\Models\JobListing;
 use App\Models\User;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class JobApplicants extends Component
 {
+    Use WithPagination;
+
     public ?JobListing $job_listing;
-    public $applications = [];
 
     public function mount($job_listing)
     {
         $this->job_listing = $job_listing;
-        $this->loadApps();
     }
 
     #[On('appsUpdated')]
     public function loadApps(){
-        $this->applications = $this->job_listing->jobApplications()
+        return $this->job_listing->jobApplications()
             ->orderByRaw("CASE
                 WHEN status = 'Accepted' THEN 1
                 WHEN status = 'Pending' THEN 2
@@ -61,8 +62,6 @@ class JobApplicants extends Component
 
         $this->dispatch('discloseJob', acceptedApplicationId: $applicationId);
 
-        $this->loadApps();
-
         session()->flash('message', 'Application accepted. Job disclosed.');
     }
 
@@ -81,13 +80,13 @@ class JobApplicants extends Component
             'status' => 'Rejected'
         ]);
 
-        $this->loadApps();
-
         session()->flash('message', 'Application rejected.');
     }
 
     public function render()
     {
-        return view('livewire.job-applicants');
+        return view('livewire.job-applicants', [
+            'applications' => $this->loadApps()
+        ]);
     }
 }
