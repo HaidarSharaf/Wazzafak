@@ -14,6 +14,8 @@ class DeveloperDashboard extends Component
     public $featured_jobs = [];
 
 
+
+
     public function mount()
     {
         $this->user = auth()->user();

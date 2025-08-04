@@ -10,6 +10,7 @@ use Livewire\Component;
 class ForgotPassword extends Component
 {
     public string $email = '';
+    public bool $sent = false;
 
     public function sendPasswordResetLink(): void
     {
@@ -29,6 +30,7 @@ class ForgotPassword extends Component
             session()->flash('error', __('An error occurred while sending the reset link. Please try again later.'));
         }
         $this->reset('email');
+        $this->sent = true;
     }
     public function render()
     {

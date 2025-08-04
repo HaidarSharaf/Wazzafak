@@ -22,29 +22,23 @@ class VerifyEmail extends Component
 
     public ?User $user;
 
-    public bool $valid = true;
+    public bool $send;
 
     public function mount(){
         $this->user = Auth::user();
 
         $this->email = $this->user->email;
+        $this->send = false;
 
         if($this->user->email_verified_at){
             $this->redirect(route('home'), navigate: true);
             return;
         }
-
-        if(!$this->user->otp_code || !$this->user->otp_expires_at || !$this->user->otp_sent_at || $this->expiredOtp()) {
-            $this->sendOtp();
-        }
     }
 
     public function sendOtp()
     {
-        if(now()->diffInSeconds($this->user->otp_sent_at) < 30) {
-            session()->flash('status', 'An OTP code was already sent to your email. Please check your inbox.');
-            return;
-        }
+        $this->send = true;
 
         $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
 
@@ -56,7 +50,6 @@ class VerifyEmail extends Component
 
         try {
             $this->user->notify(new EmailVerification($otp));
-            $this->valid = true;
             session()->flash('status', 'An OTP code was sent to your email.');
         } catch (Exception $e) {
             session()->flash('error', 'Failed to send OTP. Please try again.');
@@ -67,13 +60,11 @@ class VerifyEmail extends Component
         $this->validate();
 
         if (!$this->user->otp_code) {
-            $this->valid = false;
             session()->flash('error', 'No valid OTP found. Please request a new one.');
             return;
         }
 
         if ($this->expiredOtp()) {
-            $this->valid = false;
             $this->clearOtp();
             session()->flash('error', 'OTP has expired. Please request a new one.');
             return;

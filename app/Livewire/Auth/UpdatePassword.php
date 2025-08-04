@@ -34,6 +34,12 @@ class UpdatePassword extends Component
         ]);
 
         $this->reset('current_password', 'password', 'password_confirmation');
+
+        if(Auth::user()->role === 'admin') {
+            $this->redirect(route('admin.dashboard'), navigate: true);
+        } else {
+            $this->redirect(route('home'), navigate: true);
+        }
     }
     public function render()
     {

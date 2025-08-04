@@ -40,7 +40,16 @@ class Login extends Component
         RateLimiter::clear($this->throttleKey());
         Session::regenerate();
 
-        $this->redirectIntended(default: route('home', absolute: false), navigate: true);
+        $user = Auth::user();
+
+        if($user->role === 'admin') {
+            $this->redirect(route('admin.dashboard'), navigate: true);
+        } elseif ($user->email_verified_at === null) {
+            $this->redirect(route('verify-email'), navigate: true);
+        } else{
+            $this->redirectIntended(default: route('home', absolute: false), navigate: true);
+        }
+
     }
 
     protected function ensureIsNotRateLimited(): void

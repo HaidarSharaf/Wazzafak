@@ -175,7 +175,7 @@
 
             @can('manage-job-applicants', $this->job_listing)
                 @if($this->job_listing->status === 'Pending')
-                    <p class="text-amber-600 text-xl font-semibold w-full text-center">The job is yet to be approved by an admin!</p>
+                    <p class="text-amber-600 text-xl font-semibold w-full text-center">The job is yet to be approved by an admin.</p>
                 @elseif($this->job_listing->status === 'Rejected')
                     <span class="text-red-600 text-xl font-semibold w-full text-center">This job has been rejected by an admin. An email was sent including the problem behind rejecting it.</span>
                 @elseif(!$this->job_listing->is_disclosed)
