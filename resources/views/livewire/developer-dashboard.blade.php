@@ -39,7 +39,7 @@
                 <h3 class="text-2xl text-center font-semibold text-white">Featured Jobs</h3>
                 <p class="text-base text-center text-lime-400 mt-1">Based on your skills and preferences</p>
             </div>
-            <div class="p-2">
+            <div class="p-2 space-y-3">
                 @forelse($featured_jobs as $job)
                     <livewire:job-card-overview :job_listing="$job" />
                 @empty

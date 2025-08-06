@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\JobListing;
 use App\Models\Stack;
 use App\Models\Technology;
+use Livewire\Attributes\Reactive;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -15,24 +16,13 @@ class ExploreJobs extends Component
 {
     Use WithPagination;
 
-    public $job_listing = [];
     public $stacks = [];
 
     public $techs = [];
 
-    public $locations = [
-        'Remote',
-        'Hybrid',
-        'OnSite'
-    ];
+    public $locations = [];
 
-    public $levels = [
-        'Intern',
-        'Junior',
-        'Mid-level',
-        'Senior',
-        'Tech-lead'
-    ];
+    public $levels = [];
 
     public $chosenTechs = [];
 
@@ -60,6 +50,8 @@ class ExploreJobs extends Component
         $this->stacks = Stack::query()
             ->orderBy('name', 'asc')
             ->get();
+        $this->locations = JobListing::getLocations();
+        $this->levels = JobListing::getExperienceLevels();
     }
 
     public function getJobListings(){
@@ -90,7 +82,7 @@ class ExploreJobs extends Component
         ->whereDoesntHave('jobApplications', function ($query) {
             $query->where('user_id', auth()->id());
         })
-        ->paginate(9);
+        ->paginate(6);
     }
 
     public function toggleTech($techId)
@@ -105,21 +97,46 @@ class ExploreJobs extends Component
         }
     }
 
+    public function updatedText()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedStack()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedLocation()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedExperience()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedSortBy()
+    {
+        $this->resetPage();
+    }
+
     public function clearFilters()
     {
-        $this->text = '';
-        $this->stack = '';
-        $this->location = '';
-        $this->experience = '';
-        $this->chosenTechs = [];
-        $this->resetPage(pageName: 'jobs');
+        $this->reset([
+            'text', 'stack', 'location', 'experience', 'sortBy', 'chosenTechs',
+        ]);
+        $this->resetPage();
     }
 
     public function render()
     {
+        $jobListings = $this->getJobListings();
+
         return view('livewire.explore-jobs', [
-            'job_listings' => $this->getJobListings(),
-            'job_listings_count' => $this->getJobListings()->count(),
+            'job_listings' => $jobListings,
+            'job_listings_count' => $jobListings->total(),
         ]);
     }
 }

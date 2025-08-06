@@ -32,6 +32,11 @@ class JobListingPolicy
         return false;
     }
 
+    public function posterView(User $user, JobListing $jobListing): bool
+    {
+        return $user->role === 'recruiter' && $user->id === $jobListing->user_id;
+    }
+
     /**
      * Determine if the user can accept a job listing
      */

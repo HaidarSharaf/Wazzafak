@@ -30,9 +30,9 @@
                     class="w-full px-4 py-3 font-semibold text-gray-900 bg-white/90 rounded-xl border-0 focus:bg-white focus:ring-4 focus:ring-blue-500/30 transition-all"
                 >
                     <option value="" selected>Select Level</option>
-                    @foreach($levels as $level)
+                    @foreach($levels as $key => $level)
                         <option
-                            value="{{ $level}}"
+                            value="{{ $key}}"
                         >
                             {{ $level}}
                         </option>
@@ -49,9 +49,9 @@
                     class="w-full font-semibold bg-white border border-white/20 rounded-xl p-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                     <option value="">Select Location</option>
-                    @foreach($locations as $location)
+                    @foreach($locations as $key => $location)
                         <option
-                            value="{{ $location}}"
+                            value="{{ $key}}"
                         >
                             {{ $location }}
                         </option>

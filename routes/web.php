@@ -34,7 +34,7 @@ Route::get('/', Home::class)->middleware('can:access-home')->name('home');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/update-password', UpdatePassword::class)->name('update-password');
 
-    Route::get('/jobs/{job_listing}', JobDetails::class)->name('job-listing');
+    Route::get('/jobs/{job_listing}', JobDetails::class)->name('job-listing')->can('view-job-listing', 'job_listing');
 
     Route::middleware(['can:access-developer-dashboard'])->group(function () {
         Route::get('/jobs', ExploreJobs::class)->name('explore-jobs');

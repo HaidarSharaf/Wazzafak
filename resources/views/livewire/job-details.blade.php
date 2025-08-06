@@ -173,7 +173,7 @@
                 @endif
             @endcan
 
-            @can('manage-job-applicants', $this->job_listing)
+            @can('poster-view-job-listing', $this->job_listing)
                 @if($this->job_listing->status === 'Pending')
                     <p class="text-amber-600 text-xl font-semibold w-full text-center">The job is yet to be approved by an admin.</p>
                 @elseif($this->job_listing->status === 'Rejected')

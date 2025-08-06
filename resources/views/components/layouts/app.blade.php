@@ -17,9 +17,37 @@
 </head>
 <body
     class="bg-gray-200 bg-gradient-to-br from-blue-600 to-indigo-300 min-h-screen text-white flex p-6 lg:p-8 items-center lg:justify-start flex-col"
-    x-data
+    x-data="{ loading: true }"
+    x-init="
+    if (!window.alreadyLoaded) {
+        window.alreadyLoaded = true;
+        const start = Date.now();
+        window.addEventListener('load', () => {
+            const elapsed = Date.now() - start;
+            const remaining = 2000 - elapsed;
+            setTimeout(() => loading = false, remaining > 0 ? remaining : 0);
+        });
+    } else {
+        loading = false;
+    }
+"
+
 >
-    <div class="w-full lg:max-w-6xl md:max-w-4xl sm:max-w-2xl max-w-[450px]">
+
+    <div
+        x-show="loading"
+        x-transition.opacity.duration.500ms
+        class="fixed inset-0 z-50 flex items-center justify-center text-indigo-600"
+    >
+        <img src="{{ asset('/images/Logo.png') }}" class="h-16 w-auto animate-pulse" alt="Loading...">
+    </div>
+
+    <div
+        x-show="!loading"
+        x-transition.opacity.duration.500ms
+        class="w-full lg:max-w-6xl md:max-w-4xl sm:max-w-2xl max-w-[450px]"
+
+    >
 
         <header class="w-full lg:max-w-6xl md:max-w-4xl sm:max-w-2xl max-w-[450px] top-0 z-50 text-sm mb-2 not-has-[nav]:hidden">
             <livewire:navbar />

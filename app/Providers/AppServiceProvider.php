@@ -41,6 +41,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Gate::define('view-job-listing', [JobListingPolicy::class, 'view']);
+        Gate::define('poster-view-job-listing', [JobListingPolicy::class, 'posterView']);
         Gate::define('accept-job-listing', [JobListingPolicy::class, 'accept']);
         Gate::define('reject-job-listing', [JobListingPolicy::class, 'reject']);
         Gate::define('view-job-applicants', [JobListingPolicy::class, 'viewApplicants']);

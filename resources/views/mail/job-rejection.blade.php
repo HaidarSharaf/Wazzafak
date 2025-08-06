@@ -7,7 +7,7 @@
 <body style="font-family: Arial, sans-serif; background: #f9f9f9; margin: 0; padding: 0;">
 
 <div style="text-align: center; margin-bottom: 20px;">
-    <img src="{{ asset('/images/Logo.png') }}" style="max-width: 50px; vertical-align: middle;">
+    <img src="{{ asset('/images/Logo.png') }}" alt="Logo" style="max-width: 50px; vertical-align: middle;">
     <span style="font-size: 30px; font-weight: 800; color: #19468f; padding-left: 8px;">WAZZAFAK</span>
 </div>
 

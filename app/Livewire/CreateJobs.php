@@ -49,7 +49,6 @@ class CreateJobs extends Component
     public function create()
     {
         $this->authorize('create-job-listing');
-
         $this->form->technologies = $this->chosenTechs;
         $this->form->store();
         $this->chosenTechs = [];

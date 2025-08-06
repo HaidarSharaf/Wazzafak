@@ -1,5 +1,5 @@
 <div
-    x-data="{ showFilters: false, search: '', selectedLocation: '', selectedType: '', selectedExperience: '', selectedSalary: '', selectedTech: '' }" x-cloak
+    x-data="{ showFilters: false }" x-cloak
     class="w-full mx-auto px-4 sm:px-6 lg:px-8 pb-16"
 >
     <div class="bg-white/10 backdrop-blur-xl rounded-3xl p-6 mb-8 border border-white/20 shadow-2xl">
@@ -50,9 +50,9 @@
                         class="w-full px-4 py-3 font-semibold text-gray-900 bg-white/90 rounded-xl border-0 focus:bg-white focus:ring-4 focus:ring-blue-500/30 transition-all"
                     >
                         <option value="">All Locations</option>
-                        @foreach($locations as $location)
+                        @foreach($locations as $key => $location)
                             <option
-                                value="{{ $location}}"
+                                value="{{ $key }}"
                             >
                                 {{ $location }}
                             </option>
@@ -85,9 +85,9 @@
                         class="w-full px-4 py-3 font-semibold text-gray-900 bg-white/90 rounded-xl border-0 focus:bg-white focus:ring-4 focus:ring-blue-500/30 transition-all"
                     >
                         <option value="" selected>All Levels</option>
-                        @foreach($levels as $level)
+                        @foreach($levels as $key => $level)
                             <option
-                                value="{{ $level}}"
+                                value="{{ $key }}"
                             >
                                 {{ $level}}
                             </option>
@@ -97,7 +97,7 @@
 
                 <div class="flex items-end">
                     <button
-                        wire:click="clearFilters; showFilters = false"
+                        wire:click="clearFilters"
                         class="w-full px-4 py-3 bg-red-500 hover:bg-red-500/80 text-white font-medium rounded-xl transition-all duration-300 cursor-pointer"
                     >
                         Clear All
@@ -171,7 +171,79 @@
     >
 
         @foreach($job_listings as $job_listing)
-            <livewire:job-card :job_listing="$job_listing"/>
+            <div class="w-full"
+                 wire:key="{{ $job_listing->id }}"
+            >
+                <div class="group bg-white/10 backdrop-blur-xl rounded-3xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-500 hover:transform hover:-translate-y-2 hover:shadow-2xl">
+
+                    <a
+                        href="{{ route('job-listing', $job_listing->id) }}"
+                        wire:navigate
+                        class="flex xl:justify-between justify-start items-start mb-4 gap-2"
+                    >
+                        <img
+                            src="{{ asset('storage/users_avatars/' . $job_listing->getCompanyLogoAttribute()) }}"
+                            class="lg:w-14 lg:h-14 md:w-12 md:h-12 sm:w-10 sm:h-10 w-8 h-8 rounded-2xl flex items-center justify-center font-bold text-2xl shadow-lg"
+                        />
+                        <div>
+                            <h3 class="xl:text-xl md:text-lg text-base font-bold text-white mb-1 group-hover:text-lime-500 transition-colors">{{ $job_listing->experience }}: {{ $job_listing->getStackNameAttribute() }}</h3>
+                            <p class="text-gray-300 xl:text-base text-sm font-medium">{{ $job_listing->getCompanyNameAttribute() }}</p>
+                        </div>
+
+                    </a>
+
+                    <div class="mb-4 mt-2 flex flex-row lg:flex-col xl:flex-row items-center justify-between gap-2">
+                        <div class="flex items-center gap-2 text-gray-300">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <span class="sm:text-sm text-xs text-gray-300">{{ $job_listing->location }}</span>
+                        </div>
+                        <span class="text-white sm:text-base text-sm font-semibold">${{ $job_listing->salary }}</span>
+                    </div>
+
+                    <div class="space-y-3 my-6">
+
+                        <a
+                            href="{{ route('job-listing', $job_listing->id) }}"
+                            wire:navigate
+                            class="text-indigo-200 sm:text-base text-sm line-clamp-3"
+                        >
+                            {{ Str::limit($job_listing->description, 250) }}
+                        </a>
+
+                        <div class="flex flex-wrap gap-2 max-h-[30px] overflow-hidden">
+                            @foreach($job_listing->technologies->take(3) as $technology)
+                                <div class="relative z-10 flex items-center bg-white/20 px-2 py-1 rounded-xl mb-2 transition-all duration-200 w-fit">
+                                    @if($technology->icon)
+                                        <img src="{{ asset('storage/technologies_icons/' . $technology->icon) }}" alt="{{ $technology->name }}" class="min-w-3 min-h-3 max-w-4 max-h-4 mr-2">
+                                    @endif
+
+                                    <span class="text-xs">{{ $technology->name }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+
+                    <div class="flex gap-3">
+                        <a
+                            wire:navigate
+                            href="{{ route('job-listing', $job_listing->id) }}"
+                            class="flex-1 md:text-base text-sm text-center p-3 bg-[#19468f] text-white font-semibold rounded-xl hover:bg-lime-600 cursor-pointer transition-all duration-300 shadow-lg hover:shadow-xl"
+                        >
+                            View Details
+                        </a>
+                    </div>
+
+                    <div class="mt-4 pt-4 border-t border-white/20">
+                        <span class="text-gray-300 text-xs">
+                            {{ $job_listing->getPostedTimeAttribute() }}
+                        </span>
+                    </div>
+                </div>
+            </div>
         @endforeach
     </div>
 

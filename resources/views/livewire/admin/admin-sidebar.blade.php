@@ -99,14 +99,14 @@
                         wire:navigate
                         href="{{ route('update-password') }}"
                         wire:current.exact="text-lime-300 underline"
-                        class="w-full md:text-xl sm:text-base text-sm text-center font-bold text-[#1750b6] hover:text-lime-600 hover:underline cursor-pointer"
+                        class="w-full md:text-lg sm:text-base text-sm text-center font-bold text-[#1750b6] hover:text-lime-600 hover:underline cursor-pointer"
                     >
                         Update Password
                     </a>
 
                     <button
                         wire:click="logout"
-                        class="w-full md:text-xl sm:text-base text-sm font-bold text-[#1750b6] hover:text-lime-600 hover:underline cursor-pointer"
+                        class="w-full md:text-lg sm:text-base text-sm font-bold text-[#1750b6] hover:text-lime-600 hover:underline cursor-pointer"
                     >
                         Logout
                     </button>

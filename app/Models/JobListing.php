@@ -16,6 +16,7 @@ class JobListing extends Model
         'description',
         'salary',
         'location',
+        'experience',
         'status',
         'rejection_message',
         'is_disclosed',
@@ -51,6 +52,7 @@ class JobListing extends Model
     public function getCompanyLogoAttribute(){
         return $this->user?->recruiter?->company_logo;
     }
+
 
     public function getPostedTimeAttribute()
     {
@@ -94,9 +96,9 @@ class JobListing extends Model
         return [
             'Intern' => 'Intern',
             'Junior' => 'Junior',
-            'Mid_level' => 'Mid-level',
+            'Mid-level' => 'Mid-level',
             'Senior' => 'Senior',
-            'Tech_lead' => 'Tech-lead',
+            'Tech-lead' => 'Tech-lead',
         ];
     }
 
