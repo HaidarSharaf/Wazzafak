@@ -44,8 +44,10 @@ class AppliedJobs extends Component
 
     public function resetFilters()
     {
-        $this->status = '';
-        $this->app_date = '';
+        $this->reset([
+            'status',
+            'app_date',
+        ]);
         $this->resetPage(pageName: 'applications');
     }
 
