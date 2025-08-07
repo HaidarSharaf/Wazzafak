@@ -1,4 +1,5 @@
-# ⚡ Livewire Auth Starter Kit
+# Wazzafak 🧠💼
+
 [![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=flat&logo=laravel&logoColor=white)](https://laravel.com/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![Alpine.js](https://img.shields.io/badge/Alpine.js-8BC34A?style=flat&logo=alpine.js&logoColor=white)](https://alpinejs.dev/)
@@ -6,172 +7,86 @@
 [![PHP](https://img.shields.io/badge/PHP-777BB4?style=flat&logo=php&logoColor=white)](https://php.net/)
 [![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=mysql&logoColor=white)](https://mysql.com/)
 
+---
 
-A simple Laravel auth starter kit with **Livewire**, **Tailwind CSS**, and **Alpine.js** pre-configured for rapid development.
+## 🚀 Overview
+**Wazzafak** is a Lebanese job-matching platform tailored for Lebanese developers and tech recruiters, built with the TALL stack — **Tailwind CSS, Alpine.js, Laravel, and Livewire**.
+
+It connects talented developers with job opportunities based on skills, stack, and experience, offering a fast, reactive, and intuitive experience for both developers and recruiters.
 
 ---
 
-## ✨ Features
+## 🛠️ Tech Stack
 
-### 🔐 Complete Authentication System
-- Login / Register
-- Email verification using OTP
-- Password reset
-- Remember me functionality
-- Update password after login
-
-### ⚡ Livewire Components
-- Loading states
-- Flash session notifications
-
-### 🎨 Modern UI
-- Tailwind CSS
-- Alpine.js
-- Responsive design
+**TALL Stack:**
+- **🎨 Tailwind CSS** - Utility-first CSS framework for rapid UI development
+- **⚡ Alpine.js** - Lightweight JavaScript framework for interactive components
+- **🚀 Laravel** - PHP web application framework for robust backend functionality
+- **⚡ Livewire** - Full-stack framework for building dynamic interfaces
 
 ---
 
-## 🚀 Quick Start
+## ✨ Key Features
 
-### Option 1: Use This Template (Recommended)
+- 💼 **Post Jobs (Recruiters)**  
+  Authenticated recruiters can post job listings with rich details including required stack, techs, salaries, experience level, and more.
 
-1. Click the **“Use this template”** button on GitHub
-2. Create your new repository
-3. Clone and set up your project:
+- ✅ **Job Application Status**  
+  Admins will review job listings and then accept or reject it. Once rejected, an email with a rejection message is received by the recruiter.
 
-#### Windows (Command Prompt)
-```cmd
-git clone https://github.com/HaidarSharaf/livewire-auth-starter-kit.git my-project
-cd my-project
-setup.bat
-```
+- 📄 **Apply to Jobs (Developers)**  
+  Developers can apply directly with a single click. Applications are tracked per user and job.
 
+- 📬 **Developer Profiles**  
+  Developers will be asked to add their skills, GitHub and LinkedIn profiles, and CVs.
 
-#### Windows (PowerShell):
-```powershell
+- 🗂 **Admin Dashboard** 
+  Role-based access for managing jobs and site content.
 
-git clone https://github.com/HaidarSharaf/livewire-auth-starter-kit.git
-cd your-new-project
-.\setup.ps1
-````
+---
 
-#### Linux/Mac:
-```bash
+## Features ✨
 
-git clone https://github.com/HaidarSharaf/livewire-auth-starter-kit.git
-cd your-new-project
-chmod +x setup.sh
-./setup.sh
-```
+### For Developers
+- 🔍 **Advanced Job Search** - Filter by technology, experience level, location, and salary
+- 💼 **Smart Matching** - Get matched with jobs based on your skills and preferences
+- 📱 **Responsive Design** - Seamless experience across all devices
+- 🏷️ **Technology Tags** - Visual technology indicators with custom colors and icons
+- 📊 **Real-time Filtering** - Instant results as you adjust your search criteria
 
-### Option 2: Manual Installation
+### For Recruiters
+- ✍️ **Job Posting** - Create detailed job listings with rich descriptions
+- 🎯 **Targeted Hiring** - Specify exact technologies and experience levels
+- 📈 **Application Management** - Track and manage job applications (Accept, Reject)
+- 🔄 **Job Listing Control** - Manage job listing (Disclose).
 
-#### Windows:
-```cmd
+### For Admins
+- 🎯 **Manage Job Listings** - Accept or Reject job posts
+- ✍️ **Sending Emails** - Rejecting a job post requires a rejection message to be sent by email to the recruiter
 
-# Clone the repository
-git clone https://github.com/HaidarSharaf/livewire-auth-starter-kit.git my-project
-cd my-project
+---
 
-# Run setup (choose one)
-setup.bat
-# OR
-.\setup.ps1
+## 🚀 Deployment
+- Deployed the application using Laravel Forge
+- Integrated email management with Twilio
 
-# Configure environment
-notepad .env
+---
 
-# Edit database and other settings
+## 🧪 Testing the Application
+- Application URL: https://laraveldevvv.site
+- Admin Login: Email: admin@wazzafak.com / Password: 123123123123 / Secret Key: 123456
 
-# Run migrations
-php artisan migrate
+---
 
-# Start development server
-php artisan serve
-```
+## 🙏 Acknowledgments
 
-##### Linux/Mac:
-``` bash
+- **Laravel Community** for the amazing framework
+- **Livewire Team** for reactive components
+- **Tailwind CSS** for the utility-first CSS framework
+- **Alpine.js** for lightweight JavaScript interactions
 
-# Clone the repository
-git clone https://github.com/HaidarSharaf/livewire-auth-starter-kit.git my-project
-cd my-project
+---
 
-# Run setup
-chmod +x setup.sh
-./setup.sh
+⭐ **If you find Wazzafak helpful, please give it a star on GitHub!**
 
-# Configure environment
-nano .env
-
-# Edit database and other settings
-
-# Run migrations
-php artisan migrate
-
-# Start development server
-php artisan serve
-```
-
-📋 Requirements
-
-    PHP 8.1+
-    Composer
-    Node.js 18+
-    MySQL/PostgreSQL/SQLite
-    Git
-
-Asset Building
-```bash
-
-# Development
-npm run dev
-
-# Watch for changes
-npm run dev -- --watch
-
-# Production build
-npm run build
-```
-
-## 📁 Project Structure
-
-```text
-├── app/
-│   ├── Livewire/           # Your Livewire components
-│   ├── Models/             # Eloquent models
-│   └── Providers/          # Service providers
-├── resources/
-│   ├── views/
-│   │   ├── livewire/       # Livewire component views
-│   │   ├── layouts/        # App layouts
-│   │   ├── auth/           # Authentication pages
-│   │   └── components/     # Blade components
-│   ├── css/                # Tailwind CSS
-│   └── js/                 # Alpine.js
-├── database/
-│   ├── migrations/         # Database migrations
-│   └── seeders/            # Database seeders
-└── public/                 # Public assets
-
-```
-
-🎯 What's Included
-
-Authentication Pages
-
-    Login
-    Register
-    Forgot Password
-    Reset Password
-    Email Verification
-    Update Password
-
-
-🙏 Acknowledgments
-
-    Laravel - The PHP Framework
-    Livewire - Full-stack framework for Laravel
-    Tailwind CSS - Utility-first CSS framework
-    Alpine.js - Minimal JavaScript framework
-
+---
