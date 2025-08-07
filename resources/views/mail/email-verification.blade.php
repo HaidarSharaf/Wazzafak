@@ -12,7 +12,7 @@
 
     <p>Your One-Time Password (OTP) is:</p>
 
-    <h1 style="color: #FF4D30; font-size: 36px; letter-spacing: 4px; text-align: center">{{ $otp }}</h1>
+    <h1 style="color: #1750b6; font-size: 36px; letter-spacing: 4px; text-align: center">{{ $otp }}</h1>
 
     <p style="margin-top: 20px;">
         Enter this code in the app to verify your email address.
