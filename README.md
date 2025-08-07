@@ -73,8 +73,8 @@ It connects talented developers with job opportunities based on skills, stack, a
 ---
 
 ## 🧪 Testing the Application
-- Application URL: https://laraveldevvv.site
-- Admin Login: Email: admin@wazzafak.com / Password: 123123123123 / Secret Key: 123456
+- Application URL: https://wazzafak.site
+- Admin Login: Email: admin@wazzafak.com / Password: 123123123123
 
 ---
 
