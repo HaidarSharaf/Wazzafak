@@ -4,7 +4,6 @@
     <a
         wire:navigate
         href="{{ $admin_page ? route('admin.job.manage', $job_listing->id) : route('job-listing', $job_listing->id) }}"
-        class="backdrop-blur-xl"
     >
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
 
