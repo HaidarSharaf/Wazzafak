@@ -25,21 +25,21 @@
         <div class="space-y-6">
             <div>
                 <h2 class="text-xl font-semibold text-lime-400 mb-2">Job Stack</h2>
-                <p class="text-gray-300 md:text-lg text-base font-semibold leading-relaxed">
+                <p class="text-white md:text-lg text-base font-semibold leading-relaxed">
                     {{ $this->job_listing->getStackNameAttribute() }}
                 </p>
             </div>
 
             <div>
                 <h2 class="text-xl font-semibold text-lime-400 mb-2">Job Level</h2>
-                <p class="text-gray-300 md:text-lg text-base font-semibold leading-relaxed">
+                <p class="text-white md:text-lg text-base font-semibold leading-relaxed">
                     {{ $this->job_listing->experience }}
                 </p>
             </div>
 
             <div>
                 <h2 class="text-xl font-semibold text-lime-400 mb-2">Job Description</h2>
-                <p class="text-gray-300 md:text-lg text-base leading-relaxed">
+                <p class="text-white md:text-lg text-base leading-relaxed">
                     {{ $this->job_listing->description }}
                 </p>
             </div>
@@ -55,7 +55,7 @@
                                 <img src="{{ asset('storage/technologies_icons/' . $technology->icon) }}" alt="{{ $technology->name }}" class="min-w-5 min-h-5 max-w-6 max-h-6 mr-2">
                             @endif
 
-                            <span>{{ $technology->name }}</span>
+                            <span class="w-full">{{ $technology->name }}</span>
                         </div>
                     @endforeach
                 </div>
@@ -119,12 +119,12 @@
                     </button>
 
                 @elseif($this->job_listing->status === 'Rejected')
-                    <span class="text-red-600 text-xl font-semibold w-full text-center">This job was rejected.</span>
+                    <span class="bg-red-600 p-3 rounded-lg text-white text-xl font-semibold w-full text-center">This job was rejected.</span>
                 @elseif($this->job_listing->is_disclosed)
-                    <span class="text-red-600 text-xl font-semibold w-full text-center">This job was disclosed.</span>
+                    <span class="bg-red-600 p-3 rounded-lg text-white text-xl font-semibold w-full text-center">This job was disclosed.</span>
 
                 @elseif($this->job_listing->status === 'Accepted')
-                    <span class="text-green-600 text-xl font-semibold w-full text-center">This job was accepted.</span>
+                    <span class="bg-green-600 p-3 rounded-lg text-white text-xl font-semibold w-full text-center">This job was accepted.</span>
                 @endif
 
 
@@ -132,20 +132,22 @@
 
             @can('access-developer-dashboard')
                 @if($this->job_listing->is_disclosed)
-                    <span class="text-red-600 text-xl font-semibold w-full text-center">This job was disclosed.</span>
+                    <div class="flex items-center justify-center gap-4 flex-col w-100">
+                        <span class="bg-red-600 p-3 rounded-lg text-white text-xl font-semibold w-full text-center">This job was disclosed.</span>
                         @if($this->hasUserApplied())
-                            <button
+                            <p
                                 @class([
                                     'flex-1 px-6 py-3 rounded-xl text-white md:text-lg text-base font-semibold shadow-xl cursor-not-allowed',
                                     'bg-green-600' => $this->isUserAccepted(),
                                     'bg-red-600' => $this->isUserRejected(),
                                 ])
                             >
-                                {{ $this->isUserAccepted() ? 'Accepted. The recruiter should reach you out soon...'
+                                {{ $this->isUserAccepted() ? 'Accepted. The recruiter should have reached you out via chat or email.'
                                     : 'Rejected'
                                 }}
-                            </button>
+                            </p>
                         @endif
+                    </div>
                 @else
                     @if($this->job_listing->status === 'Accepted')
                         @if($this->hasUserApplied())
@@ -166,7 +168,20 @@
                                 wire:target="applyForJob"
                                 class="flex-1 px-6 py-3 bg-[#19468f] hover:bg-lime-600 transition-all rounded-xl text-white md:text-lg text-base font-semibold shadow-xl cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                             >
-                                Apply
+                                <div
+                                    wire:loading
+                                    wire:target="applyForJob"
+                                    class="animate-spin inline-block size-5 border-3 mt-1 border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"
+                                >
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+
+                                <span
+                                    wire:loading.remove
+                                    wire:target="applyForJob"
+                                >
+                                    Apply
+                                </span>
                             </button>
                         @endif
                     @endif
@@ -177,7 +192,7 @@
                 @if($this->job_listing->status === 'Pending')
                     <p class="text-amber-600 text-xl font-semibold w-full text-center">The job is yet to be approved by an admin.</p>
                 @elseif($this->job_listing->status === 'Rejected')
-                    <span class="text-red-600 text-xl font-semibold w-full text-center">This job has been rejected by an admin. An email was sent including the problem behind rejecting it.</span>
+                    <span class="text-red-600 text-xl font-semibold w-full text-center">This job was rejected by an admin. An email was sent including the problem behind rejecting it.</span>
                 @elseif(!$this->job_listing->is_disclosed)
                     <button
                         @click="modalDisclose = true"
@@ -186,13 +201,13 @@
                         Disclose Job
                     </button>
                 @else
-                    <span class="text-red-600 text-xl font-semibold w-full text-center">This job is disclosed.</span>
+                    <span class="bg-red-600 text-white p-3 rounded-lg text-xl font-semibold w-full text-center">This job is disclosed.</span>
                 @endif
             @endcan
 
 
             @if(!$this->job_listing->is_disclosed && $this->job_listing->status === 'Accepted')
-                <livewire:share-button />
+                <livewire:share-button :job="$this->job_listing"/>
             @endif
         </div>
 
@@ -203,13 +218,14 @@
             class="fixed inset-0 bg-white/30 backdrop-blur-md z-50 rounded-2xl"
         ></div>
 
-        <div
-            x-show="modalReject"
-            x-cloak
-            x-transition
-            class="overflow-y-auto overflow-x-hidden fixed z-50 flex justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
-        >
-            <div class="relative p-4 w-full max-w-md max-h-full">
+        <template x-teleport="body">
+            <div
+                x-show="modalReject"
+                x-cloak
+                x-transition
+                class="fixed inset-0 bg-white/30 backdrop-blur-md z-50 rounded-2xl flex justify-center items-center"
+            >
+                <div class="relative p-4 w-full max-w-md max-h-full">
                 <div class="relative bg-white rounded-lg shadow-sm">
                     <button
                         type="button"
@@ -258,15 +274,17 @@
                     </div>
                 </div>
             </div>
-        </div>
+            </div>
+        </template>
 
-        <div
-            x-show="modalDisclose"
-            x-cloak
-            x-transition
-            class="overflow-y-auto overflow-x-hidden fixed z-50 flex justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
-        >
-            <div class="relative p-4 w-full max-w-md max-h-full">
+        <template x-teleport="body">
+            <div
+                x-show="modalDisclose"
+                x-cloak
+                x-transition
+                class="fixed inset-0 bg-white/30 backdrop-blur-md z-50 rounded-2xl flex justify-center items-center"
+            >
+                <div class="relative p-4 w-full max-w-md max-h-full">
                 <div class="relative bg-white rounded-lg shadow-sm">
                     <button
                         type="button"
@@ -303,7 +321,8 @@
                     </div>
                 </div>
             </div>
-        </div>
+            </div>
+        </template>
 
     </div>
 

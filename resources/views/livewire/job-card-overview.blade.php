@@ -3,7 +3,7 @@
 >
     <a
         wire:navigate
-        href="{{ $admin_page ? route('admin.job.manage', $job_listing->id) : route('job-listing', $job_listing->id) }}"
+        href="{{ $admin_page ? route('admin.job.manage', $job_listing) : route('job-listing', $job_listing) }}"
     >
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
 
@@ -21,13 +21,7 @@
 
 
             <div class="text-right space-y-2">
-                @if($job_listing->is_disclosed)
-                    <span
-                        class="bg-red-500 md:px-5 md:py-3 md:text-base px-3 py-1 text-sm font-semibold rounded-lg text-white"
-                    >
-                        Disclosed
-                    </span>
-                @elseif($user->role === 'developer')
+                @if($user->role === 'developer')
                     @if($this->hasUserApplied())
                         <span
                             @php
@@ -40,7 +34,7 @@
                                 'md:px-5 md:py-3 md:text-base px-3 py-1 text-sm font-semibold rounded-lg text-white',
                             ])
                         >
-                            Application {{ $status }}
+                            {{ $status }}
                         </span>
                     @else
                         <span
@@ -50,7 +44,14 @@
                         </span>
                     @endif
                 @else
-                    <span
+                    @if($job_listing->is_disclosed)
+                        <span
+                            class="bg-red-500 md:px-5 md:py-3 md:text-base px-3 py-1 text-sm font-semibold rounded-lg text-white"
+                        >
+                            Disclosed
+                        </span>
+                    @else
+                        <span
                         @class([
                             'bg-green-500' => $job_listing->status === 'Accepted',
                             'bg-red-500' => $job_listing->status === 'Rejected',
@@ -60,6 +61,7 @@
                     >
                         {{ $job_listing->status }}
                     </span>
+                    @endif
                 @endif
 
             </div>

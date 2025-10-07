@@ -59,7 +59,20 @@
                         x-transition:leave-end="opacity-0 transform -translate-y-4"
                         class="w-full bg-[#1750b6] hover:bg-lime-600 transition text-white md:text-base text-sm font-semibold cursor-pointer py-3 px-6 rounded-xl shadow-lg !mt-3 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        Verify
+                        <div
+                            wire:loading
+                            wire:target="verifyOtp"
+                            class="animate-spin inline-block size-5 border-3 mt-1 border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"
+                        >
+                            <span class="sr-only">Loading...</span>
+                        </div>
+
+                        <span
+                            wire:loading.remove
+                            wire:target="verifyOtp"
+                        >
+                            Verify
+                        </span>
                     </button>
                 </div>
 

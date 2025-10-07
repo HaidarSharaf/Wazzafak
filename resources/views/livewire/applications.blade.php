@@ -1,7 +1,6 @@
 <div class="w-full space-y-3">
-    <h1 class="lg:text-3xl md:text-2xl text-xl font-bold text-white mb-8 ml-2">My Job Posts</h1>
 
-    <div class="flex items-center sm:justify-end justify-start flex-wrap gap-4 mb-10">
+    <div class="flex items-center justify-end gap-4 mb-10">
 
         <div class="w-48">
             <label class="block text-white font-medium">Status:</label>
@@ -9,12 +8,12 @@
                 wire:model.live="status"
                 class="w-full px-4 py-3 font-semibold text-gray-900 bg-white/90 rounded-xl border-0 focus:bg-white focus:ring-4 focus:ring-blue-500/30 transition-all"
             >
-                <option value="" selected>Any</option>
-                @foreach($statuses as $status)
+                <option value="">Any</option>
+                @foreach($statuses as $statusOption)
                     <option
-                        value="{{ $status }}"
+                        value="{{ $statusOption }}"
                     >
-                        {{ $status }}
+                        {{ $statusOption }}
                     </option>
                 @endforeach
             </select>
@@ -26,7 +25,7 @@
                 wire:model.live="app_date"
                 class="w-full px-4 py-3 font-semibold text-gray-900 bg-white/90 rounded-xl border-0 focus:bg-white focus:ring-4 focus:ring-blue-500/30 transition-all"
             >
-                <option value="" selected>Any</option>
+                <option value="">Any</option>
                 <option value="this_week">This Week</option>
                 <option value="this_month">This Month</option>
             </select>
@@ -35,7 +34,8 @@
         <div class="w-48">
             <label class="block text-white font-medium">&nbsp;</label>
             <button
-                @click="$wire.resetFilters"
+                wire:click="resetFilters"
+                type="button"
                 class="w-full px-4 py-3 font-semibold cursor-pointer text-white bg-red-500 hover:bg-red-600 rounded-xl transition-all"
             >
                 Reset Filters
@@ -44,24 +44,24 @@
     </div>
 
     <div class="my-4">
-        {{ $posted_jobs->links() }}
+        {{ $applied_jobs->links() }}
     </div>
 
     <div
         class="space-y-6"
         wire:loading.class="opacity-50 pointer-events-none"
     >
-        @forelse($posted_jobs as $job_listing)
-            <livewire:job-card-overview :job_listing="$job_listing" />
+        @forelse($applied_jobs as $job_listing)
+            <livewire:job-card-overview :job_listing="$job_listing" :key="$job_listing->id" />
         @empty
             <div class="text-center text-white mt-20">
-                <p class="md:text-2xl text-xl font-semibold !mb-7">No job posts found!</p>
+                <p class="md:text-2xl text-xl font-semibold !mb-7">No applications found!</p>
             </div>
         @endforelse
     </div>
 
     <div class="my-4">
-        {{ $posted_jobs->links() }}
+        {{ $applied_jobs->links() }}
     </div>
 
     <div
@@ -72,6 +72,5 @@
     </div>
 
 </div>
-
 
 

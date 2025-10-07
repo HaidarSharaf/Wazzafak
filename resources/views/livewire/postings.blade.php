@@ -1,7 +1,6 @@
 <div class="w-full space-y-3">
-    <h1 class="lg:text-3xl md:text-2xl text-xl font-bold text-white mb-8 ml-2">My Applications</h1>
 
-    <div class="flex items-center justify-end gap-4 mb-10">
+    <div class="flex items-center sm:justify-end justify-start flex-wrap gap-4 mb-10">
 
         <div class="w-48">
             <label class="block text-white font-medium">Status:</label>
@@ -10,11 +9,11 @@
                 class="w-full px-4 py-3 font-semibold text-gray-900 bg-white/90 rounded-xl border-0 focus:bg-white focus:ring-4 focus:ring-blue-500/30 transition-all"
             >
                 <option value="" selected>Any</option>
-                @foreach($statuses as $status)
+                @foreach($statuses as $statusOptions)
                     <option
-                        value="{{ $status }}"
+                        value="{{ $statusOptions }}"
                     >
-                        {{ $status }}
+                        {{ $statusOptions }}
                     </option>
                 @endforeach
             </select>
@@ -35,7 +34,7 @@
         <div class="w-48">
             <label class="block text-white font-medium">&nbsp;</label>
             <button
-                wire:click="resetFilters"
+                @click="$wire.resetFilters"
                 class="w-full px-4 py-3 font-semibold cursor-pointer text-white bg-red-500 hover:bg-red-600 rounded-xl transition-all"
             >
                 Reset Filters
@@ -44,24 +43,24 @@
     </div>
 
     <div class="my-4">
-        {{ $applied_jobs->links() }}
+        {{ $posted_jobs->links() }}
     </div>
 
     <div
         class="space-y-6"
         wire:loading.class="opacity-50 pointer-events-none"
     >
-        @forelse($applied_jobs as $job_listing)
-            <livewire:job-card-overview :job_listing="$job_listing" />
+        @forelse($posted_jobs as $job_listing)
+            <livewire:job-card-overview :job_listing="$job_listing" :key="$job_listing->id" />
         @empty
             <div class="text-center text-white mt-20">
-                <p class="md:text-2xl text-xl font-semibold !mb-7">No applications found!</p>
+                <p class="md:text-2xl text-xl font-semibold !mb-7">No job posts found!</p>
             </div>
         @endforelse
     </div>
 
     <div class="my-4">
-        {{ $applied_jobs->links() }}
+        {{ $posted_jobs->links() }}
     </div>
 
     <div
@@ -72,5 +71,6 @@
     </div>
 
 </div>
+
 
 

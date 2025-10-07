@@ -8,8 +8,8 @@ use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-#[Title('Posted Jobs | Wazzafak')]
-class PostedJobs extends Component
+#[Title('Job Applications | Wazzafak')]
+class Applications extends Component
 {
     Use WithPagination;
 
@@ -19,23 +19,35 @@ class PostedJobs extends Component
     #[Url(as: 'd', except: '')]
     public $app_date = '';
 
+    public User $user;
+
     public $statuses = ['Pending', 'Accepted', 'Rejected'];
 
-    public function getPostedJobs()
+    public function mount(){
+        $this->user = auth()->user();
+    }
+
+    public function updated($propertyName)
     {
-        return auth()->user()->jobListings()
-            ->orderBy('created_at', 'desc')
+        if (in_array($propertyName, ['status', 'app_date'])) {
+            $this->resetPage();
+        }
+    }
+
+    public function getAppliedJobs(){
+        return $this->user->appliedJobs()
+            ->orderBy('job_applications.created_at', 'desc')
             ->when($this->status, function ($query) {
-                $query->where('status', $this->status);
+                return $query->where('job_applications.status', $this->status);
             })
             ->when($this->app_date === 'this_week', function ($query) {
-                $query->whereBetween('created_at', [
+                $query->whereBetween('job_applications.created_at', [
                     now()->startOfWeek(),
                     now()->endOfWeek(),
                 ]);
             })
             ->when($this->app_date === 'this_month', function ($query) {
-                $query->whereBetween('created_at', [
+                $query->whereBetween('job_applications.created_at', [
                     now()->startOfMonth(),
                     now()->endOfMonth(),
                 ]);
@@ -45,14 +57,15 @@ class PostedJobs extends Component
 
     public function resetFilters()
     {
-        $this->reset(['status', 'app_date']);
-        $this->resetPage(pageName: 'posted-jobs');
+        $this->status = '';
+        $this->app_date = '';
+        $this->resetPage();
     }
 
     public function render()
     {
-        return view('livewire.posted-jobs', [
-            'posted_jobs' => $this->getPostedJobs(),
+        return view('livewire.applications', [
+            'applied_jobs' => $this->getAppliedJobs()
         ]);
     }
 }

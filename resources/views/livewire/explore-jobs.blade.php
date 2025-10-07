@@ -177,7 +177,7 @@
                 <div class="group bg-white/10 backdrop-blur-xl rounded-3xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-500 hover:transform hover:-translate-y-2 hover:shadow-2xl">
 
                     <a
-                        href="{{ route('job-listing', $job_listing->id) }}"
+                        href="{{ route('job-listing', $job_listing) }}"
                         wire:navigate
                         class="flex xl:justify-between justify-start items-start mb-4 gap-2"
                     >
@@ -186,7 +186,7 @@
                             class="lg:w-14 lg:h-14 md:w-12 md:h-12 sm:w-10 sm:h-10 w-8 h-8 rounded-2xl flex items-center justify-center font-bold text-2xl shadow-lg"
                         />
                         <div>
-                            <h3 class="xl:text-xl md:text-lg text-base font-bold text-white mb-1 group-hover:text-lime-500 transition-colors">{{ $job_listing->experience }}: {{ $job_listing->getStackNameAttribute() }}</h3>
+                            <h3 class="xl:text-xl md:text-lg text-base font-bold text-white mb-1 transition-colors">{{ $job_listing->experience }}: {{ $job_listing->getStackNameAttribute() }}</h3>
                             <p class="text-gray-300 xl:text-base text-sm font-medium">{{ $job_listing->getCompanyNameAttribute() }}</p>
                         </div>
 
@@ -206,7 +206,7 @@
                     <div class="space-y-3 my-6">
 
                         <a
-                            href="{{ route('job-listing', $job_listing->id) }}"
+                            href="{{ route('job-listing', $job_listing) }}"
                             wire:navigate
                             class="text-indigo-200 sm:text-base text-sm line-clamp-3"
                         >
@@ -220,7 +220,7 @@
                                         <img src="{{ asset('storage/technologies_icons/' . $technology->icon) }}" alt="{{ $technology->name }}" class="min-w-3 min-h-3 max-w-4 max-h-4 mr-2">
                                     @endif
 
-                                    <span class="text-xs">{{ $technology->name }}</span>
+                                    <span class="text-xs w-full">{{ $technology->name }}</span>
                                 </div>
                             @endforeach
                         </div>
@@ -230,7 +230,7 @@
                     <div class="flex gap-3">
                         <a
                             wire:navigate
-                            href="{{ route('job-listing', $job_listing->id) }}"
+                            href="{{ route('job-listing', $job_listing) }}"
                             class="flex-1 md:text-base text-sm text-center p-3 bg-[#19468f] text-white font-semibold rounded-xl hover:bg-lime-600 cursor-pointer transition-all duration-300 shadow-lg hover:shadow-xl"
                         >
                             View Details

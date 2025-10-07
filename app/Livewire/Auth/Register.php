@@ -44,7 +44,7 @@ class Register extends Component
     public $company_name;
     public $company_logo;
 
-    // Step 3 properties
+
     public $password;
     public $password_confirmation;
 
@@ -107,7 +107,6 @@ class Register extends Component
 
         ];
     }
-
     public function nextStep()
     {
         if ($this->currentStep == 1) {
@@ -146,6 +145,7 @@ class Register extends Component
             $this->currentStep--;
         }
     }
+
 
     public function toggleTech($techId)
     {

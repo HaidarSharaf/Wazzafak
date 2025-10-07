@@ -1,12 +1,31 @@
 <button
         x-data="{ copied: false }"
         @click="
-                            navigator.clipboard.writeText(window.location.href)
-                            .then(() => {
-                                copied = true;
-                                setTimeout(() => copied = false, 5000);
-                            })
-                    "
+
+
+            const target = '\u{1F3AF}';
+            const chart = '\u{1F4CA}';
+            const money = '\u{1F4B0}';
+            const location = '\u{1F4CD}';
+            const building = '\u{1F3E2}';
+            const link = '\u{1F517}';
+
+            const message = `
+                ${target} Job Opportunity: {{ $job->experience }} {{ $job->getStackNameAttribute()}} \n\n
+                ${chart} Experience Level: {{ $job->experience }}\n
+                ${money} Salary: ${{ $job->salary }}, {{ $job->getCompanyLocationAttribute() }}\n
+                ${location} Location: {{ $job->location }}\n
+                ${building} Company: {{ $job->getCompanyNameAttribute() }}\n\n
+                ${link} Apply here: ${window.location.href}
+            `;
+
+
+            navigator.clipboard.writeText(message)
+            .then(() => {
+                copied = true;
+                setTimeout(() => copied = false, 10000);
+            })
+        "
         class="px-6 py-3 bg-white/20 hover:bg-white/30 rounded-xl flex justify-center items-center text-white text-lg shadow-md cursor-pointer"
     >
         <svg x-show="!copied" class="md:w-6 md:h-6 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -14,5 +33,5 @@
                   d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"/>
         </svg>
         <span x-show="copied" class="text-sm">Copied!</span>
-    </button>
+</button>
 

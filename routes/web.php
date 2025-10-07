@@ -3,7 +3,10 @@
 use App\Livewire\Admin\AdminDashboard;
 use App\Livewire\Admin\ManageJob;
 use App\Livewire\Admin\ManageJobPosts;
-use App\Livewire\AppliedJobs;
+use App\Livewire\AiCvAnalyzer;
+use App\Livewire\AiCvGenerator;
+use App\Livewire\AiServices;
+use App\Livewire\Applications;
 use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
@@ -14,8 +17,15 @@ use App\Livewire\CreateJobs;
 use App\Livewire\ExploreJobs;
 use App\Livewire\Home;
 use App\Livewire\JobDetails;
-use App\Livewire\PostedJobs;
+use App\Livewire\Postings;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/ai', \App\Livewire\AiTester::class)->name('ai');
+Route::get('/ai/services', AiServices::class)->name('ai-services');
+Route::get('/ai/services/cv/analyzer', AiCvAnalyzer::class)->name('ai-cv-analyzer');
+Route::get('/ai/services/cv/generator', AiCvGenerator::class)->name('ai-cv-generator');
+
+
 
 
 Route::middleware(['guest'])->group(function () {
@@ -39,11 +49,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware(['can:access-developer-dashboard'])->group(function () {
         Route::get('/jobs', ExploreJobs::class)->name('explore-jobs');
 
-        Route::get('/applications', AppliedJobs::class)->name('my-applications');
+        Route::get('/applications', Applications::class)->name('my-applications');
     });
 
     Route::middleware(['can:access-recruiter-dashboard'])->group(function () {
-        Route::get('/posted-jobs', PostedJobs::class)->name('posted-jobs');
+        Route::get('/posted-jobs', Postings::class)->name('posted-jobs');
 
         Route::get('/job/create', CreateJobs::class)->name('create-job');
     });

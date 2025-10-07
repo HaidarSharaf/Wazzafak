@@ -27,8 +27,8 @@ class RecruiterDashboard extends Component
             ->where('status', 'Accepted')
             ->where('is_disclosed', 0)
             ->orderBy('created_at', 'desc')
-            ->limit(5)
-            ->get();
+            ->get()
+            ->take(5);
     }
 
     public function render()

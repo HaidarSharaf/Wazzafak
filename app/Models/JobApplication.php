@@ -30,9 +30,12 @@ class JobApplication extends Model
 
     public function getApplicantStacksAttribute()
     {
-        return $this->user?->stacks
-            ->pluck('name')
-            ->implode(', ');
+        return $this->user?->stacks;
+    }
+
+    public function getApplicantTechnologiesAttribute()
+    {
+        return $this->user?->technologies;
     }
 
 }

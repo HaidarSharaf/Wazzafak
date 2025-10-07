@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Vinkla\Hashids\Facades\Hashids;
 
 
 class JobListing extends Model
@@ -21,6 +22,17 @@ class JobListing extends Model
         'rejection_message',
         'is_disclosed',
     ];
+
+    public function getRouteKey()
+    {
+        return Hashids::encode($this->id);
+    }
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        $decoded = Hashids::decode($value);
+        return $this->where('id', $decoded[0] ?? 0)->firstOrFail();
+    }
 
     public function user()
     {
@@ -51,6 +63,10 @@ class JobListing extends Model
 
     public function getCompanyLogoAttribute(){
         return $this->user?->recruiter?->company_logo;
+    }
+
+    public function getCompanyLocationAttribute(){
+        return $this->user?->recruiter?->location;
     }
 
 

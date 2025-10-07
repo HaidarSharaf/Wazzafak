@@ -9,7 +9,7 @@
             <p
                 class="text-lg text-white text-opacity-90 mb-8"
             >
-                Wazzafak is the best solution for Lebanese software developers to find their dream job and for recruiters to hire top tech talents.
+                &lt;Wazzafak/&gt; is the best solution for Lebanese software developers to find their dream job and for recruiters to hire top tech talents.
             </p>
 
             <a
@@ -29,7 +29,7 @@
 
     <section class="bg-white text-[#19468f] py-16 px-10 my-10 rounded-lg">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-4xl font-bold mb-8 text-center">Why Choose Wazzafak?</h2>
+            <h2 class="text-4xl font-bold mb-8 text-center">Why Choose &lt;Wazzafak/&gt;?</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="p-6 bg-lime-300 rounded-lg shadow-lg text-center hover:scale-105 transition-transform duration-300">

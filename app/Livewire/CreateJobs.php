@@ -6,6 +6,7 @@ use App\Livewire\Forms\JobForm;
 use App\Models\JobListing;
 use App\Models\Stack;
 use App\Models\Technology;
+use App\Services\AIService;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -13,6 +14,9 @@ use Livewire\Component;
 class CreateJobs extends Component
 {
     public JobForm $form;
+
+    public $currentStep = 1;
+
 
     public $techs = [];
     public $stacks = [];
@@ -22,6 +26,8 @@ class CreateJobs extends Component
     public $locations = [];
 
     public $chosenTechs = [];
+    public $descriptionGenerated = false;
+    public $isGenerating = false;
 
     public function mount(){
         $this->techs = Technology::query()
@@ -32,6 +38,32 @@ class CreateJobs extends Component
             ->get();
         $this->locations = JobListing::getLocations();
         $this->levels = JobListing::getExperienceLevels();
+    }
+
+    public function nextStep()
+    {
+        if ($this->currentStep == 1) {
+            $this->form->validate([
+                'stack' => $this->form->rules()['stack'],
+                'experience' => $this->form->rules()['experience'],
+                'location' => $this->form->rules()['location'],
+                'salary' => $this->form->rules()['salary'],
+            ]);
+            $this->currentStep = 2;
+        } elseif($this->currentStep == 2){
+            $this->form->technologies = $this->chosenTechs;
+            $this->form->validate([
+                'technologies' => $this->form->rules()['technologies'],
+            ]);
+            $this->currentStep = 3;
+        }
+    }
+
+    public function prevStep()
+    {
+        if ($this->currentStep > 1) {
+            $this->currentStep--;
+        }
     }
 
     public function toggleTech($techId)
@@ -46,10 +78,43 @@ class CreateJobs extends Component
         }
     }
 
+    public function generateDescription(){
+
+        try{
+            $this->isGenerating = true;
+            $stack = Stack::find($this->form->stack);
+            $stack_name = $stack ? $stack->name : 'Technology';
+
+            $technology_names = Technology::whereIn('id', $this->chosenTechs)
+                ->pluck('name')
+                ->toArray();
+
+            $job_details = [
+                'stack_name' => $stack_name,
+                'experience' => $this->form->experience,
+                'location' => $this->form->location,
+                'salary' => $this->form->salary,
+                'technologies' => $technology_names,
+            ];
+
+            $aiService = new AIService();
+            $description = $aiService->generateJobDescription($job_details);
+
+            $this->form->description = $description;
+            $this->descriptionGenerated = true;
+        } catch (\Exception $e) {
+            session()->flash('error', 'Failed to generate description. Please try again.');
+        } finally {
+            $this->isGenerating = false;
+        }
+    }
+
     public function create()
     {
         $this->authorize('create-job-listing');
-        $this->form->technologies = $this->chosenTechs;
+        $this->form->validate([
+            'description' => $this->form->rules()['description'],
+        ]);
         $this->form->store();
         $this->chosenTechs = [];
         return $this->redirect(route('posted-jobs'), navigate: true);    }

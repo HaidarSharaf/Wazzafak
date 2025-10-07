@@ -39,6 +39,19 @@ class JobForm extends Form
         ];
     }
 
+    public function attributes()
+    {
+        return [
+            'stack' => 'Stack',
+            'technologies' => 'Technologies',
+            'description' => 'Job Description',
+            'salary' => 'Salary',
+            'location' => 'Location',
+            'experience' => 'Experience Level',
+        ];
+    }
+
+
     public function setJob(JobListing $job)
     {
         $this->id = $job->id;
@@ -53,7 +66,6 @@ class JobForm extends Form
     }
 
     public function store(){
-        $this->validate();
 
         $job = JobListing::create([
             'user_id' => auth()->id(),

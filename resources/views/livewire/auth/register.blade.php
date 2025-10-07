@@ -378,8 +378,20 @@
                             wire:loading.class="pointer-events-none"
                             class="bg-[#1750b6] hover:bg-lime-600 transition text-white md:text-base text-sm font-semibold cursor-pointer py-3 px-8 rounded-xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            <span wire:loading.remove>Create Account</span>
-                            <span wire:loading>Creating...</span>
+                            <div
+                                wire:loading
+                                wire:target="register"
+                                class="animate-spin inline-block size-5 border-3 mt-1 border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"
+                            >
+                                <span class="sr-only">Loading...</span>
+                            </div>
+
+                            <span
+                                wire:loading.remove
+                                wire:target="register"
+                            >
+                                Register
+                            </span>
                         </button>
                     </div>
                 </div>
@@ -388,11 +400,11 @@
 
         <div class="mt-4 flex justify-center">
             <p class="text-sm text-white">
-                Already have an account?
+                Already have an account? &nbsp;
                 <a
                     wire:navigate
                     href="{{ route('login') }}"
-                    class="text-[#19468f] hover:underline"
+                    class="text-[#19468f] hover:underline font-bold"
                 >
                     Log in here.
                 </a>

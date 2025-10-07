@@ -3,7 +3,7 @@
 >
     <a
         wire:navigate
-        href="{{ route('job-listing', $job->id) }}"
+        href="{{ route('job-listing', $job) }}"
         class="flex items-center justify-between w-full"
     >
         <div class="flex-1">

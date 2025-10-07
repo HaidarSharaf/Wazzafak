@@ -1,7 +1,7 @@
 <div class="w-full flex flex-col items-stretch justify-around py-10">
 
     <h1 class="text-center md:text-4xl text-2xl font-bold text-white mb-16">
-        {{ $user->recruiter->company_name }}'s Recruiter Dashboard
+        {{ $user->recruiter->company_name }}'s Analytics Dashboard
     </h1>
 
 
@@ -50,7 +50,7 @@
         <div class="col-span-2 space-y-6">
             <div class="pt-6">
                 <h3 class="text-2xl text-center font-semibold text-white">Job Performance</h3>
-                <p class="text-base text-center text-lime-400 mt-1">Your most active job posts</p>
+                <p class="text-base text-center text-lime-400 mt-1">Your latest job posts</p>
             </div>
             <div class="p-6 space-y-3">
                 @forelse($jobs_performance as $job)

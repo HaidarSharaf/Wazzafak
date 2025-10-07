@@ -12,6 +12,9 @@
         @endif
     @endauth
 
+    <livewire:ai-announcement />
+
+
     <livewire:home-stats />
 
 </div>

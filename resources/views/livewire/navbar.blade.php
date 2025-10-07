@@ -1,4 +1,4 @@
-<nav x-data="{ mobileMenuIsOpen: false }" x-on:click.away="mobileMenuIsOpen = false" class="flex items-center justify-between px-6 py-4 ">
+<nav x-data="{ mobileMenuIsOpen: false }" x-on:click.away="mobileMenuIsOpen = false" class="flex items-center justify-between px-6 py-4 bg-white/10 backdrop-blur-sm rounded-2xl m-4">
 
     <a
         wire:navigate
@@ -6,7 +6,7 @@
         class="xl:text-4xl lg:text-3xl md:text-3xl text-2xl font-bold flex items-center md:gap-4 gap-2"
     >
         <img src="{{ asset('images/Logo.png') }}" alt="Wazzafak logo" class="lg:w-14 md:w-12 w-10" />
-        <span>Wazzafak</span>
+        <span>&lt;Wazzafak/&gt;</span>
     </a>
 
     <ul class="hidden items-center sm:justify-between gap-7 sm:flex">
@@ -18,6 +18,17 @@
                 class="font-bold lg:text-xl md:text-lg text-base text-primary hover:underline hover:text-lime-300 focus:outline-hidden focus:underline "
             >
                 Home
+            </a>
+        </li>
+
+        <li>
+            <a
+                wire:navigate
+                href="{{ route('ai-services') }}"
+                wire:current="text-lime-300 underline"
+                class="font-bold lg:text-xl md:text-lg text-base text-primary hover:underline hover:text-lime-300 focus:outline-hidden focus:underline "
+            >
+                AI Services
             </a>
         </li>
 
@@ -126,7 +137,7 @@
                 >
 
                     <li class="border-b border-outline">
-                        <div class="flex flex-col items-center px-4 py-2">
+                        <div class="flex flex-col items-center pt-2 px-2">
                             <span class="text-base font-bold text-[#1750b6]">{{ $user->name }}</span>
                             <p class="text-sm font-medium text-[#1750b6]/60">{{ $user->email }}</p>
                         </div>
@@ -137,7 +148,7 @@
                             href="{{ route('update-password') }}"
                             wire:current.exact="text-lime-300 underline"
                             wire:navigate
-                            class="block font-semibold px-4 py-2 sm:text-base text-sm text-[#1b7af5] hover:text-lime-500 hover:underline cursor-pointer"
+                            class="block font-semibold px-4 py-1 sm:text-base text-sm text-[#1b7af5] hover:text-lime-500 hover:underline cursor-pointer"
                         >
                             Update Password
                         </a>
@@ -146,7 +157,7 @@
                     <li>
                         <button
                             wire:click="logout"
-                            class="block font-semibold px-4 py-2 sm:text-base text-sm text-[#1b7af5] hover:text-lime-500 hover:underline cursor-pointer"
+                            class="block font-semibold px-4 py-1 sm:text-base text-sm text-[#1b7af5] hover:text-lime-500 hover:underline cursor-pointer"
                         >
                             Logout
                         </button>
@@ -224,6 +235,16 @@
                 wire:current.exact="text-lime-300 underline" class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
             >
                 Home
+            </a>
+        </li>
+
+        <li class="mt-2 p-2 text-center">
+            <a
+                wire:navigate
+                href="{{ route('ai-services') }}"
+                wire:current="text-lime-300 underline" class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
+            >
+                AI Services
             </a>
         </li>
 

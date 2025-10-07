@@ -36,14 +36,16 @@
 
     <div
         x-show="loading"
+        x-cloak
         x-transition.opacity.duration.500ms
-        class="fixed inset-0 z-50 flex items-center justify-center text-indigo-600"
+        class="fixed inset-0 z-50 flex items-center justify-center"
     >
         <img src="{{ asset('/images/Logo.png') }}" class="h-16 w-auto animate-pulse" alt="Loading...">
     </div>
 
     <div
         x-show="!loading"
+        x-cloak
         x-transition.opacity.duration.500ms
         class="w-full lg:max-w-6xl md:max-w-4xl sm:max-w-2xl max-w-[450px]"
 
@@ -54,7 +56,7 @@
         </header>
 
         <div
-            class="flex items-start justify-center w-full transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0 my-10"
+            class="flex items-center justify-center w-full transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0 mb-10 md:mt-[100px] mt-10 "
         >
             <main
                 class="flex w-full flex-col-reverse justify-center lg:max-w-6xl md:max-w-4xl sm:max-w-2xl max-w-[450px] lg:flex-row"

@@ -1,7 +1,7 @@
 <div class="w-full flex flex-col items-stretch justify-around py-10">
 
     <h1 class="text-center md:text-4xl text-2xl font-bold text-white mb-16">
-        {{ $user->name }}'s Developer Dashboard
+        {{ $user->name }}'s Analytics Dashboard
     </h1>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">

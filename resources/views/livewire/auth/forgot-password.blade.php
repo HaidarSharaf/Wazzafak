@@ -33,7 +33,21 @@
                         wire:target="sendPasswordResetLink"
                         class="w-full bg-[#1750b6] hover:bg-lime-600 transition text-white md:text-base text-sm font-semibold cursor-pointer py-3 px-6 rounded-xl shadow-lg !mt-3 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        Send Password Reset Link
+                        <div
+                            wire:loading
+                            wire:target="sendPasswordResetLink"
+                            class="animate-spin inline-block size-5 border-3 mt-1 border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"
+                        >
+                            <span class="sr-only">Loading...</span>
+                        </div>
+
+                        <span
+                            wire:loading.remove
+                            wire:target="sendPasswordResetLink"
+                        >
+                            Send Password Reset Link
+                        </span>
+
                     </button>
                 </div>
 
