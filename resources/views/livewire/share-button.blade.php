@@ -13,8 +13,8 @@
             const message = `
                 ${target} Job Opportunity: {{ $job->experience }} {{ $job->getStackNameAttribute()}} \n\n
                 ${chart} Experience Level: {{ $job->experience }}\n
-                ${money} Salary: ${{ $job->salary }}, {{ $job->getCompanyLocationAttribute() }}\n
-                ${location} Location: {{ $job->location }}\n
+                ${money} Salary: ${{ $job->salary }}\n
+                ${location} Location: {{ $job->location }}, {{ $job->getCompanyLocationAttribute() }}\n
                 ${building} Company: {{ $job->getCompanyNameAttribute() }}\n\n
                 ${link} Apply here: ${window.location.href}
             `;

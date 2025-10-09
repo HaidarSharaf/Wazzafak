@@ -31,7 +31,7 @@ class DeveloperDashboard extends Component
 
                 $query->whereRaw('1 = 0');
 
-                $query->orWhere('experience', $developer->experience_level);
+                $query->where('experience', $developer->experience_level);
 
                 $query->orWhereIn('stack_id', $userStackIds);
 

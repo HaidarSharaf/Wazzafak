@@ -300,13 +300,7 @@
                             wire:click="$set('aiRecommendation', null)"
                             class="flex-1 bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 cursor-pointer"
                         >
-                            Review All Applicants Manually
-                        </button>
-                        <button
-                            wire:click="analyzeCVsWithAI"
-                            class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 cursor-pointer"
-                        >
-                            Re-analyze
+                            Review Applicants Manually
                         </button>
                     </div>
                 </div>

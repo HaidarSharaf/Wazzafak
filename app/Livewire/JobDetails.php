@@ -6,6 +6,7 @@ use App\Models\JobApplication;
 use App\Models\JobListing;
 use App\Models\User;
 use App\Notifications\JobRejection;
+use App\Traits\Notifications;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -13,6 +14,7 @@ use Livewire\Component;
 #[Title('Job Details | Wazzafak')]
 class JobDetails extends Component
 {
+    use Notifications;
 
     public ?JobListing $job_listing;
     public ?User $user;
@@ -58,7 +60,11 @@ class JobDetails extends Component
             'status' => 'Accepted'
         ]);
 
-        session()->flash('message', 'Job accepted successfully!');
+        $this->notify(
+            variant: 'success',
+            title: 'Job Listing Accepted',
+            message: "You have accepted {$this->job_listing->getCompanyNameAttribute()}'s job listing."
+        );
     }
 
     public function rejectJob()
@@ -76,7 +82,11 @@ class JobDetails extends Component
 
         $this->user->notify(new JobRejection($this->rejection_message, $this->job_listing));
 
-        session()->flash('message', 'Job rejected successfully!');
+        $this->notify(
+            variant: 'success',
+            title: 'Job Listing rejected',
+            message: "You have rejected {$this->job_listing->getCompanyNameAttribute()}'s job listing. They have been notified."
+        );
     }
 
     public function applyForJob()
@@ -89,7 +99,10 @@ class JobDetails extends Component
             'status' => 'Pending'
         ]);
 
-        session()->flash('message', 'Application submitted successfully!');
+        $this->notify(
+            variant: 'success',
+            message: "Application submitted successfully!"
+        );
     }
 
     #[On('discloseJob')]
@@ -116,7 +129,11 @@ class JobDetails extends Component
 
         $this->dispatch('appsUpdated');
 
-        session()->flash('message', 'Job disclosed.');
+        $this->notify(
+            variant: 'success',
+            title: 'Job Listing Disclosed',
+            message: "You have disclosed the job listing. All pending applications have been rejected."
+        );
     }
 
     public function render()

@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Services\AIService;
+use App\Traits\Notifications;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -13,6 +14,7 @@ use Smalot\PdfParser\Parser;
 class AiCvAnalyzer extends Component
 {
     use WithFileUploads;
+    use Notifications;
 
     #[Validate('required|file|mimes:pdf,doc,docx|max:5120')]
     public $cv;
@@ -58,10 +60,11 @@ class AiCvAnalyzer extends Component
 
         } catch (\Exception $e) {
             $this->errorMessage = 'Analysis failed: ' . $e->getMessage();
-            logger()->error('CV Analysis Error', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
+            $this->notify(
+                variant: 'danger',
+                title: 'Analysis failed',
+                message: $e->getMessage()
+            );
         }
     }
 

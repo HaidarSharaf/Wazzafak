@@ -7,12 +7,14 @@ use App\Models\JobListing;
 use App\Models\Stack;
 use App\Models\Technology;
 use App\Services\AIService;
+use App\Traits\Notifications;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Title('Create a Job | Wazzafak')]
 class CreateJobs extends Component
 {
+    use Notifications;
     public JobForm $form;
 
     public $currentStep = 1;
@@ -104,6 +106,11 @@ class CreateJobs extends Component
             $this->descriptionGenerated = true;
         } catch (\Exception $e) {
             session()->flash('error', 'Failed to generate description. Please try again.');
+            $this->notify(
+                variant: 'danger',
+                title: 'Error',
+                message: 'Failed to generate description. Please try again.',
+            );
         } finally {
             $this->isGenerating = false;
         }
@@ -117,7 +124,8 @@ class CreateJobs extends Component
         ]);
         $this->form->store();
         $this->chosenTechs = [];
-        return $this->redirect(route('posted-jobs'), navigate: true);    }
+        return $this->redirect(route('posted-jobs'), navigate: true);
+        }
 
     public function render()
     {

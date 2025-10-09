@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\JobListing;
 use App\Models\User;
 use App\Services\AIService;
+use App\Traits\Notifications;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -13,6 +14,7 @@ use Smalot\PdfParser\Parser;
 class JobApplicants extends Component
 {
     Use WithPagination;
+    use Notifications;
 
     public ?JobListing $job_listing;
 
@@ -83,7 +85,7 @@ class JobApplicants extends Component
                     'experience' => $application->getApplicantExperienceAttribute(),
                     'stacks' => $application->getApplicantStacksAttribute()->pluck('name')->toArray(),
                     'technologies' => $application->getApplicantTechnologiesAttribute()->pluck('name')->toArray(),
-                    'cv_text' => substr($cvText, 0, 3000), // Limit to avoid token limits
+                    'cv_text' => substr($cvText, 0, 3000),
                 ];
             }
 
@@ -91,7 +93,6 @@ class JobApplicants extends Component
                 throw new \Exception('Not enough valid CVs to analyze.');
             }
 
-            // Prepare job requirements
             $jobRequirements = [
                 'stack' => $this->job_listing->getStackNameAttribute(),
                 'experience' => $this->job_listing->experience,
@@ -99,16 +100,16 @@ class JobApplicants extends Component
                 'salary' => $this->job_listing->salary,
             ];
 
-            // Get AI recommendation
             $aiService = new AIService();
             $this->aiRecommendation = $aiService->analyzeCVsForJob($cvData, $jobRequirements);
 
         } catch (\Exception $e) {
             $this->analysisError = $e->getMessage();
-            logger()->error('CV Analysis Error', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
+            $this->notify(
+                variant: 'danger',
+                title: 'CV Analysis Error',
+                message: $e->getMessage()
+            );
         } finally {
             $this->analyzingCVs = false;
         }
@@ -122,9 +123,10 @@ class JobApplicants extends Component
         }
         $cv_file = $user->developer?->cv;
         if (!$cv_file) {
-            return;
+            return null;
         }
         return response()->download(storage_path("app/public/dev_cvs/{$cv_file}"), $user->name . '_CV.pdf');
+
     }
 
     public function acceptApplicant($applicationId)
@@ -142,9 +144,14 @@ class JobApplicants extends Component
             'status' => 'Accepted'
         ]);
 
+        $this->notify(
+            variant: 'success',
+            title: 'Application Rejected',
+            message: "You have accepted {$application->user->name}'s application. All other applications where rejected automatically and job post was disclosed."
+        );
+
         $this->dispatch('discloseJob', acceptedApplicationId: $applicationId);
 
-        session()->flash('message', 'Application accepted. Job disclosed.');
     }
 
     public function rejectApplicant($applicationId)
@@ -158,15 +165,20 @@ class JobApplicants extends Component
             return;
         }
 
+
         $application->update([
             'status' => 'Rejected'
         ]);
 
+        $this->notify(
+            variant: 'success',
+            title: 'Application Rejected',
+            message: "You have rejected {$application->user->name}'s application."
+        );
+
         if ($this->aiRecommendation && $this->aiRecommendation['best_applicant_id'] == $applicationId) {
             $this->aiRecommendation = null;
         }
-
-        session()->flash('message', 'Application rejected.');
     }
 
     public function render()

@@ -168,22 +168,101 @@ class AIService
         return $decoded;
     }
 
-    public function generateCoverLetter(string $cvText, string $jobDescription): string
+    public function generateCVContent(array $userData): array
     {
+        $name = $userData['name'];
+        $email = $userData['email'] ?? '';
+        $phone = $userData['phone'] ?? '';
+        $location = $userData['location'] ?? '';
+        $linkedin = $userData['linkedin'] ?? '';
+        $github = $userData['github'] ?? '';
+        $stacks = implode(', ', $userData['stacks'] ?? []);
+        $technologies = implode(', ', $userData['technologies'] ?? []);
+
+        $experiencesText = '';
+        if (!empty($userData['experiences'])) {
+            foreach ($userData['experiences'] as $exp) {
+                $experiencesText .= "- {$exp['title']} at {$exp['company']} ({$exp['duration']})\n";
+                $experiencesText .= "  Description: {$exp['description']}\n\n";
+            }
+        }
+
+        $educationsText = '';
+        if (!empty($userData['educations'])) {
+            foreach ($userData['educations'] as $edu) {
+                $educationsText .= "- {$edu['degree']} from {$edu['institution']} ({$edu['year']})\n\n";
+            }
+        }
+
+        $certificationsText = '';
+        if (!empty($userData['certifications'])) {
+            foreach ($userData['certifications'] as $cert) {
+                $certificationsText .= "- {$cert['name']} from {$cert['issuer']}\n";
+                $certificationsText .= "  {$cert['description']}\n\n";
+            }
+        }
+
+        $prompt = "You are an expert CV writer. Generate a professional CV summary and project descriptions for a developer.
+
+        Developer Information:
+        Name: {$name}
+        Email: {$email}
+        Phone: {$phone}
+        Location: {$location}
+        LinkedIn: {$linkedin}
+        GitHub: {$github}
+        Stacks: {$stacks}
+        Technologies: {$technologies}
+
+        Work Experiences:
+        {$experiencesText}
+
+        Education:
+        {$educationsText}
+
+        Certifications:
+        {$certificationsText}
+
+        Generate ONLY a JSON response with:
+        {
+          \"professional_summary\": \"A compelling 2-3 sentence professional summary highlighting their expertise and strengths\",
+          \"project_suggestions\": [
+            {
+              \"title\": \"Project name\",
+              \"description\": \"Brief project description\",
+              \"technologies\": \"Technologies used\",
+              \"highlights\": [\"achievement 1\", \"achievement 2\", \"achievement 3\"]
+            }
+          ]
+        }
+
+        Make it professional, concise, and impactful. Base the summary on their stacks, technologies, and experience.";
+
         $response = $this->client->chat()->create([
             'model' => 'llama-3.3-70b-versatile',
             'messages' => [
                 [
                     'role' => 'system',
-                    'content' => 'You are an expert at writing professional cover letters.'
+                    'content' => 'You are a professional CV writer. Generate compelling professional summaries and project descriptions. Return ONLY valid JSON, no markdown, no code blocks.'
                 ],
                 [
                     'role' => 'user',
-                    'content' => "Based on this CV:\n{$cvText}\n\nWrite a cover letter for this job:\n{$jobDescription}"
+                    'content' => $prompt
                 ],
             ],
+            'temperature' => 0.7,
+            'max_tokens' => 1000,
         ]);
 
-        return $response->choices[0]->message->content;
+        $result = $response->choices[0]->message->content;
+        $result = preg_replace('/```json\s*|\s*```/', '', $result);
+        $decoded = json_decode(trim($result), true);
+
+        if (!$decoded) {
+            throw new \Exception('Invalid AI response format');
+        }
+
+        return $decoded;
     }
+
 }

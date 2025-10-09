@@ -104,7 +104,7 @@
                         wire:click="acceptJob"
                         wire:loading.attr="disabled"
                         wire:target="acceptJob, rejectJob"
-                        class="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700 transition-all rounded-xl text-white md:text-lg text-base font-semibold shadow-xl cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+                        class="flex-1 px-6 py-3 bg-green-600 hover:bg-green-700 transition-all rounded-xl text-white md:text-lg text-base font-semibold shadow-xl cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                     >
                         Accept Job
                     </button>
@@ -190,9 +190,9 @@
 
             @can('poster-view-job-listing', $this->job_listing)
                 @if($this->job_listing->status === 'Pending')
-                    <p class="text-amber-600 text-xl font-semibold w-full text-center">The job is yet to be approved by an admin.</p>
+                    <p class="bg-amber-600 text-white text-xl font-semibold w-full text-center">The job is yet to be approved by an admin.</p>
                 @elseif($this->job_listing->status === 'Rejected')
-                    <span class="text-red-600 text-xl font-semibold w-full text-center">This job was rejected by an admin. An email was sent including the problem behind rejecting it.</span>
+                    <span class="bg-red-600 text-white text-xl font-semibold w-full text-center">This job was rejected by an admin. An email was sent including the problem behind rejecting it.</span>
                 @elseif(!$this->job_listing->is_disclosed)
                     <button
                         @click="modalDisclose = true"
