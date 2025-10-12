@@ -1,5 +1,5 @@
 <div
-    class="w-full"
+    class="w-full min-h-screen py-12"
     x-data="{ generating: @entangle('isGenerating') }"
 >
     <div class="max-w-3xl mx-auto bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-3xl shadow-xl">
@@ -194,13 +194,13 @@
                             type="button"
                             x-data="{ generating: false }"
                             x-on:click="
-                                            generating = true;
-                                            $wire.generateDescription().then(() => {
-                                                generating = false;
-                                            }).catch(() => {
-                                                generating = false;
-                                            });
-                                        "
+                                generating = true;
+                                $wire.generateDescription().then(() => {
+                                    generating = false;
+                                }).catch(() => {
+                                    generating = false;
+                                });
+                            "
                             :disabled="generating"
                             :class="generating ? 'opacity-50 cursor-not-allowed' : 'hover:bg-lime-600'"
                             class="bg-[#1750b6] transition text-white md:text-base text-sm font-semibold cursor-pointer py-3 px-8 rounded-xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"

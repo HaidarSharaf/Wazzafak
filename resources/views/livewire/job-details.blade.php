@@ -119,12 +119,12 @@
                     </button>
 
                 @elseif($this->job_listing->status === 'Rejected')
-                    <span class="bg-red-600 p-3 rounded-lg text-white text-xl font-semibold w-full text-center">This job was rejected.</span>
+                    <span class="bg-red-600 p-3 rounded-xl text-white text-xl font-semibold w-full text-center">This job was rejected.</span>
                 @elseif($this->job_listing->is_disclosed)
-                    <span class="bg-red-600 p-3 rounded-lg text-white text-xl font-semibold w-full text-center">This job was disclosed.</span>
+                    <span class="bg-red-600 p-3 rounded-xl text-white text-xl font-semibold w-full text-center">This job was disclosed.</span>
 
                 @elseif($this->job_listing->status === 'Accepted')
-                    <span class="bg-green-600 p-3 rounded-lg text-white text-xl font-semibold w-full text-center">This job was accepted.</span>
+                    <span class="bg-green-600 p-3 rounded-xl text-white text-xl font-semibold w-full text-center">This job was accepted.</span>
                 @endif
 
 
@@ -132,17 +132,17 @@
 
             @can('access-developer-dashboard')
                 @if($this->job_listing->is_disclosed)
-                    <div class="flex items-center justify-center gap-4 flex-col w-100">
-                        <span class="bg-red-600 p-3 rounded-lg text-white text-xl font-semibold w-full text-center">This job was disclosed.</span>
+                    <div class="flex items-center justify-center gap-4 flex-col w-full">
+                        <span class="flex-1 bg-red-600 p-3 rounded-xl text-white md:text-lg text-base font-semibold w-full text-center">This job was disclosed.</span>
                         @if($this->hasUserApplied())
                             <p
                                 @class([
-                                    'flex-1 px-6 py-3 rounded-xl text-white md:text-lg text-base font-semibold shadow-xl cursor-not-allowed',
+                                    'flex-1 px-6 py-3 rounded-xl text-white md:text-lg text-base font-semibold shadow-xl cursor-not-allowed w-full text-center',
                                     'bg-green-600' => $this->isUserAccepted(),
                                     'bg-red-600' => $this->isUserRejected(),
                                 ])
                             >
-                                {{ $this->isUserAccepted() ? 'Accepted. The recruiter should have reached you out via chat or email.'
+                                {{ $this->isUserAccepted() ? 'Accepted. The recruiter should have reached you out via chat.'
                                     : 'Rejected'
                                 }}
                             </p>
@@ -190,9 +190,9 @@
 
             @can('poster-view-job-listing', $this->job_listing)
                 @if($this->job_listing->status === 'Pending')
-                    <p class="bg-amber-600 text-white text-xl font-semibold w-full text-center">The job is yet to be approved by an admin.</p>
+                    <p class="bg-amber-600 text-white text-xl px-4 py-3 rounded-xl font-semibold w-full text-center">The job is yet to be approved by an admin.</p>
                 @elseif($this->job_listing->status === 'Rejected')
-                    <span class="bg-red-600 text-white text-xl font-semibold w-full text-center">This job was rejected by an admin. An email was sent including the problem behind rejecting it.</span>
+                    <span class="bg-red-600 text-white text-xl px-4 py-3 rounded-xl font-semibold w-full text-center">This job was rejected by an admin. An email was sent including the reason behind rejecting it.</span>
                 @elseif(!$this->job_listing->is_disclosed)
                     <button
                         @click="modalDisclose = true"
@@ -201,7 +201,7 @@
                         Disclose Job
                     </button>
                 @else
-                    <span class="bg-red-600 text-white p-3 rounded-lg text-xl font-semibold w-full text-center">This job is disclosed.</span>
+                    <span class="bg-red-600 text-white p-3 rounded-xl text-xl font-semibold w-full text-center">This job is disclosed.</span>
                 @endif
             @endcan
 
@@ -226,11 +226,11 @@
                 class="fixed inset-0 bg-white/30 backdrop-blur-md z-50 rounded-2xl flex justify-center items-center"
             >
                 <div class="relative p-4 w-full max-w-md max-h-full">
-                <div class="relative bg-white rounded-lg shadow-sm">
+                <div class="relative bg-white rounded-xl shadow-sm">
                     <button
                         type="button"
                         @click="modalReject = false"
-                        class="absolute top-3 end-2.5 text-[#0D1B2A] bg-transparent cursor-pointer hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                        class="absolute top-3 end-2.5 text-[#0D1B2A] bg-transparent cursor-pointer hover:bg-gray-200 hover:text-gray-900 rounded-xl text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
                     >
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
@@ -259,7 +259,7 @@
                             type="button"
                             @disabled($rejection_message === '')
                             @click="$wire.rejectJob; modalReject = false"
-                            class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 cursor-pointer focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center disabled:opacity-50 disabled:cursor-not-allowed"
+                            class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 cursor-pointer focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-xl text-sm inline-flex items-center px-5 py-2.5 text-center disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             Yes, I'm sure
                         </button>
@@ -267,7 +267,7 @@
                         <button
                             type="button"
                             @click="modalReject = false"
-                            class="py-2.5 px-5 ms-3 text-sm font-medium text-[#0D1B2A] cursor-pointer focus:outline-none bg-white hover:bg-gray-200 rounded-lg border border-gray-200 focus:z-10 focus:ring-4 focus:ring-gray-100"
+                            class="py-2.5 px-5 ms-3 text-sm font-medium text-[#0D1B2A] cursor-pointer focus:outline-none bg-white hover:bg-gray-200 rounded-xl border border-gray-200 focus:z-10 focus:ring-4 focus:ring-gray-100"
                         >
                             No, cancel
                         </button>
@@ -285,11 +285,11 @@
                 class="fixed inset-0 bg-white/30 backdrop-blur-md z-50 rounded-2xl flex justify-center items-center"
             >
                 <div class="relative p-4 w-full max-w-md max-h-full">
-                <div class="relative bg-white rounded-lg shadow-sm">
+                <div class="relative bg-white rounded-xl shadow-sm">
                     <button
                         type="button"
                         @click="modalDisclose = false"
-                        class="absolute top-3 end-2.5 text-[#0D1B2A] bg-transparent cursor-pointer hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                        class="absolute top-3 end-2.5 text-[#0D1B2A] bg-transparent cursor-pointer hover:bg-gray-200 hover:text-gray-900 rounded-xl text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
                     >
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
@@ -306,7 +306,7 @@
                         <button
                             type="button"
                             @click="$wire.discloseJob; modalDisclose = false"
-                            class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 cursor-pointer focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+                            class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 cursor-pointer focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-xl text-sm inline-flex items-center px-5 py-2.5 text-center"
                         >
                             Yes, I'm sure
                         </button>
@@ -314,7 +314,7 @@
                         <button
                             type="button"
                             @click="modalDisclose = false"
-                            class="py-2.5 px-5 ms-3 text-sm font-medium text-[#0D1B2A] cursor-pointer focus:outline-none bg-white hover:bg-gray-200 rounded-lg border border-gray-200 focus:z-10 focus:ring-4 focus:ring-gray-100"
+                            class="py-2.5 px-5 ms-3 text-sm font-medium text-[#0D1B2A] cursor-pointer focus:outline-none bg-white hover:bg-gray-200 rounded-xl border border-gray-200 focus:z-10 focus:ring-4 focus:ring-gray-100"
                         >
                             No, cancel
                         </button>

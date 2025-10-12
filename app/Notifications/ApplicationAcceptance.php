@@ -8,12 +8,12 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class JobRejection extends Notification implements ShouldQueue
+class ApplicationAcceptance extends Notification implements ShouldQueue
 {
     use Queueable;
 
     public function __construct(
-        public string $rejectionMessage,
+        public string $applicant_name,
         public JobListing $job_listing,
     ) {}
 
@@ -25,22 +25,21 @@ class JobRejection extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Job Post Rejected')
-            ->view('emails.job-rejection', [
+            ->subject('Job Application Accepted')
+            ->view('emails.application-acceptance', [
+                'applicant_name' => $this->applicant_name,
                 'company_name' => $this->job_listing->getCompanyNameAttribute(),
                 'job_title' =>  $this->job_listing->experience . ": " . $this->job_listing->getStackNameAttribute(),
-                'rejection_message' => $this->rejectionMessage,
             ]);
     }
 
     public function toArray(object $notifiable): array
     {
         return [
-            'type' => 'job_rejection',
+            'type' => 'application_acceptance',
+            'applicant_name' => $this->applicant_name,
             'company_name' => $this->job_listing->getCompanyNameAttribute(),
             'job_title' =>  $this->job_listing->experience . ": " . $this->job_listing->getStackNameAttribute(),
-            'rejection_message' => $this->rejectionMessage,
-            'rejected_at' => now()->toDateTimeString(),
         ];
     }
 }

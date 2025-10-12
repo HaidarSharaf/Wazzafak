@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\JobListing;
 use App\Models\User;
+use App\Notifications\ApplicationAcceptance;
 use App\Services\AIService;
 use App\Traits\Notifications;
 use Livewire\Attributes\On;
@@ -140,13 +141,18 @@ class JobApplicants extends Component
             return;
         }
 
+
         $application->update([
             'status' => 'Accepted'
         ]);
 
+        $applicant = $application->user;
+
+        $applicant->notify(new ApplicationAcceptance($applicant->name, $this->job_listing));
+
         $this->notify(
             variant: 'success',
-            title: 'Application Rejected',
+            title: 'Application Accepted',
             message: "You have accepted {$application->user->name}'s application. All other applications where rejected automatically and job post was disclosed."
         );
 
@@ -164,7 +170,6 @@ class JobApplicants extends Component
             session()->flash('error', 'Application not found.');
             return;
         }
-
 
         $application->update([
             'status' => 'Rejected'

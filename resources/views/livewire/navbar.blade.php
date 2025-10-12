@@ -6,7 +6,7 @@
         class="xl:text-4xl lg:text-3xl md:text-3xl text-2xl font-bold flex items-center md:gap-4 gap-2"
     >
         <img src="{{ asset('images/Logo.png') }}" alt="Wazzafak logo" class="lg:w-14 md:w-12 w-10" />
-        <span>&lt;Wazzafak/&gt;</span>
+        <span>&lt;Wazzafak /&gt;</span>
     </a>
 
     <ul class="hidden items-center sm:justify-between gap-7 sm:flex">

@@ -70,7 +70,7 @@
             @if(!empty($analysisResult))
                 <div class="space-y-4">
                     <div class="p-4">
-                        <h2 class="text-xl text-white bg-green-600 font-bold mb-2 px-3 py-2">Strengths:</h2>
+                        <h2 class="text-xl text-white bg-green-600 rounded-lg w-fit text-center font-bold mb-2 px-3 py-2">Strengths:</h2>
                         <ul class="list-disc ml-6 text-white font-semibold space-y-1">
                             @forelse($analysisResult['strengths'] ?? [] as $item)
                                 <li>{{ $item }}</li>
@@ -81,7 +81,7 @@
                     </div>
 
                     <div class="p-4">
-                        <h2 class="text-xl bg-red-600 text-white font-bold mb-2 px-3 py-2">Weaknesses:</h2>
+                        <h2 class="text-xl bg-red-600 text-white rounded-lg w-fit text-center font-bold mb-2 px-3 py-2">Weaknesses:</h2>
                         <ul class="list-disc ml-6 text-white font-semibold space-y-1">
                             @forelse($analysisResult['weaknesses'] ?? [] as $item)
                                 <li>{{ $item }}</li>
@@ -92,7 +92,7 @@
                     </div>
 
                     <div class="p-4 mb-2">
-                        <h2 class="text-xl text-white bg-amber-600 font-bold mb-2 px-3 py-2">Suggested Improvements:</h2>
+                        <h2 class="text-xl text-white bg-amber-600 rounded-lg w-fit text-center font-bold mb-2 px-3 py-2">Suggested Improvements:</h2>
                         <ol class="list-decimal ml-6 text-white font-semibold space-y-1">
                             @forelse($analysisResult['improvements'] ?? [] as $item)
                                 <li>{{ $item }}</li>

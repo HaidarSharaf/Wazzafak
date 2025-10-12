@@ -1,4 +1,7 @@
-<div class="w-full min-h-screen py-12">
+<div
+    class="w-full min-h-screen py-12"
+    x-data="{ downloadingPDF: false }"
+>
     <div class="max-w-5xl mx-auto px-4">
         <div class="bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-3xl shadow-xl">
 
@@ -37,15 +40,15 @@
                 >
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-white font-semibold mb-2">Full Name *</label>
+                            <label class="block text-white font-semibold mb-2">Full Name <span class="text-red-500">*</span></label>
                             <input wire:model="name" type="text" class="w-full bg-white border border-white/20 rounded-xl p-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#1750b6]" placeholder="John Doe">
-                            @error('name') <span class="text-red-400 text-sm">{{ $message }}</span> @enderror
+                            @error('name') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                         </div>
 
                         <div>
-                            <label class="block text-white font-semibold mb-2">Email *</label>
+                            <label class="block text-white font-semibold mb-2">Email <span class="text-red-500">*</span></label>
                             <input wire:model="email" type="email" class="w-full bg-white border border-white/20 rounded-xl p-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#1750b6]" placeholder="john@example.com">
-                            @error('email') <span class="text-red-400 text-sm">{{ $message }}</span> @enderror
+                            @error('email') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                         </div>
                     </div>
 
@@ -90,7 +93,7 @@
                     class="space-y-6"
                 >
                     <div>
-                        <label class="block text-white font-semibold mb-3">Stacks *</label>
+                        <label class="block text-white font-semibold mb-3">Stacks <span class="text-red-500">*</span></label>
                         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                             @foreach($stacks as $stack)
                                 <div
@@ -114,11 +117,11 @@
                                 </div>
                             @endforeach
                         </div>
-                        @error('chosenStacks') <span class="text-red-400 text-sm">{{ $message }}</span> @enderror
+                        @error('chosenStacks') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                     </div>
 
                     <div>
-                        <label class="block text-white font-semibold mb-3">Technologies *</label>
+                        <label class="block text-white font-semibold mb-3">Technologies <span class="text-red-500">*</span></label>
                         <div class="flex flex-wrap gap-3 max-h-66 overflow-y-auto p-4 rounded-xl">
                             @foreach($techs as $tech)
                                 <div
@@ -150,7 +153,7 @@
                                 </div>
                             @endforeach
                         </div>
-                        @error('chosenTechs') <span class="text-red-400 text-sm">{{ $message }}</span> @enderror
+                        @error('chosenTechs') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                     </div>
 
                     <div>
@@ -184,7 +187,7 @@
 
             @if($currentStep == 3)
                 <div
-                    x-data
+                    x-data="{ generating: false, generated: false }"
                     x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 transform translate-x-8"
                     x-transition:enter-end="opacity-100 transform translate-x-0"
@@ -253,7 +256,6 @@
                         @endforelse
                     </div>
 
-                    <!-- AI Generation Section -->
                     @if(!$contentGenerated)
                         <div class="bg-gradient-to-r from-lime-500/20 to-green-500/20 border border-lime-400/30 rounded-2xl p-6">
                             <div class="flex items-start gap-4">
@@ -270,89 +272,45 @@
                                     </p>
                                     <div class="mt-5 flex justify-end">
                                         <button
-                                            wire:click="generateWithAI"
-                                            wire:loading.attr="disabled"
-                                            wire:target="generateWithAI"
                                             type="button"
-                                            class="cursor-pointer inline-flex items-center gap-2 bg-gradient-to-r from-lime-500 to-green-600 hover:from-lime-600 hover:to-green-700 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-lg"
+
+                                            x-on:click="
+                                                generating = true;
+                                                $wire.generateWithAI().then(() => {
+                                                    generating = false;
+                                                    generated = true
+                                                }).catch(() => {
+                                                    generating = false;
+                                                });
+                                            "
+                                            :disabled="generating"
+                                            :class="generating ? 'opacity-50 cursor-not-allowed' : 'hover:bg-lime-600'"
+                                            class="bg-[#1750b6] transition text-white md:text-base text-sm font-semibold cursor-pointer py-3 px-8 rounded-xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
-                                            <svg
-                                                wire:loading.remove
-                                                wire:target="generateWithAI"
-                                                class="w-5 h-5"
-                                                fill="currentColor"
-                                                viewBox="0 0 20 20"
-                                            >
-                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                                            </svg>
+                                            <div x-show="generating"
+                                                 class="animate-spin inline-block size-5 border-3 mt-1 border-current border-t-transparent text-white rounded-full"
+                                                 role="status" aria-label="loading">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
 
-                                            <div
-                                                wire:loading
-                                                wire:target="generateWithAI"
-                                                class="animate-spin size-5 border-3 border-current border-t-transparent rounded-full"
-                                            ></div>
-
-                                            <span wire:loading.remove wire:target="generateWithAI">
+                                            <span x-show="!generating" class="flex gap-2 items-center">
+                                                <svg class="size-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                    <g id="SVGRepo_iconCarrier">
+                                                        <path
+                                                            d="M7.45284 2.71266C7.8276 1.76244 9.1724 1.76245 9.54716 2.71267L10.7085 5.65732C10.8229 5.94743 11.0526 6.17707 11.3427 6.29148L14.2873 7.45284C15.2376 7.8276 15.2376 9.1724 14.2873 9.54716L11.3427 10.7085C11.0526 10.8229 10.8229 11.0526 10.7085 11.3427L9.54716 14.2873C9.1724 15.2376 7.8276 15.2376 7.45284 14.2873L6.29148 11.3427C6.17707 11.0526 5.94743 10.8229 5.65732 10.7085L2.71266 9.54716C1.76244 9.1724 1.76245 7.8276 2.71267 7.45284L5.65732 6.29148C5.94743 6.17707 6.17707 5.94743 6.29148 5.65732L7.45284 2.71266Z"
+                                                            fill="#e2d20a"></path>
+                                                        <path
+                                                            d="M16.9245 13.3916C17.1305 12.8695 17.8695 12.8695 18.0755 13.3916L18.9761 15.6753C19.039 15.8348 19.1652 15.961 19.3247 16.0239L21.6084 16.9245C22.1305 17.1305 22.1305 17.8695 21.6084 18.0755L19.3247 18.9761C19.1652 19.039 19.039 19.1652 18.9761 19.3247L18.0755 21.6084C17.8695 22.1305 17.1305 22.1305 16.9245 21.6084L16.0239 19.3247C15.961 19.1652 15.8348 19.039 15.6753 18.9761L13.3916 18.0755C12.8695 17.8695 12.8695 17.1305 13.3916 16.9245L15.6753 16.0239C15.8348 15.961 15.961 15.8348 16.0239 15.6753L16.9245 13.3916Z"
+                                                            fill="#e2d20a"></path>
+                                                    </g>
+                                                </svg>
                                                 Generate with AI
-                                            </span>
-                                            <span wire:loading wire:target="generateWithAI">
-                                                Generating...
                                             </span>
                                         </button>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    @else
-                        <!-- AI Generated Content Preview -->
-                        <div
-                            class="bg-gradient-to-br from-green-500/20 to-lime-500/20 border-2 border-green-400/50 rounded-2xl p-6"
-                            x-data
-                            x-transition:enter="transition ease-out duration-500"
-                            x-transition:enter-start="opacity-0 transform scale-90"
-                            x-transition:enter-end="opacity-100 transform scale-100"
-                        >
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                </div>
-                                <h3 class="text-xl font-bold text-white">AI Content Generated!</h3>
-                            </div>
-
-                            <div class="space-y-4">
-                                <div>
-                                    <h4 class="text-sm font-semibold text-green-300 mb-2">Professional Summary:</h4>
-                                    <p class="text-white/90 leading-relaxed bg-white/5 p-4 rounded-xl">{{ $aiContent['professional_summary'] }}</p>
-                                </div>
-
-                                @if(!empty($aiContent['project_suggestions']))
-                                    <div>
-                                        <h4 class="text-sm font-semibold text-green-300 mb-2">Suggested Projects:</h4>
-                                        @foreach($aiContent['project_suggestions'] as $project)
-                                            <div class="bg-white/5 p-4 rounded-xl mb-3">
-                                                <h5 class="font-bold text-white mb-1">{{ $project['title'] }}</h5>
-                                                <p class="text-sm text-white/80 mb-2">{{ $project['description'] }}</p>
-                                                <p class="text-xs text-green-300 mb-2"><strong>Technologies:</strong> {{ $project['technologies'] }}</p>
-                                                <ul class="text-sm text-white/90 space-y-1">
-                                                    @foreach($project['highlights'] as $highlight)
-                                                        <li class="flex items-start gap-2">
-                                                            <svg class="w-4 h-4 text-lime-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                                            </svg>
-                                                            <span>{{ $highlight }}</span>
-                                                        </li>
-                                                    @endforeach
-                                                </ul>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                @endif
-
-                                <button wire:click="$set('contentGenerated', false)" type="button" class="cursor-pointer text-white/80 hover:text-white text-sm font-semibold">
-                                    ← Regenerate Content
-                                </button>
                             </div>
                         </div>
                     @endif
@@ -362,16 +320,22 @@
                             Back
                         </button>
                         <button
-                            wire:click="downloadPDF"
-                            wire:loading.attr="disabled"
-                            wire:target="downloadPDF"
+                            x-show="generated"
+                            x-on:click="
+                                downloadingPDF = true;
+                                $wire.downloadPDF().then(() => {
+                                    downloadingPDF = false;
+                                }).catch(() => {
+                                    downloadingPDF = false;
+                                });
+                            "
+                            :disabled="downloadingPDF || !generated"
+                            :class="downloadingPDF ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''"
                             type="button"
-                            class="cursor-pointer bg-green-600 hover:bg-green-700 transition-all text-white font-semibold py-3 px-8 rounded-xl shadow-lg flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                            @if(!$contentGenerated) disabled @endif
+                            class="cursor-pointer bg-green-600 hover:bg-green-700 transition-all text-white font-semibold py-3 px-8 rounded-xl shadow-lg flex items-center gap-2"
                         >
                             <svg
-                                wire:loading.remove
-                                wire:target="downloadPDF"
+                                x-show="!downloadingPDF"
                                 class="w-5 h-5"
                                 fill="none"
                                 stroke="currentColor"
@@ -380,18 +344,16 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                             </svg>
 
-                            <div
-                                wire:loading
-                                wire:target="downloadPDF"
-                                class="animate-spin size-5 border-3 border-current border-t-transparent rounded-full"
-                            ></div>
-
-                            <span wire:loading.remove wire:target="downloadPDF">
+                            <span x-show="!downloadingPDF">
                                 Download PDF
                             </span>
-                            <span wire:loading wire:target="downloadPDF">
-                                Generating PDF...
-                            </span>
+
+                            <div x-show="downloadingPDF"
+                                 class="animate-spin inline-block size-5 border-3 mt-1 border-current border-t-transparent text-white rounded-full"
+                                 role="status" aria-label="loading">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+
                         </button>
                     </div>
                 </div>

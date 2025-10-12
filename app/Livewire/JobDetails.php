@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\JobApplication;
 use App\Models\JobListing;
 use App\Models\User;
+use App\Notifications\JobAcceptance;
 use App\Notifications\JobRejection;
 use App\Traits\Notifications;
 use Livewire\Attributes\On;
@@ -60,6 +61,8 @@ class JobDetails extends Component
             'status' => 'Accepted'
         ]);
 
+        $this->user->notify(new JobAcceptance($this->job_listing));
+
         $this->notify(
             variant: 'success',
             title: 'Job Listing Accepted',
@@ -98,6 +101,7 @@ class JobDetails extends Component
             'user_id' => auth()->id(),
             'status' => 'Pending'
         ]);
+
 
         $this->notify(
             variant: 'success',

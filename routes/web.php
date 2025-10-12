@@ -3,6 +3,8 @@
 use App\Livewire\Admin\AdminDashboard;
 use App\Livewire\Admin\ManageJob;
 use App\Livewire\Admin\ManageJobPosts;
+use App\Livewire\Admin\ManageStacks;
+use App\Livewire\Admin\ManageTechnologies;
 use App\Livewire\AiCvAnalyzer;
 use App\Livewire\AiCvGenerator;
 use App\Livewire\AiServices;
@@ -20,13 +22,9 @@ use App\Livewire\JobDetails;
 use App\Livewire\Postings;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/ai', \App\Livewire\AiTester::class)->name('ai');
 Route::get('/ai/services', AiServices::class)->name('ai-services');
 Route::get('/ai/services/cv/analyzer', AiCvAnalyzer::class)->name('ai-cv-analyzer');
 Route::get('/ai/services/cv/generator', AiCvGenerator::class)->name('ai-cv-generator');
-
-
-
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', Login::class)->name('login');
@@ -62,7 +60,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::middleware(['auth', 'can:access-admin-panel'])->prefix('/admin')->group(function(){
     Route::get('/dashboard', AdminDashboard::class)->name('admin.dashboard');
-    Route::get('/jobs/manage', ManageJobPosts::class)->name('admin.manage');
-    Route::get('/job/manage/{job_listing}', ManageJob::class)->name('admin.job.manage');
+    Route::get('/jobs/manage', ManageJobPosts::class)->name('admin.manage-jobs');
+    Route::get('/jobs/manage/{job_listing}', ManageJob::class)->name('admin.job.manage');
+    Route::get('/stacks', ManageStacks::class)->name('admin.manage-stacks');
+    Route::get('/technologies', ManageTechnologies::class)->name('admin.manage-technologies');
 });
 

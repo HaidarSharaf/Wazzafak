@@ -1,4 +1,4 @@
-<div class="w-full">
+<div class="w-full min-h-screen py-12">
     <div class="max-w-3xl mx-auto bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-3xl shadow-xl">
 
 

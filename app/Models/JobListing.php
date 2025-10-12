@@ -46,7 +46,7 @@ class JobListing extends Model
 
     public function technologies()
     {
-        return $this->belongsToMany(Technology::class, 'job_listing_technologies');
+        return $this->belongsToMany(Technology::class, 'job_listing_technologies', 'job_listing_id', 'technology_id');
     }
 
     public function jobApplications(){

@@ -72,7 +72,7 @@
     <div
         x-data="{
         notifications: [],
-        displayDuration: 5000,
+        displayDuration: 8000,
         soundEffect: false,
 
         addNotification({ variant = 'info', sender = null, title = null, message = null }) {

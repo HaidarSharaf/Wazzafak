@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .job-details h3 {
+            margin: 0 0 15px 0;
+            color: #1f2937;
+            font-size: 18px;
+        }
+        .message-box {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        .message-box h4 {
+            margin: 0 0 10px 0;
+            color: #dc2626;
+            font-size: 16px;
+        }
+        .message-box p {
+            margin: 0;
+            color: #991b1b;
+            line-height: 1.8;
+        }
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+        .info-box p {
+            margin: 0;
+            color: #1e40af;
+            font-size: 14px;
+        }
+        .footer {
+            background: #f9fafb;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+        }
+        .footer p {
+            margin: 5px 0;
+            color: #6b7280;
+            font-size: 13px;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo span {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1750b6;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Job Post Rejected</h1>
+        <p>Your recent job posting does not meet requirements</p>
+    </div>
+
+    <div class="content">
+        <p>Dear <strong>{{ $company_name }}</strong>,</p>
+
+        <p>Thank you for submitting a job posting to &lt;Wazzafak /&gt;. After careful review, we regret to inform you that your job post, <strong>{{ $job_title }}</strong>, has not been approved at this time.</p>
+
+        <div class="message-box">
+            <h4>Reason for Rejection</h4>
+            <p>{{ $rejection_message }}</p>
+        </div>
+
+        <div class="info-box">
+            <p>💡 <strong>What's next?</strong> Please review the feedback above and feel free to submit a new job posting that addresses these concerns. We're here to help you find the right candidates!</p>
+        </div>
+
+        <p style="margin-top: 30px;">If you have any questions or need assistance, please don't hesitate to contact our support team.</p>
+
+        <p style="margin-top: 20px;">Best regards,<br><strong>The &lt;Wazzafak /&gt; Team</strong></p>
+    </div>
+
+    <div class="footer">
+        <div class="logo">
+            <span>WAZZAFAK</span>
+        </div>
+        <p>© {{ date('Y') }} &lt;Wazzafak /&gt;. All rights reserved.</p>
+        <p>Connecting talented professionals with great opportunities</p>
+    </div>
+</div>
+</body>
+</html>
