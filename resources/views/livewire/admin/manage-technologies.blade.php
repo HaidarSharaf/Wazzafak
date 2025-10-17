@@ -2,13 +2,18 @@
     class="min-h-screen w-full py-8"
     x-data="{
         showModal: false,
+        showEditModal: false,
         showDeleteModal: false,
         openModal() { this.showModal = true },
         closeModal() { this.showModal = false },
+        openEditModal() { this.showEditModal = true },
+        closeEditModal() { this.showEditModal = false },
         openDeleteModal() { this.showDeleteModal = true },
         closeDeleteModal() { this.showDeleteModal = false },
     }"
     @close-modal.window="closeModal()"
+    @close-edit-modal.window="closeEditModal()"
+    @close-delete-modal.window="closeDeleteModal()"
 >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -67,7 +72,7 @@
                     <div class="flex items-center justify-end pt-4 border-t border-white/10">
                         <div class="flex gap-2">
                             <button
-                                @click="openModal(); $wire.call('openEditModal', {{ $tech->id }})"
+                                @click="openEditModal(); $wire.call('openEditModal', {{ $tech->id }})"
                                 class="text-blue-700 hover:text-blue-800 transition cursor-pointer"
                             >
                                 <svg class="size-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -114,16 +119,16 @@
             @click.away="closeModal"
         >
             <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">
-                {{ $editingId ? 'Edit Technology' : 'Create New Technology' }}
+                Create New Technology
             </h2>
 
-            <form wire:submit.prevent="save">
+            <form wire:submit.prevent="create">
                 <div class="mb-4">
                     <label class="block text-gray-900 font-semibold mb-2">Technology Name</label>
                     <input
                         wire:model="name"
                         type="text"
-                        class="w-full bg-gray-300 border border-gray-200 rounded-xl p-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-lime-500"
+                        class="w-full bg-gray-300 border border-gray-200 rounded-xl p-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="e.g., React, Node.js, Python"
                     />
                     @error('name')
@@ -133,19 +138,10 @@
 
                 <div class="mb-6">
                     <label class="block text-gray-900 font-semibold mb-2">Icon</label>
-
-                    @if($existingIcon && !$icon)
-                        <div class="mb-3 flex items-center gap-3 bg-gray-400 p-3 rounded-lg">
-                            <img src="{{ asset('storage/technologies_icons/' . $existingIcon) }}" alt="Current icon"
-                                 class="w-10 h-10">
-                            <span class="text-gray-800 text-sm">Current icon</span>
-                        </div>
-                    @endif
-
                     <input
                         wire:model="icon"
                         type="file"
-                        accept="image/*"
+                        accept=".svg,.png,.jpg,.jpeg"
                         class="w-full bg-gray-300 border border-gray-200 rounded-xl p-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                     <p class="text-gray-600 text-xs mt-1">PNG, JPG, SVG (Max 2MB)</p>
@@ -155,14 +151,10 @@
 
                     @if($icon)
                         <div class="mt-3 flex items-center gap-3 bg-gray-100 p-3 rounded-lg">
+                            <span class="text-gray-800 text-base font-semibold">Preview</span>
                             <img src="{{ $icon->temporaryUrl() }}" alt="Preview" class="w-10 h-10">
-                            <span class="text-gray-800 text-sm">New icon preview</span>
                         </div>
                     @endif
-
-                    <div wire:loading wire:target="icon" class="text-gray-700 text-sm mt-2">
-                        Uploading...
-                    </div>
                 </div>
 
                 <div class="flex gap-3">
@@ -177,12 +169,89 @@
                         type="submit"
                         class="flex-1 bg-blue-600 hover:bg-lime-500 text-white font-semibold py-3 px-6 rounded-xl transition cursor-pointer"
                     >
-                        {{ $editingId ? 'Update' : 'Create' }}
+                        Create
                     </button>
                 </div>
             </form>
         </div>
     </div>
+
+    <div
+        x-show="showEditModal"
+        x-transition.opacity
+        x-cloak
+        class="fixed inset-0 bg-white/30 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
+    >
+        <div
+            class="bg-white backdrop-blur-xl border border-white/20 rounded-2xl p-6 w-full max-w-md"
+            @click.away="closeEditModal"
+        >
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">
+                Edit Technology
+            </h2>
+
+            <form wire:submit.prevent="update">
+                <div class="mb-4">
+                    <label class="block text-gray-900 font-semibold mb-2">Technology Name</label>
+                    <input
+                        wire:model="name"
+                        type="text"
+                        class="w-full bg-gray-300 border border-gray-200 rounded-xl p-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    @error('name')
+                    <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-gray-900 font-semibold mb-2">Icon</label>
+
+                    @if($existingIcon && !$icon)
+                        <div class="mb-3 flex items-center gap-3 bg-gray-400 p-3 rounded-lg">
+                            <span class="text-gray-800 text-base font-semibold">Current</span>
+                            <img src="{{ asset('storage/technologies_icons/' . $existingIcon) }}" alt="Current icon"
+                                 class="w-10 h-10">
+                        </div>
+                    @endif
+
+                    <input
+                        wire:model="icon"
+                        type="file"
+                        accept=".svg,.png,.jpg,.jpeg"
+                        class="w-full bg-gray-300 border border-gray-200 rounded-xl p-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    <p class="text-gray-600 text-xs mt-1">PNG, JPG, SVG (Max 2MB)</p>
+                    @error('icon')
+                    <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                    @enderror
+
+                    @if($icon)
+                        <div class="mt-3 flex items-center gap-3 bg-gray-100 p-3 rounded-lg">
+                            <span class="text-gray-800 text-base font-semibold">New Preview</span>
+                            <img src="{{ $icon->temporaryUrl() }}" alt="Preview" class="w-10 h-10">
+                        </div>
+                    @endif
+                </div>
+
+                <div class="flex gap-3">
+                    <button
+                        type="button"
+                        @click="closeEditModal"
+                        class="flex-1 bg-white hover:bg-gray-200 text-gray-900 font-semibold py-3 px-6 rounded-xl transition cursor-pointer border border-gray-300"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="submit"
+                        class="flex-1 bg-blue-600 hover:bg-lime-500 text-white font-semibold py-3 px-6 rounded-xl transition cursor-pointer"
+                    >
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 
     <div
         x-show="showDeleteModal"

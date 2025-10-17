@@ -1,11 +1,12 @@
-<nav x-data="{ mobileMenuIsOpen: false }" x-on:click.away="mobileMenuIsOpen = false" class="flex items-center justify-between px-6 py-4 bg-white/10 backdrop-blur-sm rounded-2xl m-4">
+<nav x-data="{ mobileMenuIsOpen: false }" x-on:click.away="mobileMenuIsOpen = false"
+     class="flex items-center justify-between px-6 py-4 bg-white/10 backdrop-blur-sm rounded-2xl m-4">
 
     <a
         wire:navigate
         href="{{ route('home') }}"
         class="xl:text-4xl lg:text-3xl md:text-3xl text-2xl font-bold flex items-center md:gap-4 gap-2"
     >
-        <img src="{{ asset('images/Logo.png') }}" alt="Wazzafak logo" class="lg:w-14 md:w-12 w-10" />
+        <img src="{{ asset('images/Logo.png') }}" alt="Wazzafak logo" class="lg:w-14 md:w-12 w-10"/>
         <span>&lt;Wazzafak /&gt;</span>
     </a>
 
@@ -111,11 +112,13 @@
                 <button
                     x-on:click="userDropDownIsOpen = ! userDropDownIsOpen"
                     x-bind:aria-expanded="userDropDownIsOpen" x-on:keydown.space.prevent="openWithKeyboard = true"
-                    x-on:keydown.enter.prevent="openWithKeyboard = true" x-on:keydown.down.prevent="openWithKeyboard = true"
+                    x-on:keydown.enter.prevent="openWithKeyboard = true"
+                    x-on:keydown.down.prevent="openWithKeyboard = true"
                     class="rounded-2xl focus-visible:outline-2 cursor-pointer"
                 >
                     @if($user->role !== 'recruiter')
-                        <div class="md:size-12 size-10 rounded-2xl bg-gradient-to-br from-[#1750b6]/60 to-lime-400 flex items-center justify-center text-lg font-bold text-white">
+                        <div
+                            class="md:size-12 size-10 rounded-2xl bg-gradient-to-br from-[#1750b6]/60 to-lime-400 flex items-center justify-center text-lg font-bold text-white">
                             {{ $user->name[0] }}
                         </div>
                     @else
@@ -141,6 +144,17 @@
                             <span class="text-base font-bold text-[#1750b6]">{{ $user->name }}</span>
                             <p class="text-sm font-medium text-[#1750b6]/60">{{ $user->email }}</p>
                         </div>
+                    </li>
+
+                    <li>
+                        <a
+                            href="{{ route('update-profile') }}"
+                            wire:current.exact="text-lime-300 underline"
+                            wire:navigate
+                            class="block font-semibold px-4 py-1 sm:text-base text-sm text-[#1b7af5] hover:text-lime-500 hover:underline cursor-pointer"
+                        >
+                            Profile
+                        </a>
                     </li>
 
                     <li>
@@ -175,11 +189,13 @@
         type="button"
         class="flex text-on-surface sm:hidden"
     >
-        <svg x-cloak x-show="!mobileMenuIsOpen" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6 cursor-pointer">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        <svg x-cloak x-show="!mobileMenuIsOpen" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true"
+             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6 cursor-pointer">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
         </svg>
-        <svg x-cloak x-show="mobileMenuIsOpen" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="text-lime-300 size-6 cursor-pointer">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        <svg x-cloak x-show="mobileMenuIsOpen" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true"
+             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="text-lime-300 size-6 cursor-pointer">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
         </svg>
     </button>
 
@@ -210,7 +226,8 @@
             <li class="mb-4 border-none">
                 <div class="flex items-center gap-4 py-2">
                     @if($user->role !== 'recruiter')
-                        <div class="md:size-12 size-10 rounded-2xl bg-gradient-to-br from-[#1750b6]/60 to-lime-400 flex items-center justify-center text-lg font-bold text-white">
+                        <div
+                            class="md:size-12 size-10 rounded-2xl bg-gradient-to-br from-[#1750b6]/60 to-lime-400 flex items-center justify-center text-lg font-bold text-white">
                             {{ $user->name[0] }}
                         </div>
                     @else
@@ -232,7 +249,8 @@
             <a
                 wire:navigate
                 href="{{ route('home') }}"
-                wire:current.exact="text-lime-300 underline" class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
+                wire:current.exact="text-lime-300 underline"
+                class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
             >
                 Home
             </a>
@@ -242,7 +260,8 @@
             <a
                 wire:navigate
                 href="{{ route('ai-services') }}"
-                wire:current="text-lime-300 underline" class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
+                wire:current="text-lime-300 underline"
+                class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
             >
                 AI Services
             </a>
@@ -254,7 +273,8 @@
                     <a
                         wire:navigate
                         href="{{ route('explore-jobs') }}"
-                        wire:current.exact="text-lime-300 underline" class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
+                        wire:current.exact="text-lime-300 underline"
+                        class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
                     >
                         Explore Jobs
                     </a>
@@ -264,7 +284,8 @@
                     <a
                         wire:navigate
                         href="{{ route('my-applications') }}"
-                        wire:current.exact="text-lime-300 underline" class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
+                        wire:current.exact="text-lime-300 underline"
+                        class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
                     >
                         Applied Jobs
                     </a>
@@ -274,7 +295,8 @@
                     <a
                         wire:navigate
                         href="{{ route('create-job') }}"
-                        wire:current.exact="text-lime-300 underline" class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
+                        wire:current.exact="text-lime-300 underline"
+                        class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
                     >
                         Post a Job
                     </a>
@@ -284,7 +306,8 @@
                     <a
                         wire:navigate
                         href="{{ route('posted-jobs') }}"
-                        wire:current.exact="text-lime-300 underline" class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
+                        wire:current.exact="text-lime-300 underline"
+                        class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-300 hover:underline"
                     >
                         Posted Jobs
                     </a>
@@ -293,6 +316,17 @@
 
 
             <hr role="none" class="my-2 border-gray-300">
+
+            <li class="p-2 text-center">
+                <a
+                    wire:navigate
+                    href="{{ route('update-profile') }}"
+                    wire:current.exact="text-lime-300 underline"
+                    class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-500 hover:underline cursor-pointer"
+                >
+                    Profile
+                </a>
+            </li>
 
             <li class="p-2 text-center">
                 <a

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
@@ -19,7 +20,10 @@ class ManageTechnologies extends Component
     use Notifications;
     use WithPagination, WithFileUploads;
 
+    #[Validate('required|string|max:255|unique:technologies,name')]
     public $name = '';
+
+    #[Validate('nullable|mimes:svg,png,jpg,jpeg|max:2048')]
     public $icon = null;
     public $editingId = null;
     public $showModal = false;
@@ -27,11 +31,6 @@ class ManageTechnologies extends Component
     public $deletingId = null;
     public $search = '';
     public $existingIcon = null;
-
-    protected $rules = [
-        'name' => 'required|string|max:255|unique:technologies,name',
-        'icon' => 'nullable|image|max:2048',
-    ];
 
     public function updatingSearch()
     {
@@ -53,61 +52,63 @@ class ManageTechnologies extends Component
         $this->showModal = true;
     }
 
-    public function save()
+    public function create()
     {
-        if ($this->editingId) {
-            $this->validate([
-                'name' => 'required|string|max:255|unique:technologies,name,' . $this->editingId,
-                'icon' => 'nullable|image|max:2048',
-            ]);
+        $this->authorize('manage-techs');
 
-            $tech = Technology::findOrFail($this->editingId);
+        $this->validate();
 
-            $data = [
-                'name' => $this->name,
-            ];
+        $data = ['name' => $this->name];
 
-            if ($this->icon) {
-                if ($tech->icon && Storage::disk('public')->exists('technologies_icons/' . $tech->icon)) {
-                    Storage::disk('public')->delete('technologies_icons/' . $tech->icon);
-                }
-
-                $filename = Str::slug($this->name) . '-' . time() . '.' . $this->icon->getClientOriginalExtension();
-                $this->icon->storeAs('technologies_icons', $filename, 'public');
-                $data['icon'] = $filename;
-            }
-
-            $tech->update($data);
-
-            $this->notify(
-                variant: 'success',
-                title: 'Technology Updated successfully!',
-                message: "Technology has been updated."
-            );
-        } else {
-            $this->validate();
-
-            $data = [
-                'name' => $this->name,
-            ];
-
-            if ($this->icon) {
-                $filename = Str::slug($this->name) . '-' . time() . '.' . $this->icon->getClientOriginalExtension();
-                $this->icon->storeAs('technologies_icons', $filename, 'public');
-                $data['icon'] = $filename;
-            }
-
-            Technology::create($data);
-
-            $this->notify(
-                variant: 'success',
-                title: 'Technology Created successfully!',
-                message: "New technology added."
-            );
+        if ($this->icon) {
+            $filename = Str::lower($this->name) . '.' . $this->icon->getClientOriginalExtension();
+            $this->icon->storeAs('technologies_icons', $filename, 'public');
+            $data['icon'] = $filename;
         }
 
+        Technology::create($data);
+
+        $this->notify(
+            variant: 'success',
+            title: 'Technology Created!',
+            message: "New technology added."
+        );
+
         $this->resetForm();
-        $this->dispatch('close-modal');    }
+        $this->dispatch('close-modal');
+    }
+
+    public function update()
+    {
+        $this->authorize('manage-techs');
+
+        $this->validate();
+
+        $tech = Technology::findOrFail($this->editingId);
+        $data = ['name' => $this->name];
+
+        if ($this->icon) {
+            if ($tech->icon && Storage::disk('public')->exists('technologies_icons/' . $tech->icon)) {
+                Storage::disk('public')->delete('technologies_icons/' . $tech->icon);
+            }
+
+            $filename = Str::lower($this->name) . '.' . $this->icon->getClientOriginalExtension();
+            $this->icon->storeAs('technologies_icons', $filename, 'public');
+            $data['icon'] = $filename;
+        }
+
+        $tech->update($data);
+
+        $this->notify(
+            variant: 'success',
+            title: 'Technology Updated!',
+            message: "Technology details updated."
+        );
+
+        $this->resetForm();
+        $this->dispatch('close-edit-modal');
+    }
+
 
     public function confirmDelete($id)
     {
@@ -117,10 +118,10 @@ class ManageTechnologies extends Component
 
     public function delete()
     {
+        $this->authorize('manage-techs');
         try {
             $tech = Technology::findOrFail($this->deletingId);
 
-            // Delete icon if exists
             if ($tech->icon && \Storage::disk('public')->exists('technologies_icons/' . $tech->icon)) {
                 \Storage::disk('public')->delete('technologies_icons/' . $tech->icon);
             }
@@ -147,7 +148,6 @@ class ManageTechnologies extends Component
     public function resetForm()
     {
         $this->name = '';
-        $this->color = '#1750b6';
         $this->icon = null;
         $this->existingIcon = null;
         $this->editingId = null;

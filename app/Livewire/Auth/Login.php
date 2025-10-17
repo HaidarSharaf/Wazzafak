@@ -43,7 +43,7 @@ class Login extends Component
         $user = Auth::user();
 
         if($user->role === 'admin') {
-            $this->redirect(route('admin.dashboard'), navigate: true);
+            $this->redirect(route('admin.secret-key'), navigate: true);
         } elseif ($user->email_verified_at === null) {
             $this->redirect(route('verify-email'), navigate: true);
         } else{

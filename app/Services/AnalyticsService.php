@@ -16,7 +16,7 @@ class AnalyticsService
     public function getOverviewStats()
     {
         return [
-            'total_users' => User::count(),
+            'total_users' => User::where('role', '!=', 'admin')->count(),
             'total_developers' => User::where('role', 'developer')->count(),
             'total_recruiters' => User::where('role', 'recruiter')->count(),
             'total_jobs' => JobListing::count(),

@@ -2,13 +2,17 @@
     class="min-h-screen w-full py-8"
     x-data="{
         showModal: false,
+        showEditModal: false,
         showDeleteModal: false,
         openModal() { this.showModal = true },
         closeModal() { this.showModal = false },
+        openEditModal() { this.showEditModal = true },
+        closeEditModal() { this.showEditModal = false },
         openDeleteModal() { this.showDeleteModal = true },
         closeDeleteModal() { this.showDeleteModal = false },
     }"
     @close-modal.window="closeModal()"
+    @close-edit-modal.window="closeEditModal()"
     @close-delete-modal.window="closeDeleteModal()"
 >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -62,7 +66,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <button
-                                    @click="openModal(); $wire.call('openEditModal', {{ $stack->id }})"
+                                    @click="openEditModal(); $wire.call('openEditModal', {{ $stack->id }})"
                                     class="text-blue-700 hover:text-blue-800 mr-3 transition cursor-pointer"
                                 >
                                     <svg class="size-8 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -111,10 +115,10 @@
                 @click.away="closeModal"
             >
                 <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">
-                    {{ $editingId ? 'Edit Stack' : 'Create New Stack' }}
+                    Create New Stack
                 </h2>
 
-                <form wire:submit.prevent="save">
+                <form wire:submit.prevent="create">
                     <div class="mb-6">
                         <label class="block text-gray-900 font-semibold mb-2">Stack Name</label>
                         <input
@@ -140,7 +144,54 @@
                             type="submit"
                             class="flex-1 bg-blue-600 hover:bg-lime-500 text-white font-semibold py-3 px-6 rounded-xl transition cursor-pointer"
                         >
-                            {{ $editingId ? 'Update' : 'Create' }}
+                            Create
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div
+            x-show="showEditModal"
+            x-transition.opacity
+            x-cloak
+            class="fixed inset-0 bg-white/30 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
+        >
+            <div
+                class="bg-white backdrop-blur-xl border border-white/20 rounded-2xl p-6 w-full max-w-md"
+                @click.away="closeEditModal"
+            >
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">
+                    Edit Stack
+                </h2>
+
+                <form wire:submit.prevent="update">
+                    <div class="mb-6">
+                        <label class="block text-gray-900 font-semibold mb-2">Stack Name</label>
+                        <input
+                            wire:model="name"
+                            type="text"
+                            class="w-full bg-gray-300 border border-gray-200 rounded-xl p-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="e.g., Full Stack, Backend, Frontend"
+                        />
+                        @error('name')
+                        <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="flex gap-3">
+                        <button
+                            type="button"
+                            @click="closeEditModal"
+                            class="flex-1 bg-white hover:bg-gray-200 text-gray-900 font-semibold py-3 px-6 rounded-xl transition cursor-pointer border border-gray-300"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            class="flex-1 bg-blue-600 hover:bg-lime-500 text-white font-semibold py-3 px-6 rounded-xl transition cursor-pointer"
+                        >
+                            Save
                         </button>
                     </div>
                 </form>

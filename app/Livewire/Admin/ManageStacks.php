@@ -6,6 +6,7 @@ use App\Models\Stack;
 use App\Traits\Notifications;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -16,14 +17,11 @@ class ManageStacks extends Component
     use Notifications;
     use WithPagination;
 
+    #[Validate('required|string|max:255|unique:stacks,name')]
     public $name = '';
     public $editingId = null;
     public $deletingId = null;
     public $search = '';
-
-    protected $rules = [
-        'name' => 'required|string|max:255|unique:stacks,name',
-    ];
 
     public function updatingSearch()
     {
@@ -42,37 +40,41 @@ class ManageStacks extends Component
         $this->name = $stack->name;
     }
 
-    public function save()
+    public function create()
     {
-        if ($this->editingId) {
-            $this->validate([
-                'name' => 'required|string|max:255|unique:stacks,name,' . $this->editingId,
-            ]);
+        $this->authorize('manage-stacks');
+        $this->validate();
 
-            $stack = Stack::findOrFail($this->editingId);
-            $stack->update(['name' => $this->name]);
+        Stack::create(['name' => $this->name]);
 
-            $this->notify(
-                variant: 'success',
-                title: 'Stack Edited successfully!',
-                message: "Stack name has been updated."
-            );
-        } else {
-            $this->validate();
-
-            Stack::create(['name' => $this->name]);
-
-            $this->notify(
-                variant: 'success',
-                title: 'Stack Created successfully!',
-                message: "New stack added."
-            );
-        }
+        $this->notify(
+            variant: 'success',
+            title: 'Stack Created successfully!',
+            message: "New stack added."
+        );
 
         $this->resetForm();
         $this->dispatch('close-modal');
     }
 
+    public function update()
+    {
+        $this->authorize('manage-stacks');
+        $this->validate();
+
+        $stack = Stack::findOrFail($this->editingId);
+        $stack->update(['name' => $this->name]);
+
+        $this->notify(
+            variant: 'success',
+            title: 'Stack Edited successfully!',
+            message: "Stack name has been updated."
+        );
+
+        $this->resetForm();
+        $this->dispatch('close-edit-modal');
+
+    }
     public function confirmDelete($id)
     {
         $this->deletingId = $id;
@@ -80,6 +82,7 @@ class ManageStacks extends Component
 
     public function delete()
     {
+        $this->authorize('manage-stacks');
         try {
             $stack = Stack::findOrFail($this->deletingId);
             $stack->delete();

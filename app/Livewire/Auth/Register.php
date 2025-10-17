@@ -62,6 +62,8 @@ class Register extends Component
         'Tripoli',
     ];
 
+    public $techSearch = '';
+
     public function mount()
     {
         $this->techs = Technology::query()
@@ -71,6 +73,17 @@ class Register extends Component
             ->orderBy('name', 'asc')
             ->get();
         $this->levels = JobListing::getExperienceLevels();
+    }
+
+    public function getFilteredTechsProperty()
+    {
+        if (empty($this->techSearch)) {
+            return $this->techs;
+        }
+
+        return $this->techs->filter(function ($tech) {
+            return stripos($tech->name, $this->techSearch) !== false;
+        });
     }
 
 

@@ -44,6 +44,8 @@ class AiCvGenerator extends Component
     public $generatingContent = false;
     public $contentGenerated = false;
 
+    public $techSearch = '';
+
     public function mount()
     {
         $this->techs = Technology::query()->orderBy('name', 'asc')->get();
@@ -52,6 +54,17 @@ class AiCvGenerator extends Component
         if (auth()->check()) {
             $this->prefillUserData();
         }
+    }
+
+    public function getFilteredTechsProperty()
+    {
+        if (empty($this->techSearch)) {
+            return $this->techs;
+        }
+
+        return $this->techs->filter(function ($tech) {
+            return stripos($tech->name, $this->techSearch) !== false;
+        });
     }
 
     protected function prefillUserData()

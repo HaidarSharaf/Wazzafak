@@ -6,10 +6,13 @@ use App\Models\JobListing;
 use App\Models\User;
 use App\Notifications\ApplicationAcceptance;
 use App\Services\AIService;
+use App\Services\ZoomService;
 use App\Traits\Notifications;
+use Carbon\Carbon;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Mockery\Exception;
 use Smalot\PdfParser\Parser;
 
 class JobApplicants extends Component
@@ -22,6 +25,12 @@ class JobApplicants extends Component
     public $aiRecommendation = null;
     public $analyzingCVs = false;
     public $analysisError = null;
+
+    public $interview_location = 'online_meeting';
+    public $rejectOthers = true;
+
+    public $interview_date = null;
+    public $interview_time = null;
 
     public function mount($job_listing)
     {
@@ -120,7 +129,7 @@ class JobApplicants extends Component
     {
         $user = User::find($id);
         if (!$user) {
-            return;
+            return null;
         }
         $cv_file = $user->developer?->cv;
         if (!$cv_file) {
@@ -134,30 +143,90 @@ class JobApplicants extends Component
     {
         $this->authorize('manage-job-applicants', $this->job_listing);
 
+        $this->validate([
+            'interview_location' => 'required|in:online_meeting,in_person',
+            'interview_date' => 'required|date|after_or_equal:today',
+            'interview_time' => 'required'
+        ], [
+            'interview_date.required' => 'Please select an interview date.',
+            'interview_date.after_or_equal' => 'Interview date must be today or in the future.',
+            'interview_time.required' => 'Please select an interview time.',
+        ]);
+
         $application = $this->job_listing->jobApplications()->find($applicationId);
 
         if (!$application) {
-            session()->flash('error', 'Application not found.');
+            $this->notify(
+                variant: 'danger',
+                title: 'Error',
+                message: 'Application not found.'
+            );
             return;
         }
 
+        try {
+            $recruiter_user = auth()->user();
+            $interviewDateTime = Carbon::parse($this->interview_date . ' ' . $this->interview_time);
 
-        $application->update([
-            'status' => 'Accepted'
-        ]);
+            $zoomMeetingData = null;
 
-        $applicant = $application->user;
+            if ($this->interview_location === 'online_meeting') {
+                $zoomService = new ZoomService();
 
-        $applicant->notify(new ApplicationAcceptance($applicant->name, $this->job_listing));
+                $topic = "Interview for {$this->job_listing->getStackNameAttribute()} Position - {$application->user->name}";
 
-        $this->notify(
-            variant: 'success',
-            title: 'Application Accepted',
-            message: "You have accepted {$application->user->name}'s application. All other applications where rejected automatically and job post was disclosed."
-        );
+                $recruiterEmail = $recruiter_user->email;
 
-        $this->dispatch('discloseJob', acceptedApplicationId: $applicationId);
+                $zoomMeetingData = $zoomService->createMeeting(
+                    $topic,
+                    $interviewDateTime,
+                );
+            }
 
+            $application->update([
+                'status' => 'Accepted'
+            ]);
+
+            $applicant = $application->user;
+
+            $applicant->notify(new ApplicationAcceptance(
+                $applicant->name,
+                $this->job_listing,
+                $interviewDateTime,
+                $this->interview_location,
+                $zoomMeetingData
+            ));
+
+            $recruiter_user->notify(new ApplicationAcceptance(
+                $recruiter_user->name,
+                $this->job_listing,
+                $interviewDateTime,
+                $this->interview_location,
+                $zoomMeetingData,
+                $applicant->name,
+                true
+            ));
+
+            $this->notify(
+                variant: 'success',
+                title: 'Application Accepted',
+                message: "Interview scheduled with {$application->user->name}." .
+                ($this->rejectOthers ? " All other applications were rejected and the job post was disclosed." : "")
+            );
+
+            if($this->rejectOthers){
+                $this->dispatch('discloseJob', acceptedApplicationId: $applicationId);
+            }
+
+            $this->reset(['interview_date', 'interview_time', 'interview_location', 'rejectOthers']);
+
+        } catch (Exception $e){
+            $this->notify(
+                variant: 'danger',
+                title: 'Error',
+                message: 'Failed to schedule interview. Please try again. ' . $e->getMessage()
+            );
+        }
     }
 
     public function rejectApplicant($applicationId)

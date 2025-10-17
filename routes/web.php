@@ -9,11 +9,13 @@ use App\Livewire\AiCvAnalyzer;
 use App\Livewire\AiCvGenerator;
 use App\Livewire\AiServices;
 use App\Livewire\Applications;
+use App\Livewire\Auth\AdminSecretKey;
 use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Auth\UpdatePassword;
+use App\Livewire\Auth\UpdateProfile;
 use App\Livewire\Auth\VerifyEmail;
 use App\Livewire\CreateJobs;
 use App\Livewire\ExploreJobs;
@@ -22,6 +24,7 @@ use App\Livewire\JobDetails;
 use App\Livewire\Postings;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/', Home::class)->middleware('can:access-home')->name('home');
 Route::get('/ai/services', AiServices::class)->name('ai-services');
 Route::get('/ai/services/cv/analyzer', AiCvAnalyzer::class)->name('ai-cv-analyzer');
 Route::get('/ai/services/cv/generator', AiCvGenerator::class)->name('ai-cv-generator');
@@ -37,10 +40,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('verify-email', VerifyEmail::class)->name('verify-email');
 });
 
-Route::get('/', Home::class)->middleware('can:access-home')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/update-password', UpdatePassword::class)->name('update-password');
+    Route::get('/password/update', UpdatePassword::class)->name('update-password');
 
     Route::get('/jobs/{job_listing}', JobDetails::class)->name('job-listing')->can('view-job-listing', 'job_listing');
 
@@ -48,6 +50,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/jobs', ExploreJobs::class)->name('explore-jobs');
 
         Route::get('/applications', Applications::class)->name('my-applications');
+
+        Route::get('/profile/update', UpdateProfile::class)->name('update-profile');
     });
 
     Route::middleware(['can:access-recruiter-dashboard'])->group(function () {
@@ -59,10 +63,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
 Route::middleware(['auth', 'can:access-admin-panel'])->prefix('/admin')->group(function(){
+    Route::get("/secret", AdminSecretKey::class)->name('admin.secret-key');
     Route::get('/dashboard', AdminDashboard::class)->name('admin.dashboard');
     Route::get('/jobs/manage', ManageJobPosts::class)->name('admin.manage-jobs');
     Route::get('/jobs/manage/{job_listing}', ManageJob::class)->name('admin.job.manage');
-    Route::get('/stacks', ManageStacks::class)->name('admin.manage-stacks');
-    Route::get('/technologies', ManageTechnologies::class)->name('admin.manage-technologies');
+    Route::get('/stacks/manage', ManageStacks::class)->name('admin.manage-stacks');
+    Route::get('/technologies/manage', ManageTechnologies::class)->name('admin.manage-technologies');
 });
 

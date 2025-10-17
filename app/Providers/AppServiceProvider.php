@@ -32,6 +32,9 @@ class AppServiceProvider extends ServiceProvider
         Model::automaticallyEagerLoadRelationships();
 
         Gate::define('access-admin-panel', [UserPolicy::class, 'accessAdminPanel']);
+        Gate::define('manage-stacks', [UserPolicy::class, 'accessAdminPanel']);
+        Gate::define('manage-techs', [UserPolicy::class, 'accessAdminPanel']);
+
         Gate::define('access-recruiter-dashboard', [UserPolicy::class, 'accessRecruiterDashboard']);
         Gate::define('access-developer-dashboard', [UserPolicy::class, 'accessDeveloperDashboard']);
 

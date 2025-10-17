@@ -321,7 +321,7 @@
     <div class="min-w-[800px]">
         <div class="px-6 py-4 border-b border-gray-200">
             <div class="grid grid-cols-12 gap-4 text-base font-medium text-white">
-                <div class="col-span-3">Applicant</div>
+                <div class="col-span-4">Applicant</div>
                 <div class="col-span-2 text-center">Status</div>
                 <div class="col-span-1 flex justify-center items-center">
                     LinkedIn
@@ -330,8 +330,7 @@
                     GitHub
                 </div>
                 <div class="col-span-1 flex justify-center">CV</div>
-                <div class="col-span-2 flex justify-center">Chat</div>
-                <div class="col-span-2 flex justify-center">Actions</div>
+                <div class="col-span-3 flex justify-center">Actions</div>
             </div>
         </div>
 
@@ -355,7 +354,7 @@
                 <div
                     class="px-2 py-4 rounded-lg hover:bg-black/10 transition-all duration-200">
                     <div class="grid grid-cols-12 gap-4 items-center">
-                        <div class="col-span-3">
+                        <div class="col-span-4">
                             <div
                                 class="flex items-center gap-3 cursor-pointer"
                                 title="Click to view applicant details."
@@ -418,7 +417,7 @@
                                 </a>
                             </div>
 
-                            <div class="col-span-1 overflow-hidden lg:ml-2 md:ml-1">
+                            <div class="col-span-1 overflow-hidden md:ml-1">
                                 <button
                                     wire:click="downloadCV('{{ $application->user?->id }}')"
                                     wire:target="downloadCV('{{ $application->user?->id }}')"
@@ -454,24 +453,10 @@
                                     </svg>
                                 </button>
                             </div>
-                            <div class="col-span-2 overflow-hidden lg:ml-1">
-                                <button
-                                    class="flex cursor-pointer font-semibold items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm text-white bg-blue-500 hover:bg-blue-600 rounded-lg transition-colors flex-shrink-0"
-                                >
-                                    <span class="hidden sm:inline">Message</span>
-                                    <span class="sm:hidden">Message</span>
-                                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"
-                                         xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M14.4376 15.3703L12.3042 19.5292C11.9326 20.2537 10.8971 20.254 10.525 19.5297L4.24059 7.2971C3.81571 6.47007 4.65077 5.56156 5.51061 5.91537L18.5216 11.2692C19.2984 11.5889 19.3588 12.6658 18.6227 13.0704L14.4376 15.3703ZM14.4376 15.3703L5.09594 6.90886"
-                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
-                                    </svg>
-                                </button>
-                            </div>
                         @endif
 
                         @if($status === 'Pending')
-                            <div class="col-span-2 overflow-hidden">
+                            <div class="col-span-3 overflow-hidden">
                                 <div class="flex justify-center items-center gap-4">
                                     <button
                                         @click="modalReject = true, selectedApplicationId = '{{ $application->id }}'"
@@ -680,7 +665,7 @@
                 class="fixed inset-0 bg-white/30 backdrop-blur-md z-50 rounded-2xl flex justify-center items-center"
             >
                 <div
-                    class="relative p-4 w-full max-w-md max-h-full"
+                    class="relative p-4 w-full max-w-lg max-h-full"
                     @click.outside="modalAccept = false; selectedApplicationId = null;"
                 >
                     <div class="relative bg-white rounded-lg shadow-sm">
@@ -700,7 +685,71 @@
                             </svg>
 
                             <h3 class="mb-5 text-lg font-semibold text-[#0D1B2A]">Are you sure you want to accept this application?</h3>
-                            <p class="mb-5 text-gray-500">By doing so, all other applications will be rejected.</p>
+
+                            <div class="mb-10 flex flex-col gap-7">
+
+                                <div>
+                                    <label class="block text-gray-900 font-semibold mb-2 text-left">Interview Location:</label>
+                                    <select
+                                        wire:model="interview_location"
+                                        class="w-full px-4 py-3 font-semibold text-gray-900 bg-gray-300 rounded-xl border-0 focus:bg-gray-200 focus:ring-4 focus:ring-green-500/30 transition-all"
+                                    >
+                                        <option value="online_meeting" selected>Online Meeting</option>
+                                        <option value="in_person">In-Person</option>
+                                    </select>
+                                    @error('interview_location') <span class="text-xs text-red-600"> {{ $message }}</span> @enderror
+                                </div>
+
+                                <div>
+                                    <label class="block text-gray-900 font-semibold mb-3 text-left">Interview Date & Time:</label>
+
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Date</label>
+                                            <div class="relative">
+                                                <input
+                                                    type="date"
+                                                    wire:model="interview_date"
+                                                    class="w-full px-4 py-3 font-semibold text-gray-900 bg-white border-2 border-gray-300 rounded-xl focus:border-[#1750b6] focus:ring-4 focus:ring-[#1750b6]/20 transition-all outline-none"
+                                                />
+                                                <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Time</label>
+                                            <div class="relative">
+                                                <input
+                                                    type="time"
+                                                    wire:model="interview_time"
+                                                    class="w-full px-4 py-3 font-semibold text-gray-900 bg-white border-2 border-gray-300 rounded-xl focus:border-[#1750b6] focus:ring-4 focus:ring-[#1750b6]/20 transition-all outline-none"
+                                                />
+                                                <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @error('interviewDate') <span class="text-xs text-red-600 mt-1 block">{{ $message }}</span> @enderror
+                                    @error('interviewTime') <span class="text-xs text-red-600 mt-1 block">{{ $message }}</span> @enderror
+                                </div>
+
+                                <div class="flex items-center mt-1">
+                                    <label class="inline-flex items-center cursor-pointer gap-2">
+                                        <input
+                                            wire:model="rejectOthers"
+                                            type="checkbox"
+                                            class="sr-only peer"
+                                        >
+                                        <div class="relative w-11 h-6 bg-gray-600 white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-gray-400 after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-gray-200 after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                                        <span class="md:ml-3 ml-1 block font-semibold md:text-base sm:text-sm text-xs text-gray-800">Reject Other Applicants and Disclose Job?</span>
+                                    </label>
+                                </div>
+                            </div>
+
                             <button
                                 type="button"
                                 @click="$wire.acceptApplicant(selectedApplicationId); modalAccept = false; selectedApplicationId = null"

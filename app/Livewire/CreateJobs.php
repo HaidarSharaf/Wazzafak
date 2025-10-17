@@ -19,7 +19,6 @@ class CreateJobs extends Component
 
     public $currentStep = 1;
 
-
     public $techs = [];
     public $stacks = [];
 
@@ -31,15 +30,28 @@ class CreateJobs extends Component
     public $descriptionGenerated = false;
     public $isGenerating = false;
 
+    public $techSearch = '';
+
     public function mount(){
         $this->techs = Technology::query()
-                            ->orderBy('name', 'asc')
-                            ->get();
+            ->orderBy('name', 'asc')
+            ->get();
         $this->stacks = Stack::query()
             ->orderBy('name', 'asc')
             ->get();
         $this->locations = JobListing::getLocations();
         $this->levels = JobListing::getExperienceLevels();
+    }
+
+    public function getFilteredTechsProperty()
+    {
+        if (empty($this->techSearch)) {
+            return $this->techs;
+        }
+
+        return $this->techs->filter(function ($tech) {
+            return stripos($tech->name, $this->techSearch) !== false;
+        });
     }
 
     public function nextStep()
@@ -125,7 +137,7 @@ class CreateJobs extends Component
         $this->form->store();
         $this->chosenTechs = [];
         return $this->redirect(route('posted-jobs'), navigate: true);
-        }
+    }
 
     public function render()
     {
