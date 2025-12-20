@@ -139,23 +139,18 @@
                     class="absolute right-0 top-12 flex w-fit min-w-48 z-50 flex-col items-center overflow-hidden rounded-lg border border-outline bg-gray-100 py-1.5"
                 >
 
-                    <li class="border-b border-outline">
-                        <div class="flex flex-col items-center pt-2 px-2">
-                            <span class="text-base font-bold text-[#1750b6]">{{ $user->name }}</span>
-                            <p class="text-sm font-medium text-[#1750b6]/60">{{ $user->email }}</p>
-                        </div>
-                    </li>
-
-                    <li>
-                        <a
-                            href="{{ route('update-profile') }}"
-                            wire:current.exact="text-lime-300 underline"
-                            wire:navigate
-                            class="block font-semibold px-4 py-1 sm:text-base text-sm text-[#1b7af5] hover:text-lime-500 hover:underline cursor-pointer"
-                        >
-                            Profile
-                        </a>
-                    </li>
+                    @if($user->role === 'developer')
+                        <li>
+                            <a
+                                href="{{ route('update-profile') }}"
+                                wire:current.exact="text-lime-300 underline"
+                                wire:navigate
+                                class="block font-semibold px-4 py-1 sm:text-base text-sm text-[#1b7af5] hover:text-lime-500 hover:underline cursor-pointer"
+                            >
+                                Profile
+                            </a>
+                        </li>
+                    @endif
 
                     <li>
                         <a
@@ -317,16 +312,18 @@
 
             <hr role="none" class="my-2 border-gray-300">
 
-            <li class="p-2 text-center">
-                <a
-                    wire:navigate
-                    href="{{ route('update-profile') }}"
-                    wire:current.exact="text-lime-300 underline"
-                    class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-500 hover:underline cursor-pointer"
-                >
-                    Profile
-                </a>
-            </li>
+            @if($user->role === 'developer')
+                <li class="p-2 text-center">
+                    <a
+                        wire:navigate
+                        href="{{ route('update-profile') }}"
+                        wire:current.exact="text-lime-300 underline"
+                        class="w-full text-xl font-bold text-[#1b7af5] hover:text-lime-500 hover:underline cursor-pointer"
+                    >
+                        Profile
+                    </a>
+                </li>
+            @endif
 
             <li class="p-2 text-center">
                 <a

@@ -23,21 +23,17 @@ class DeveloperDashboard extends Component
         $this->accepted_apps = $this->user->jobApplications()->where('status', 'Accepted')->count();
         $this->featured_jobs = JobListing::query()
             ->where('status', 'Accepted')
+            ->where('experience', $this->user->developer->experience_level)
             ->where('is_disclosed', 0)
             ->where(function ($query) {
                 $developer = $this->user->developer;
                 $userStackIds = $this->user->stacks->pluck('id')->toArray();
                 $userTechIds = $this->user->technologies->pluck('id')->toArray();
 
-                $query->whereRaw('1 = 0');
-
-                $query->where('experience', $developer->experience_level);
-
-                $query->orWhereIn('stack_id', $userStackIds);
-
-                $query->orWhereHas('technologies', function($q) use ($userTechIds) {
-                    $q->whereIn('technology_id', $userTechIds);
-                });
+                $query->whereIn('stack_id', $userStackIds)
+                    ->orWhereHas('technologies', function ($q) use ($userTechIds) {
+                        $q->whereIn('technology_id', $userTechIds);
+                    });
             })
             ->whereDoesntHave('jobApplications', function ($query) {
                 $query->where('user_id', $this->user->id);

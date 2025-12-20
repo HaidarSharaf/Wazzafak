@@ -8,7 +8,7 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Layout('components.layouts.admin')]
-#[Title('Admin Dashboard | Byte Zone')]
+#[Title('Admin Dashboard | Wazzafak')]
 class AdminDashboard extends Component
 {
 

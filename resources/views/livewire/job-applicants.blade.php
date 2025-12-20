@@ -662,6 +662,7 @@
                 x-show="modalAccept"
                 x-cloak
                 x-transition
+                @close-accept-modal.window="modalAccept = false; selectedApplicationId = null"
                 class="fixed inset-0 bg-white/30 backdrop-blur-md z-50 rounded-2xl flex justify-center items-center"
             >
                 <div
@@ -672,7 +673,9 @@
                         <button
                             type="button"
                             @click="modalAccept = false"
-                            class="absolute top-3 end-2.5 text-[#0D1B2A] bg-transparent cursor-pointer hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                            wire:loading.attr="disabled"
+                            wire:target="acceptApplicant"
+                            class="absolute top-3 end-2.5 text-[#0D1B2A] bg-transparent cursor-pointer hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
@@ -680,13 +683,42 @@
                         </button>
 
                         <div class="p-4 md:p-5 text-center">
-                            <svg class="mx-auto mb-4 text-green-500 w-12 h-12" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <svg class="mx-auto mb-4 text-green-500 w-12 h-12"
+                                 wire:loading.remove
+                                 wire:target="acceptApplicant"
+                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                             </svg>
 
-                            <h3 class="mb-5 text-lg font-semibold text-[#0D1B2A]">Are you sure you want to accept this application?</h3>
+                            <h3
+                                wire:loading.remove
+                                wire:target="acceptApplicant"
+                                class="mb-5 text-lg font-semibold text-[#0D1B2A]"
+                            >
+                                Are you sure you want to accept this application?
+                            </h3>
 
-                            <div class="mb-10 flex flex-col gap-7">
+                            <h3
+                                wire:loading
+                                wire:target="acceptApplicant"
+                                class="mb-5 text-lg font-semibold text-[#0D1B2A]"
+                            >
+                                Scheduling Interview...
+                            </h3>
+
+                            <p
+                                wire:loading
+                                wire:target="acceptApplicant"
+                                class="mb-5 text-gray-600 text-sm animate-pulse"
+                            >
+                                Please wait while we process the application and schedule the interview.
+                            </p>
+
+                            <div
+                                wire:loading.remove
+                                 wire:target="acceptApplicant"
+                                 class="mb-10 flex flex-col gap-7"
+                            >
 
                                 <div>
                                     <label class="block text-gray-900 font-semibold mb-2 text-left">Interview Location:</label>
@@ -716,6 +748,7 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                                 </svg>
                                             </div>
+                                            @error('interview_date') <span class="text-xs text-red-600 mt-1 block">{{ $message }}</span> @enderror
                                         </div>
 
                                         <div>
@@ -730,11 +763,10 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                                 </svg>
                                             </div>
+                                            @error('interview_time') <span class="text-xs text-red-600 mt-1 block">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
 
-                                    @error('interviewDate') <span class="text-xs text-red-600 mt-1 block">{{ $message }}</span> @enderror
-                                    @error('interviewTime') <span class="text-xs text-red-600 mt-1 block">{{ $message }}</span> @enderror
                                 </div>
 
                                 <div class="flex items-center mt-1">
@@ -750,21 +782,41 @@
                                 </div>
                             </div>
 
-                            <button
-                                type="button"
-                                @click="$wire.acceptApplicant(selectedApplicationId); modalAccept = false; selectedApplicationId = null"
-                                class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 cursor-pointer focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+                            <div
+                                wire:loading.remove
+                                wire:target="acceptApplicant"
                             >
-                                Yes, I'm sure
-                            </button>
+                                <button
+                                    type="button"
+                                    @click="$wire.acceptApplicant(selectedApplicationId)"
+                                    class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 cursor-pointer focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+                                >
+                                    Yes, I'm sure
+                                </button>
 
-                            <button
-                                type="button"
-                                @click="modalAccept = false"
-                                class="py-2.5 px-5 ms-3 text-sm font-medium text-[#0D1B2A] cursor-pointer focus:outline-none bg-white hover:bg-gray-200 rounded-lg border border-gray-200 focus:z-10 focus:ring-4 focus:ring-gray-100"
+                                <button
+                                    type="button"
+                                    @click="modalAccept = false"
+                                    class="py-2.5 px-5 ms-3 text-sm font-medium text-[#0D1B2A] cursor-pointer focus:outline-none bg-white hover:bg-gray-200 rounded-lg border border-gray-200 focus:z-10 focus:ring-4 focus:ring-gray-100"
+                                >
+                                    No, cancel
+                                </button>
+                            </div>
+
+                            <div
+                                wire:loading
+                                wire:target="acceptApplicant"
                             >
-                                No, cancel
-                            </button>
+                                <button
+                                    type="button"
+                                    disabled
+                                    class="text-white bg-green-400 cursor-not-allowed font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center gap-2"
+                                >
+                                    <div class="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                                    Processing...
+                                </button>
+                            </div>
+
                         </div>
                     </div>
                 </div>

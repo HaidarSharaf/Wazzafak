@@ -13,31 +13,16 @@ class ApplicationAcceptance extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    protected $name;
-
-    protected $applicant_name;
-    protected $jobListing;
-    protected $interviewDateTime;
-    protected $interviewLocation;
-    protected $zoomData;
-    protected $isRecruiter;
 
     public function __construct(
-        string $name,
-        JobListing $jobListing,
-        Carbon $interviewDateTime,
-        string $interviewLocation,
-        ?array $zoomData = null,
-        ?string $applicantName = null,
-        bool $isRecruiter = false
+        public string $name,
+        public JobListing $jobListing,
+        public Carbon $interviewDateTime,
+        public string $interviewLocation,
+        public ?array $zoomData = null,
+        public ?string $applicantName = null,
+        public bool $isRecruiter = false
     ) {
-        $this->name = $name;
-        $this->jobListing = $jobListing;
-        $this->interviewDateTime = $interviewDateTime;
-        $this->interviewLocation = $interviewLocation;
-        $this->zoomData = $zoomData;
-        $this->applicantName = $applicantName;
-        $this->isRecruiter = $isRecruiter;
     }
 
     public function via(object $notifiable): array
@@ -55,7 +40,7 @@ class ApplicationAcceptance extends Notification implements ShouldQueue
                 ->subject('Interview Scheduled - ' . $this->jobListing->getStackNameAttribute())
                 ->view('emails.application-acceptance-recruiter', [
                     'recruiter_name' => $this->name,
-                    'candidate_name' => $this->applicantName,
+                    'candidate_name' => $this->applicantName ? $this->applicantName : 'Candidate',
                     'job_title' => $this->jobListing->experience . ": " . $this->jobListing->getStackNameAttribute(),
                     'interview_date' => $formattedDate,
                     'interview_time' => $formattedTime,
@@ -74,7 +59,7 @@ class ApplicationAcceptance extends Notification implements ShouldQueue
                     'job_title' => $this->jobListing->experience . ": " . $this->jobListing->getStackNameAttribute(),
                     'interview_date' => $formattedDate,
                     'interview_time' => $formattedTime,
-                    'interview_location' => $this->interviewLocation === 'online_meeting' ? 'Online Meeting (Zoom)' : 'In-Person',
+                    'interview_location' => $this->interviewLocation === 'online_meeting' ? 'Online Meeting (Zoom)' : 'In-Person, ' . $this->jobListing->getCompanyLocationAttribute(),
                     'is_online' => $this->interviewLocation === 'online_meeting',
                     'zoom_join_url' => $this->zoomData['join_url'] ?? null,
                     'zoom_meeting_id' => $this->zoomData['id'] ?? null,
@@ -95,7 +80,7 @@ class ApplicationAcceptance extends Notification implements ShouldQueue
             'zoom_start_url' => $this->isRecruiter ? ($this->zoomData['start_url'] ?? null) : null,
             'zoom_meeting_id' => $this->zoomData['id'] ?? null,
             'zoom_password' => $this->zoomData['password'] ?? null,
-            'applicant_name' => $this->applicant_name,
+            'applicant_name' => $this->applicantName,
             'is_recruiter' => $this->isRecruiter,
         ];
     }

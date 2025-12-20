@@ -183,9 +183,6 @@ class JobApplicants extends Component
                 );
             }
 
-            $application->update([
-                'status' => 'Accepted'
-            ]);
 
             $applicant = $application->user;
 
@@ -197,7 +194,8 @@ class JobApplicants extends Component
                 $zoomMeetingData
             ));
 
-            $recruiter_user->notify(new ApplicationAcceptance(
+            $recruiter_user->notify(
+                (new ApplicationAcceptance(
                 $recruiter_user->name,
                 $this->job_listing,
                 $interviewDateTime,
@@ -205,7 +203,12 @@ class JobApplicants extends Component
                 $zoomMeetingData,
                 $applicant->name,
                 true
-            ));
+                ))->delay(now()->addSeconds(20))
+            );
+
+            $application->update([
+                'status' => 'Accepted'
+            ]);
 
             $this->notify(
                 variant: 'success',
@@ -220,12 +223,16 @@ class JobApplicants extends Component
 
             $this->reset(['interview_date', 'interview_time', 'interview_location', 'rejectOthers']);
 
+            $this->dispatch('close-accept-modal');
+
         } catch (Exception $e){
             $this->notify(
                 variant: 'danger',
                 title: 'Error',
                 message: 'Failed to schedule interview. Please try again. ' . $e->getMessage()
             );
+
+            $this->dispatch('close-accept-modal');
         }
     }
 

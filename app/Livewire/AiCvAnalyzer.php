@@ -91,6 +91,62 @@ class AiCvAnalyzer extends Component
         $this->reset(['cv', 'analysisResult', 'analyzed', 'errorMessage']);
     }
 
+    protected function extractFromWord(string $filePath, string $extension): string
+    {
+        if ($extension === 'docx') {
+            return $this->extractFromDocx($filePath);
+        }
+        
+        if ($extension === 'doc') {
+            return $this->extractFromDoc($filePath);
+        }
+        
+        throw new \Exception('Unsupported Word document format');
+    }
+
+    protected function extractFromDocx(string $filePath): string
+    {
+        $zip = new \ZipArchive();
+        
+        if ($zip->open($filePath) !== true) {
+            throw new \Exception('Unable to open DOCX file');
+        }
+        
+        $content = $zip->getFromName('word/document.xml');
+        $zip->close();
+        
+        if ($content === false) {
+            throw new \Exception('Unable to extract content from DOCX file');
+        }
+        
+        $text = strip_tags($content);
+        $text = html_entity_decode($text, ENT_QUOTES | ENT_XML1, 'UTF-8');
+        
+        return trim($text);
+    }
+
+    protected function extractFromDoc(string $filePath): string
+    {
+        // Basic extraction for older .doc files
+        $content = file_get_contents($filePath);
+        
+        if ($content === false) {
+            throw new \Exception('Unable to read DOC file');
+        }
+        
+        // Extract readable text from binary content
+        $content = str_replace(["\r", "\n"], " ", $content);
+        $content = preg_replace('/[^\x20-\x7E]/', ' ', $content);
+        $content = preg_replace('/\s+/', ' ', $content);
+        $text = trim($content);
+        
+        if (strlen($text) < 50) {
+            throw new \Exception('Unable to extract meaningful text from DOC file. Please convert to DOCX or PDF.');
+        }
+        
+        return $text;
+    }
+
     protected function isLikelyCV(string $text): bool
     {
         $text = strtolower($text);

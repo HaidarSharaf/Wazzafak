@@ -80,8 +80,7 @@
                     @forelse($this->filteredTechs as $tech)
                         <div
                             wire:click="toggleTech({{ $tech->id }})"
-                            style="background-color: {{ $tech->color }} !important;"
-                            class="rounded-xl py-2 px-5 border text-sm min-w-[25px] font-semibold flex items-center justify-center transition cursor-pointer text-white relative overflow-hidden
+                            class="rounded-xl py-2 px-5 border bg-white/20 text-sm min-w-[20px] font-semibold flex items-center justify-center transition cursor-pointer text-white relative overflow-hidden
                             {{ in_array($tech->id, $selectedTechs) ? 'ring-2 ring-white shadow-lg transform scale-105' : 'hover:shadow-md hover:transform hover:scale-102' }}"
                         >
                             @if(!in_array($tech->id, $selectedTechs))
